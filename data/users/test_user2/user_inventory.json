@@ -1,0 +1,30 @@
+{
+    "templateCardInventory": [
+        {
+            "multiverseId": -42,
+            "cardName": "template_name",
+            "cardTypes": [
+                "template_type1",
+                "template_type1",
+                "template_type1",
+                "template_type1"
+            ],
+            "manaCost": -42,
+            "manaColors": [
+                "template_blue",
+                "template_green"
+            ],
+            "cardText": [
+                "template_text1",
+                "template_text2",
+                "template_text3"
+            ],
+            "rarity": "template_rarity",
+            "artwork": "link",
+            "artist": "template_artist",
+            "set": "template_set",
+            "condition": "template_condition",
+            "age": -42
+        }
+    ]
+}
