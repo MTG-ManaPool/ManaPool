@@ -1,5 +1,4 @@
-from user.user import createUser
-from user.user import readUser
+from .. user.user import createUser, readUser
 
 def login():
     print('Welcome to ManaPool, your multitool tracking your current Magic The Gathering inventory!\n')
@@ -31,3 +30,8 @@ def login():
                     user = createUser(username_in)
                     continue
         return user
+
+if __name__ == '__main__':
+    pass
+else:
+    print('importing module "login"')

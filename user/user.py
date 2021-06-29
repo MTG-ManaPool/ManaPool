@@ -34,3 +34,8 @@ def readUser(path):
         user = json.load(json_file) # pull in json as python dict/will be db read later
     json_file.close()
     return user
+
+if __name__ == '__main__':
+    pass
+else:
+    print('importing module "users"')

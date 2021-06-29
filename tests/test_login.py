@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import patch
-from ui.login import login
+from .. ui.login import login
 
 class TestLogin(unittest.TestCase):
     
