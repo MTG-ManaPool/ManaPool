@@ -25,10 +25,12 @@ Activate your virtual environment,
 
 #### Unix
 
+    virtualenv env
     source env/bin/activate
 
 #### Windows
 
+    virtualenv env
     .\env\Scripts\activate
 
 
