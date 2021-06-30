@@ -1,0 +1,111 @@
+{
+    "object": "card",
+    "id": "c5287e77-890d-41bd-acc6-7a8f1866426d",
+    "oracle_id": "156107a0-1657-4d04-904c-f8d19df32ff8",
+    "multiverse_ids": [
+    212578
+    ],
+    "tcgplayer_id": 37086,
+    "cardmarket_id": 240528,
+    "name": "A Display of My Dark Power",
+    "lang": "en",
+    "released_at": "2010-06-18",
+    "uri": "https://api.scryfall.com/cards/c5287e77-890d-41bd-acc6-7a8f1866426d",
+    "scryfall_uri": "https://scryfall.com/card/oarc/8%E2%98%85/a-display-of-my-dark-power?utm_source=api",
+    "layout": "scheme",
+    "highres_image": true,
+    "image_status": "highres_scan",
+    "image_uris": {
+    "small": "https://c1.scryfall.com/file/scryfall-cards/small/front/c/5/c5287e77-890d-41bd-acc6-7a8f1866426d.jpg?1562252706",
+    "normal": "https://c1.scryfall.com/file/scryfall-cards/normal/front/c/5/c5287e77-890d-41bd-acc6-7a8f1866426d.jpg?1562252706",
+    "large": "https://c1.scryfall.com/file/scryfall-cards/large/front/c/5/c5287e77-890d-41bd-acc6-7a8f1866426d.jpg?1562252706",
+    "png": "https://c1.scryfall.com/file/scryfall-cards/png/front/c/5/c5287e77-890d-41bd-acc6-7a8f1866426d.png?1562252706",
+    "art_crop": "https://c1.scryfall.com/file/scryfall-cards/art_crop/front/c/5/c5287e77-890d-41bd-acc6-7a8f1866426d.jpg?1562252706",
+    "border_crop": "https://c1.scryfall.com/file/scryfall-cards/border_crop/front/c/5/c5287e77-890d-41bd-acc6-7a8f1866426d.jpg?1562252706"
+    },
+    "mana_cost": "",
+    "cmc": 0,
+    "type_line": "Scheme",
+    "oracle_text": "When you set this scheme in motion, until your next turn, whenever a player taps a land for mana, that player adds one mana of any type that land produced.",
+    "colors": [],
+    "color_identity": [],
+    "keywords": [],
+    "produced_mana": [
+    "B",
+    "G",
+    "R",
+    "U",
+    "W"
+    ],
+    "legalities": {
+    "standard": "not_legal",
+    "future": "not_legal",
+    "historic": "not_legal",
+    "gladiator": "not_legal",
+    "pioneer": "not_legal",
+    "modern": "not_legal",
+    "legacy": "not_legal",
+    "pauper": "not_legal",
+    "vintage": "not_legal",
+    "penny": "not_legal",
+    "commander": "not_legal",
+    "brawl": "not_legal",
+    "duel": "not_legal",
+    "oldschool": "not_legal",
+    "premodern": "not_legal"
+    },
+    "games": [
+    "paper"
+    ],
+    "reserved": false,
+    "foil": false,
+    "nonfoil": true,
+    "oversized": true,
+    "promo": false,
+    "reprint": false,
+    "variation": false,
+    "set_id": "238beedf-1d4d-475f-a980-527ba2f55dc6",
+    "set": "oarc",
+    "set_name": "Archenemy Schemes",
+    "set_type": "archenemy",
+    "set_uri": "https://api.scryfall.com/sets/238beedf-1d4d-475f-a980-527ba2f55dc6",
+    "set_search_uri": "https://api.scryfall.com/cards/search?order=set&q=e%3Aoarc&unique=prints",
+    "scryfall_set_uri": "https://scryfall.com/sets/oarc?utm_source=api",
+    "rulings_uri": "https://api.scryfall.com/cards/c5287e77-890d-41bd-acc6-7a8f1866426d/rulings",
+    "prints_search_uri": "https://api.scryfall.com/cards/search?order=released&q=oracleid%3A156107a0-1657-4d04-904c-f8d19df32ff8&unique=prints",
+    "collector_number": "8★",
+    "digital": false,
+    "rarity": "common",
+    "flavor_text": "\"What would you say is my greatest attribute? Is it my gluttonous lust for power?\"",
+    "card_back_id": "1b2396d4-9048-439d-96bd-354288518841",
+    "artist": "Jim Nelson",
+    "artist_ids": [
+    "aa9f64d1-29e1-4c82-877e-44c18183f40b"
+    ],
+    "illustration_id": "3749f9f1-d65e-4365-9287-c2fdf8a5428d",
+    "border_color": "black",
+    "frame": "2003",
+    "full_art": false,
+    "textless": false,
+    "booster": false,
+    "story_spotlight": false,
+    "prices": {
+    "usd": "5.00",
+    "usd_foil": null,
+    "eur": null,
+    "eur_foil": null,
+    "tix": null
+    },
+    "related_uris": {
+    "gatherer": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=212578",
+    "tcgplayer_infinite_articles": "https://infinite.tcgplayer.com/search?contentMode=article&game=magic&partner=scryfall&q=A+Display+of+My+Dark+Power&utm_campaign=affiliate&utm_medium=api&utm_source=scryfall",
+    "tcgplayer_infinite_decks": "https://infinite.tcgplayer.com/search?contentMode=deck&game=magic&partner=scryfall&q=A+Display+of+My+Dark+Power&utm_campaign=affiliate&utm_medium=api&utm_source=scryfall",
+    "edhrec": "https://edhrec.com/route/?cc=A+Display+of+My+Dark+Power",
+    "mtgtop8": "https://mtgtop8.com/search?MD_check=1&SB_check=1&cards=A+Display+of+My+Dark+Power"
+    },
+    "purchase_uris": {
+    "tcgplayer": "https://shop.tcgplayer.com/product/productsearch?id=37086&utm_campaign=affiliate&utm_medium=api&utm_source=scryfall",
+    "cardmarket": "https://www.cardmarket.com/en/Magic/Products/Search?referrer=scryfall&searchString=A+Display+of+My+Dark+Power&utm_campaign=card_prices&utm_medium=text&utm_source=scryfall",
+    "cardhoarder": "https://www.cardhoarder.com/cards?affiliate_id=scryfall&data%5Bsearch%5D=A+Display+of+My+Dark+Power&ref=card-profile&utm_campaign=affiliate&utm_medium=card&utm_source=scryfall"
+    }
+    }

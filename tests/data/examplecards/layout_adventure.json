@@ -1,0 +1,145 @@
+{
+    "object": "card",
+    "id": "32158458-42eb-41bc-a15a-11af28463eb0",
+    "oracle_id": "db6fbdc9-1c45-416f-a08e-2082f65adb65",
+    "multiverse_ids": [
+    473000
+    ],
+    "mtgo_id": 78176,
+    "arena_id": 70185,
+    "tcgplayer_id": 198549,
+    "cardmarket_id": 399169,
+    "name": "Animating Faerie // Bring to Life",
+    "lang": "en",
+    "released_at": "2019-10-04",
+    "uri": "https://api.scryfall.com/cards/32158458-42eb-41bc-a15a-11af28463eb0",
+    "scryfall_uri": "https://scryfall.com/card/eld/38/animating-faerie-bring-to-life?utm_source=api",
+    "layout": "adventure",
+    "highres_image": true,
+    "image_status": "highres_scan",
+    "image_uris": {
+    "small": "https://c1.scryfall.com/file/scryfall-cards/small/front/3/2/32158458-42eb-41bc-a15a-11af28463eb0.jpg?1572489832",
+    "normal": "https://c1.scryfall.com/file/scryfall-cards/normal/front/3/2/32158458-42eb-41bc-a15a-11af28463eb0.jpg?1572489832",
+    "large": "https://c1.scryfall.com/file/scryfall-cards/large/front/3/2/32158458-42eb-41bc-a15a-11af28463eb0.jpg?1572489832",
+    "png": "https://c1.scryfall.com/file/scryfall-cards/png/front/3/2/32158458-42eb-41bc-a15a-11af28463eb0.png?1572489832",
+    "art_crop": "https://c1.scryfall.com/file/scryfall-cards/art_crop/front/3/2/32158458-42eb-41bc-a15a-11af28463eb0.jpg?1572489832",
+    "border_crop": "https://c1.scryfall.com/file/scryfall-cards/border_crop/front/3/2/32158458-42eb-41bc-a15a-11af28463eb0.jpg?1572489832"
+    },
+    "mana_cost": "{2}{U} // {2}{U}",
+    "cmc": 3,
+    "type_line": "Creature — Faerie // Sorcery — Adventure",
+    "power": "2",
+    "toughness": "2",
+    "colors": [
+    "U"
+    ],
+    "color_identity": [
+    "U"
+    ],
+    "keywords": [
+    "Flying"
+    ],
+    "card_faces": [
+    {
+    "object": "card_face",
+    "name": "Animating Faerie",
+    "mana_cost": "{2}{U}",
+    "type_line": "Creature — Faerie",
+    "oracle_text": "Flying",
+    "power": "2",
+    "toughness": "2",
+    "flavor_text": "A true puppet master has no need for strings.",
+    "artist": "Joseph Meehan",
+    "artist_id": "6befd6d5-7f8d-4b7c-87e3-5511391a3359",
+    "illustration_id": "6c97bfb8-f512-4e31-ac9c-a3f969d40a56"
+    },
+    {
+    "object": "card_face",
+    "name": "Bring to Life",
+    "mana_cost": "{2}{U}",
+    "type_line": "Sorcery — Adventure",
+    "oracle_text": "Target noncreature artifact you control becomes a 0/0 artifact creature. Put four +1/+1 counters on it.",
+    "artist": "Joseph Meehan",
+    "artist_id": "6befd6d5-7f8d-4b7c-87e3-5511391a3359"
+    }
+    ],
+    "legalities": {
+    "standard": "legal",
+    "future": "legal",
+    "historic": "legal",
+    "gladiator": "legal",
+    "pioneer": "legal",
+    "modern": "legal",
+    "legacy": "legal",
+    "pauper": "not_legal",
+    "vintage": "legal",
+    "penny": "legal",
+    "commander": "legal",
+    "brawl": "legal",
+    "duel": "legal",
+    "oldschool": "not_legal",
+    "premodern": "not_legal"
+    },
+    "games": [
+    "arena",
+    "paper",
+    "mtgo"
+    ],
+    "reserved": false,
+    "foil": true,
+    "nonfoil": true,
+    "oversized": false,
+    "promo": false,
+    "reprint": false,
+    "variation": false,
+    "set_id": "a90a7b2f-9dd8-4fc7-9f7d-8ea2797ec782",
+    "set": "eld",
+    "set_name": "Throne of Eldraine",
+    "set_type": "expansion",
+    "set_uri": "https://api.scryfall.com/sets/a90a7b2f-9dd8-4fc7-9f7d-8ea2797ec782",
+    "set_search_uri": "https://api.scryfall.com/cards/search?order=set&q=e%3Aeld&unique=prints",
+    "scryfall_set_uri": "https://scryfall.com/sets/eld?utm_source=api",
+    "rulings_uri": "https://api.scryfall.com/cards/32158458-42eb-41bc-a15a-11af28463eb0/rulings",
+    "prints_search_uri": "https://api.scryfall.com/cards/search?order=released&q=oracleid%3Adb6fbdc9-1c45-416f-a08e-2082f65adb65&unique=prints",
+    "collector_number": "38",
+    "digital": false,
+    "rarity": "uncommon",
+    "flavor_text": "A true puppet master has no need for strings.",
+    "card_back_id": "0aeebaf5-8c7d-4636-9e82-8c27447861f7",
+    "artist": "Joseph Meehan",
+    "artist_ids": [
+    "6befd6d5-7f8d-4b7c-87e3-5511391a3359"
+    ],
+    "illustration_id": "6c97bfb8-f512-4e31-ac9c-a3f969d40a56",
+    "border_color": "black",
+    "frame": "2015",
+    "full_art": false,
+    "textless": false,
+    "booster": true,
+    "story_spotlight": false,
+    "edhrec_rank": 8204,
+    "preview": {
+    "source": "Wizards of the Coast",
+    "source_uri": "https://twitter.com/MTG_Arena/status/1169291126970314752",
+    "previewed_at": "2019-09-04"
+    },
+    "prices": {
+    "usd": "0.03",
+    "usd_foil": "0.17",
+    "eur": "0.10",
+    "eur_foil": "0.19",
+    "tix": "0.03"
+    },
+    "related_uris": {
+    "gatherer": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=473000",
+    "tcgplayer_infinite_articles": "https://infinite.tcgplayer.com/search?contentMode=article&game=magic&partner=scryfall&q=Animating+Faerie+%2F%2F+Bring+to+Life&utm_campaign=affiliate&utm_medium=api&utm_source=scryfall",
+    "tcgplayer_infinite_decks": "https://infinite.tcgplayer.com/search?contentMode=deck&game=magic&partner=scryfall&q=Animating+Faerie+%2F%2F+Bring+to+Life&utm_campaign=affiliate&utm_medium=api&utm_source=scryfall",
+    "edhrec": "https://edhrec.com/route/?cc=Animating+Faerie",
+    "mtgtop8": "https://mtgtop8.com/search?MD_check=1&SB_check=1&cards=Animating+Faerie"
+    },
+    "purchase_uris": {
+    "tcgplayer": "https://shop.tcgplayer.com/product/productsearch?id=198549&utm_campaign=affiliate&utm_medium=api&utm_source=scryfall",
+    "cardmarket": "https://www.cardmarket.com/en/Magic/Products/Search?referrer=scryfall&searchString=Animating+Faerie&utm_campaign=card_prices&utm_medium=text&utm_source=scryfall",
+    "cardhoarder": "https://www.cardhoarder.com/cards/78176?affiliate_id=scryfall&ref=card-profile&utm_campaign=affiliate&utm_medium=card&utm_source=scryfall"
+    }
+    }

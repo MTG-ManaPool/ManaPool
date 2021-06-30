@@ -1,0 +1,124 @@
+{
+    "object": "card",
+    "id": "d18396f9-ae20-4471-84ab-a2148319bc39",
+    "oracle_id": "7cb47a7e-fe60-45a2-9c07-bd5c6ddca82d",
+    "multiverse_ids": [
+    503817
+    ],
+    "mtgo_id": 87745,
+    "arena_id": 75248,
+    "tcgplayer_id": 230718,
+    "cardmarket_id": 531232,
+    "name": "Arni Slays the Troll",
+    "lang": "en",
+    "released_at": "2021-02-05",
+    "uri": "https://api.scryfall.com/cards/d18396f9-ae20-4471-84ab-a2148319bc39",
+    "scryfall_uri": "https://scryfall.com/card/khm/201/arni-slays-the-troll?utm_source=api",
+    "layout": "saga",
+    "highres_image": true,
+    "image_status": "highres_scan",
+    "image_uris": {
+    "small": "https://c1.scryfall.com/file/scryfall-cards/small/front/d/1/d18396f9-ae20-4471-84ab-a2148319bc39.jpg?1616207415",
+    "normal": "https://c1.scryfall.com/file/scryfall-cards/normal/front/d/1/d18396f9-ae20-4471-84ab-a2148319bc39.jpg?1616207415",
+    "large": "https://c1.scryfall.com/file/scryfall-cards/large/front/d/1/d18396f9-ae20-4471-84ab-a2148319bc39.jpg?1616207415",
+    "png": "https://c1.scryfall.com/file/scryfall-cards/png/front/d/1/d18396f9-ae20-4471-84ab-a2148319bc39.png?1616207415",
+    "art_crop": "https://c1.scryfall.com/file/scryfall-cards/art_crop/front/d/1/d18396f9-ae20-4471-84ab-a2148319bc39.jpg?1616207415",
+    "border_crop": "https://c1.scryfall.com/file/scryfall-cards/border_crop/front/d/1/d18396f9-ae20-4471-84ab-a2148319bc39.jpg?1616207415"
+    },
+    "mana_cost": "{R}{G}",
+    "cmc": 2,
+    "type_line": "Enchantment — Saga",
+    "oracle_text": "(As this Saga enters and after your draw step, add a lore counter. Sacrifice after III.)\nI — Target creature you control fights up to one target creature you don't control.\nII — Add {R}. Put two +1/+1 counters on up to one target creature you control.\nIII — You gain life equal to the greatest power among creatures you control.",
+    "colors": [
+    "G",
+    "R"
+    ],
+    "color_identity": [
+    "G",
+    "R"
+    ],
+    "keywords": [
+    "Fight"
+    ],
+    "produced_mana": [
+    "R"
+    ],
+    "legalities": {
+    "standard": "legal",
+    "future": "legal",
+    "historic": "legal",
+    "gladiator": "legal",
+    "pioneer": "legal",
+    "modern": "legal",
+    "legacy": "legal",
+    "pauper": "not_legal",
+    "vintage": "legal",
+    "penny": "legal",
+    "commander": "legal",
+    "brawl": "legal",
+    "duel": "legal",
+    "oldschool": "not_legal",
+    "premodern": "not_legal"
+    },
+    "games": [
+    "arena",
+    "paper",
+    "mtgo"
+    ],
+    "reserved": false,
+    "foil": true,
+    "nonfoil": true,
+    "oversized": false,
+    "promo": false,
+    "reprint": false,
+    "variation": false,
+    "set_id": "43057fad-b1c1-437f-bc48-0045bce6d8c9",
+    "set": "khm",
+    "set_name": "Kaldheim",
+    "set_type": "expansion",
+    "set_uri": "https://api.scryfall.com/sets/43057fad-b1c1-437f-bc48-0045bce6d8c9",
+    "set_search_uri": "https://api.scryfall.com/cards/search?order=set&q=e%3Akhm&unique=prints",
+    "scryfall_set_uri": "https://scryfall.com/sets/khm?utm_source=api",
+    "rulings_uri": "https://api.scryfall.com/cards/d18396f9-ae20-4471-84ab-a2148319bc39/rulings",
+    "prints_search_uri": "https://api.scryfall.com/cards/search?order=released&q=oracleid%3A7cb47a7e-fe60-45a2-9c07-bd5c6ddca82d&unique=prints",
+    "collector_number": "201",
+    "digital": false,
+    "rarity": "uncommon",
+    "card_back_id": "0aeebaf5-8c7d-4636-9e82-8c27447861f7",
+    "artist": "Simon Dominic",
+    "artist_ids": [
+    "b0e80135-db5a-4b88-a0bc-815a0e94faa1"
+    ],
+    "illustration_id": "13170dc3-0f4a-4d07-a86f-99e0e87cf929",
+    "border_color": "black",
+    "frame": "2015",
+    "full_art": false,
+    "textless": false,
+    "booster": true,
+    "story_spotlight": false,
+    "edhrec_rank": 10099,
+    "preview": {
+    "source": "Deathsie",
+    "source_uri": "https://twitter.com/Deathsie/status/1349946949311426560",
+    "previewed_at": "2021-01-15"
+    },
+    "prices": {
+    "usd": "0.08",
+    "usd_foil": "0.15",
+    "eur": "0.03",
+    "eur_foil": "0.19",
+    "tix": "0.01"
+    },
+    "related_uris": {
+    "gatherer": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=503817",
+    "tcgplayer_infinite_articles": "https://infinite.tcgplayer.com/search?contentMode=article&game=magic&partner=scryfall&q=Arni+Slays+the+Troll&utm_campaign=affiliate&utm_medium=api&utm_source=scryfall",
+    "tcgplayer_infinite_decks": "https://infinite.tcgplayer.com/search?contentMode=deck&game=magic&partner=scryfall&q=Arni+Slays+the+Troll&utm_campaign=affiliate&utm_medium=api&utm_source=scryfall",
+    "edhrec": "https://edhrec.com/route/?cc=Arni+Slays+the+Troll",
+    "mtgtop8": "https://mtgtop8.com/search?MD_check=1&SB_check=1&cards=Arni+Slays+the+Troll"
+    },
+    "purchase_uris": {
+    "tcgplayer": "https://shop.tcgplayer.com/product/productsearch?id=230718&utm_campaign=affiliate&utm_medium=api&utm_source=scryfall",
+    "cardmarket": "https://www.cardmarket.com/en/Magic/Products/Search?referrer=scryfall&searchString=Arni+Slays+the+Troll&utm_campaign=card_prices&utm_medium=text&utm_source=scryfall",
+    "cardhoarder": "https://www.cardhoarder.com/cards/87745?affiliate_id=scryfall&ref=card-profile&utm_campaign=affiliate&utm_medium=card&utm_source=scryfall"
+    }
+    }

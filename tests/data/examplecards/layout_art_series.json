@@ -1,0 +1,113 @@
+{
+    "object": "card",
+    "id": "237ae864-215a-4f7b-8c2d-9bce2148e197",
+    "oracle_id": "d6f8ca2d-d726-455d-963f-ef55e41881b3",
+    "multiverse_ids": [],
+    "name": "Abundant Harvest // Abundant Harvest",
+    "lang": "en",
+    "released_at": "2021-06-18",
+    "uri": "https://api.scryfall.com/cards/237ae864-215a-4f7b-8c2d-9bce2148e197",
+    "scryfall_uri": "https://scryfall.com/card/amh2/37/abundant-harvest-abundant-harvest?utm_source=api",
+    "layout": "art_series",
+    "highres_image": false,
+    "image_status": "lowres",
+    "cmc": 0,
+    "type_line": "Card // Card",
+    "color_identity": [],
+    "keywords": [],
+    "card_faces": [
+    {
+    "object": "card_face",
+    "name": "Abundant Harvest",
+    "mana_cost": "",
+    "type_line": "Card",
+    "oracle_text": "",
+    "colors": [],
+    "artist": "Iris Compiet",
+    "artist_id": "aa807c8c-d07f-4f09-90d3-b2cbf5b86dbf",
+    "illustration_id": "cf7d22af-6879-4e1f-adce-a9b9e5782690",
+    "image_uris": {}
+    },
+    {
+    "object": "card_face",
+    "name": "Abundant Harvest",
+    "mana_cost": "",
+    "type_line": "Card",
+    "oracle_text": "",
+    "colors": [],
+    "artist": "Iris Compiet",
+    "artist_id": "aa807c8c-d07f-4f09-90d3-b2cbf5b86dbf",
+    "illustration_id": "bcbfd70c-d06e-4604-9ece-874f3c5125b2",
+    "image_uris": {}
+    }
+    ],
+    "legalities": {
+    "standard": "not_legal",
+    "future": "not_legal",
+    "historic": "not_legal",
+    "gladiator": "not_legal",
+    "pioneer": "not_legal",
+    "modern": "not_legal",
+    "legacy": "not_legal",
+    "pauper": "not_legal",
+    "vintage": "not_legal",
+    "penny": "not_legal",
+    "commander": "not_legal",
+    "brawl": "not_legal",
+    "duel": "not_legal",
+    "oldschool": "not_legal",
+    "premodern": "not_legal"
+    },
+    "games": [
+    "paper"
+    ],
+    "reserved": false,
+    "foil": true,
+    "nonfoil": true,
+    "oversized": false,
+    "promo": false,
+    "reprint": true,
+    "variation": false,
+    "set_id": "95671546-fd82-43e2-966f-eba5968f629b",
+    "set": "amh2",
+    "set_name": "Modern Horizons 2 Art Series",
+    "set_type": "memorabilia",
+    "set_uri": "https://api.scryfall.com/sets/95671546-fd82-43e2-966f-eba5968f629b",
+    "set_search_uri": "https://api.scryfall.com/cards/search?order=set&q=e%3Aamh2&unique=prints",
+    "scryfall_set_uri": "https://scryfall.com/sets/amh2?utm_source=api",
+    "rulings_uri": "https://api.scryfall.com/cards/237ae864-215a-4f7b-8c2d-9bce2148e197/rulings",
+    "prints_search_uri": "https://api.scryfall.com/cards/search?order=released&q=oracleid%3Ad6f8ca2d-d726-455d-963f-ef55e41881b3&unique=prints",
+    "collector_number": "37",
+    "digital": false,
+    "rarity": "common",
+    "card_back_id": "0aeebaf5-8c7d-4636-9e82-8c27447861f7",
+    "artist": "Iris Compiet",
+    "artist_ids": [
+    "aa807c8c-d07f-4f09-90d3-b2cbf5b86dbf"
+    ],
+    "border_color": "borderless",
+    "frame": "2015",
+    "full_art": false,
+    "textless": false,
+    "booster": false,
+    "story_spotlight": false,
+    "edhrec_rank": 8760,
+    "prices": {
+    "usd": null,
+    "usd_foil": null,
+    "eur": null,
+    "eur_foil": null,
+    "tix": null
+    },
+    "related_uris": {
+    "tcgplayer_infinite_articles": "https://infinite.tcgplayer.com/search?contentMode=article&game=magic&partner=scryfall&q=Abundant+Harvest+%2F%2F+Abundant+Harvest&utm_campaign=affiliate&utm_medium=api&utm_source=scryfall",
+    "tcgplayer_infinite_decks": "https://infinite.tcgplayer.com/search?contentMode=deck&game=magic&partner=scryfall&q=Abundant+Harvest+%2F%2F+Abundant+Harvest&utm_campaign=affiliate&utm_medium=api&utm_source=scryfall",
+    "edhrec": "https://edhrec.com/route/?cc=Abundant+Harvest",
+    "mtgtop8": "https://mtgtop8.com/search?MD_check=1&SB_check=1&cards=Abundant+Harvest"
+    },
+    "purchase_uris": {
+    "tcgplayer": "https://www.tcgplayer.com/search/magic/product?productLineName=magic&q=Abundant+Harvest&utm_campaign=affiliate&utm_medium=api&utm_source=scryfall",
+    "cardmarket": "https://www.cardmarket.com/en/Magic/Products/Search?referrer=scryfall&searchString=Abundant+Harvest&utm_campaign=card_prices&utm_medium=text&utm_source=scryfall",
+    "cardhoarder": "https://www.cardhoarder.com/cards?affiliate_id=scryfall&data%5Bsearch%5D=Abundant+Harvest&ref=card-profile&utm_campaign=affiliate&utm_medium=card&utm_source=scryfall"
+    }
+    }

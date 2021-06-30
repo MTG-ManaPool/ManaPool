@@ -1,0 +1,113 @@
+{
+    "object": "card",
+    "id": "9499b38f-5030-4348-a0ff-9002b0e46f2a",
+    "oracle_id": "8c77f436-81ab-4200-b76d-58b1f91fc3d0",
+    "multiverse_ids": [
+    401652
+    ],
+    "tcgplayer_id": 104201,
+    "cardmarket_id": 284127,
+    "name": "Beastbreaker of Bala Ged",
+    "lang": "en",
+    "released_at": "2015-08-28",
+    "uri": "https://api.scryfall.com/cards/9499b38f-5030-4348-a0ff-9002b0e46f2a",
+    "scryfall_uri": "https://scryfall.com/card/ddp/10/beastbreaker-of-bala-ged?utm_source=api",
+    "layout": "leveler",
+    "highres_image": true,
+    "image_status": "highres_scan",
+    "image_uris": {
+    "small": "https://c1.scryfall.com/file/scryfall-cards/small/front/9/4/9499b38f-5030-4348-a0ff-9002b0e46f2a.jpg?1593095420",
+    "normal": "https://c1.scryfall.com/file/scryfall-cards/normal/front/9/4/9499b38f-5030-4348-a0ff-9002b0e46f2a.jpg?1593095420",
+    "large": "https://c1.scryfall.com/file/scryfall-cards/large/front/9/4/9499b38f-5030-4348-a0ff-9002b0e46f2a.jpg?1593095420",
+    "png": "https://c1.scryfall.com/file/scryfall-cards/png/front/9/4/9499b38f-5030-4348-a0ff-9002b0e46f2a.png?1593095420",
+    "art_crop": "https://c1.scryfall.com/file/scryfall-cards/art_crop/front/9/4/9499b38f-5030-4348-a0ff-9002b0e46f2a.jpg?1593095420",
+    "border_crop": "https://c1.scryfall.com/file/scryfall-cards/border_crop/front/9/4/9499b38f-5030-4348-a0ff-9002b0e46f2a.jpg?1593095420"
+    },
+    "mana_cost": "{1}{G}",
+    "cmc": 2,
+    "type_line": "Creature — Human Warrior",
+    "oracle_text": "Level up {2}{G} ({2}{G}: Put a level counter on this. Level up only as a sorcery.)\nLEVEL 1-3\n4/4\nLEVEL 4+\n6/6\nTrample",
+    "power": "2",
+    "toughness": "2",
+    "colors": [
+    "G"
+    ],
+    "color_identity": [
+    "G"
+    ],
+    "keywords": [
+    "Level Up",
+    "Trample"
+    ],
+    "legalities": {
+    "standard": "not_legal",
+    "future": "not_legal",
+    "historic": "not_legal",
+    "gladiator": "not_legal",
+    "pioneer": "not_legal",
+    "modern": "legal",
+    "legacy": "legal",
+    "pauper": "not_legal",
+    "vintage": "legal",
+    "penny": "legal",
+    "commander": "legal",
+    "brawl": "not_legal",
+    "duel": "legal",
+    "oldschool": "not_legal",
+    "premodern": "not_legal"
+    },
+    "games": [
+    "paper"
+    ],
+    "reserved": false,
+    "foil": false,
+    "nonfoil": true,
+    "oversized": false,
+    "promo": false,
+    "reprint": true,
+    "variation": false,
+    "set_id": "0dbc7609-b12c-471a-bfd3-c57bc670c445",
+    "set": "ddp",
+    "set_name": "Duel Decks: Zendikar vs. Eldrazi",
+    "set_type": "duel_deck",
+    "set_uri": "https://api.scryfall.com/sets/0dbc7609-b12c-471a-bfd3-c57bc670c445",
+    "set_search_uri": "https://api.scryfall.com/cards/search?order=set&q=e%3Addp&unique=prints",
+    "scryfall_set_uri": "https://scryfall.com/sets/ddp?utm_source=api",
+    "rulings_uri": "https://api.scryfall.com/cards/9499b38f-5030-4348-a0ff-9002b0e46f2a/rulings",
+    "prints_search_uri": "https://api.scryfall.com/cards/search?order=released&q=oracleid%3A8c77f436-81ab-4200-b76d-58b1f91fc3d0&unique=prints",
+    "collector_number": "10",
+    "digital": false,
+    "rarity": "uncommon",
+    "card_back_id": "0aeebaf5-8c7d-4636-9e82-8c27447861f7",
+    "artist": "Karl Kopinski",
+    "artist_ids": [
+    "0fad2c48-a56e-4a0b-b512-224f6f238f20"
+    ],
+    "illustration_id": "00b0b7fb-b87e-446c-be8f-fd6cd9f777cc",
+    "border_color": "black",
+    "frame": "2015",
+    "full_art": false,
+    "textless": false,
+    "booster": false,
+    "story_spotlight": false,
+    "edhrec_rank": 14498,
+    "prices": {
+    "usd": "0.09",
+    "usd_foil": null,
+    "eur": "0.05",
+    "eur_foil": null,
+    "tix": null
+    },
+    "related_uris": {
+    "gatherer": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=401652",
+    "tcgplayer_infinite_articles": "https://infinite.tcgplayer.com/search?contentMode=article&game=magic&partner=scryfall&q=Beastbreaker+of+Bala+Ged&utm_campaign=affiliate&utm_medium=api&utm_source=scryfall",
+    "tcgplayer_infinite_decks": "https://infinite.tcgplayer.com/search?contentMode=deck&game=magic&partner=scryfall&q=Beastbreaker+of+Bala+Ged&utm_campaign=affiliate&utm_medium=api&utm_source=scryfall",
+    "edhrec": "https://edhrec.com/route/?cc=Beastbreaker+of+Bala+Ged",
+    "mtgtop8": "https://mtgtop8.com/search?MD_check=1&SB_check=1&cards=Beastbreaker+of+Bala+Ged"
+    },
+    "purchase_uris": {
+    "tcgplayer": "https://shop.tcgplayer.com/product/productsearch?id=104201&utm_campaign=affiliate&utm_medium=api&utm_source=scryfall",
+    "cardmarket": "https://www.cardmarket.com/en/Magic/Products/Search?referrer=scryfall&searchString=Beastbreaker+of+Bala+Ged&utm_campaign=card_prices&utm_medium=text&utm_source=scryfall",
+    "cardhoarder": "https://www.cardhoarder.com/cards?affiliate_id=scryfall&data%5Bsearch%5D=Beastbreaker+of+Bala+Ged&ref=card-profile&utm_campaign=affiliate&utm_medium=card&utm_source=scryfall"
+    }
+    }

@@ -1,0 +1,117 @@
+{
+    "object": "card",
+    "id": "1c97e5b2-a024-4aa7-a9b8-45f441aad138",
+    "oracle_id": "7c0edef3-5346-4001-87ae-11157be58031",
+    "multiverse_ids": [],
+    "tcgplayer_id": 170076,
+    "name": "Ajani, Adversary of Tyrants Emblem",
+    "lang": "en",
+    "released_at": "2018-07-13",
+    "uri": "https://api.scryfall.com/cards/1c97e5b2-a024-4aa7-a9b8-45f441aad138",
+    "scryfall_uri": "https://scryfall.com/card/tm19/15/ajani-adversary-of-tyrants-emblem?utm_source=api",
+    "layout": "emblem",
+    "highres_image": true,
+    "image_status": "highres_scan",
+    "image_uris": {
+    "small": "https://c1.scryfall.com/file/scryfall-cards/small/front/1/c/1c97e5b2-a024-4aa7-a9b8-45f441aad138.jpg?1562701927",
+    "normal": "https://c1.scryfall.com/file/scryfall-cards/normal/front/1/c/1c97e5b2-a024-4aa7-a9b8-45f441aad138.jpg?1562701927",
+    "large": "https://c1.scryfall.com/file/scryfall-cards/large/front/1/c/1c97e5b2-a024-4aa7-a9b8-45f441aad138.jpg?1562701927",
+    "png": "https://c1.scryfall.com/file/scryfall-cards/png/front/1/c/1c97e5b2-a024-4aa7-a9b8-45f441aad138.png?1562701927",
+    "art_crop": "https://c1.scryfall.com/file/scryfall-cards/art_crop/front/1/c/1c97e5b2-a024-4aa7-a9b8-45f441aad138.jpg?1562701927",
+    "border_crop": "https://c1.scryfall.com/file/scryfall-cards/border_crop/front/1/c/1c97e5b2-a024-4aa7-a9b8-45f441aad138.jpg?1562701927"
+    },
+    "mana_cost": "",
+    "cmc": 0,
+    "type_line": "Emblem — Ajani",
+    "oracle_text": "At the beginning of your end step, create three 1/1 white Cat creature tokens with lifelink.",
+    "colors": [],
+    "color_identity": [],
+    "keywords": [],
+    "all_parts": [
+    {
+    "object": "related_card",
+    "id": "4c565076-5db2-47ea-8ee0-4a4fd7bb353d",
+    "component": "combo_piece",
+    "name": "Ajani, Adversary of Tyrants",
+    "type_line": "Legendary Planeswalker — Ajani",
+    "uri": "https://api.scryfall.com/cards/4c565076-5db2-47ea-8ee0-4a4fd7bb353d"
+    },
+    {
+    "object": "related_card",
+    "id": "1c97e5b2-a024-4aa7-a9b8-45f441aad138",
+    "component": "combo_piece",
+    "name": "Ajani, Adversary of Tyrants Emblem",
+    "type_line": "Emblem — Ajani",
+    "uri": "https://api.scryfall.com/cards/1c97e5b2-a024-4aa7-a9b8-45f441aad138"
+    }
+    ],
+    "legalities": {
+    "standard": "not_legal",
+    "future": "not_legal",
+    "historic": "not_legal",
+    "gladiator": "not_legal",
+    "pioneer": "not_legal",
+    "modern": "not_legal",
+    "legacy": "not_legal",
+    "pauper": "not_legal",
+    "vintage": "not_legal",
+    "penny": "not_legal",
+    "commander": "not_legal",
+    "brawl": "not_legal",
+    "duel": "not_legal",
+    "oldschool": "not_legal",
+    "premodern": "not_legal"
+    },
+    "games": [
+    "paper"
+    ],
+    "reserved": false,
+    "foil": false,
+    "nonfoil": true,
+    "oversized": false,
+    "promo": false,
+    "reprint": false,
+    "variation": false,
+    "set_id": "f291a61b-4afa-4c57-85ac-c67d5ab1403d",
+    "set": "tm19",
+    "set_name": "Core Set 2019 Tokens",
+    "set_type": "token",
+    "set_uri": "https://api.scryfall.com/sets/f291a61b-4afa-4c57-85ac-c67d5ab1403d",
+    "set_search_uri": "https://api.scryfall.com/cards/search?order=set&q=e%3Atm19&unique=prints",
+    "scryfall_set_uri": "https://scryfall.com/sets/tm19?utm_source=api",
+    "rulings_uri": "https://api.scryfall.com/cards/1c97e5b2-a024-4aa7-a9b8-45f441aad138/rulings",
+    "prints_search_uri": "https://api.scryfall.com/cards/search?order=released&q=oracleid%3A7c0edef3-5346-4001-87ae-11157be58031&unique=prints",
+    "collector_number": "15",
+    "digital": false,
+    "rarity": "common",
+    "card_back_id": "0aeebaf5-8c7d-4636-9e82-8c27447861f7",
+    "artist": "Victor Adame Minguez",
+    "artist_ids": [
+    "bd8f7368-5b10-4554-b6b8-d052c6aca89f"
+    ],
+    "illustration_id": "d5dda222-7902-4b57-bf3d-3bf2fa0768a9",
+    "border_color": "black",
+    "frame": "2015",
+    "full_art": false,
+    "textless": false,
+    "booster": true,
+    "story_spotlight": false,
+    "prices": {
+    "usd": "0.24",
+    "usd_foil": null,
+    "eur": null,
+    "eur_foil": null,
+    "tix": null
+    },
+    "related_uris": {
+    "tcgplayer_infinite_articles": "https://infinite.tcgplayer.com/search?contentMode=article&game=magic&partner=scryfall&q=Ajani%2C+Adversary+of+Tyrants+Emblem&utm_campaign=affiliate&utm_medium=api&utm_source=scryfall",
+    "tcgplayer_infinite_decks": "https://infinite.tcgplayer.com/search?contentMode=deck&game=magic&partner=scryfall&q=Ajani%2C+Adversary+of+Tyrants+Emblem&utm_campaign=affiliate&utm_medium=api&utm_source=scryfall",
+    "edhrec": "https://edhrec.com/route/?cc=Ajani%2C+Adversary+of+Tyrants+Emblem",
+    "mtgtop8": "https://mtgtop8.com/search?MD_check=1&SB_check=1&cards=Ajani%2C+Adversary+of+Tyrants+Emblem"
+    },
+    "purchase_uris": {
+    "tcgplayer": "https://shop.tcgplayer.com/product/productsearch?id=170076&utm_campaign=affiliate&utm_medium=api&utm_source=scryfall",
+    "cardmarket": "https://www.cardmarket.com/en/Magic/Products/Search?referrer=scryfall&searchString=Ajani%2C+Adversary+of+Tyrants+Emblem&utm_campaign=card_prices&utm_medium=text&utm_source=scryfall",
+    "cardhoarder": "https://www.cardhoarder.com/cards?affiliate_id=scryfall&data%5Bsearch%5D=Ajani%2C+Adversary+of+Tyrants+Emblem&ref=card-profile&utm_campaign=affiliate&utm_medium=card&utm_source=scryfall"
+    }
+    }
