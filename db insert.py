@@ -30,14 +30,15 @@ drop_col = [
   "frame_effects","life_modifier", "hand_modifier", "highres_image", "digital", "image_status", "reprint", "variation"
   ]
 
-print("Building Dataframes")
+print("\nBuilding inital Dataframes\n")
 inventoryDF = pd.read_json("tests/data/examplecards/layout_test_set.json")
 inventoryDF.info(verbose=False, memory_usage="deep")
 
 ## preprocessing, clean data
 inventoryDF_cleaned = inventoryDF.drop(columns=drop_col)
-
-print(inventoryDF_cleaned)
+print("\nResulting cleaned Dataframe\n")
+inventoryDF_cleaned.info(verbose=False, memory_usage="deep")
+print("\n", inventoryDF_cleaned, "\n")
 
 
 
