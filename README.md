@@ -4,7 +4,7 @@ ManaPool - Magic the Gathering Collection Tool
 What is ManaPool?
 -------------------------
 
-ManaPool is a collection manager and aquisition tool for Magic the Gathering trading cards. 
+ManaPool is a collection manager and aquisition tool for Magic the Gathering trading cards.
 
 ManaPool provides an interface to manage a digital representation of a personal collection of Magic the Gathering cards.
 
@@ -17,11 +17,11 @@ For ManaPool, you will need python3, and pip. It is recommended to use a virtual
 
     sudo apt-get install python3 python3-pip virtualenv
 
-Fetch the latest version of the project: 
+Fetch the latest version of the project:
 
     git clone https://github.com/tjohn11/ManaPool.git
 
-Activate your virtual environment, 
+Activate your virtual environment,
 
 #### Unix
 
@@ -41,7 +41,7 @@ Then install the requirements:
 License
 ---------
 This work is made available under the "MIT License". Please see the file LICENSE in this distribution for license terms.
-# 
+#
 
 Stevon S, Trevor J, Victor H  - 2021
 
