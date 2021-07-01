@@ -50,7 +50,7 @@ if DB_READY:
   # Drop collection contents if needed
   if(DROP_TABLE):
     print("Dropping existing table.")
-    db_client.db_collection.drop()
+    db_client.db_collection.collection_name.drop()
 
 
 
@@ -63,12 +63,12 @@ if DB_READY:
       to_insert.append(df_item)
 
       if count % db_client.batch_limit == 0:
-          db_client.db_collection.insert_many(to_insert)
+          db_client.db_collection.collection_name.insert_many(to_insert)
           to_insert = []
 
 
   print("Showing sample entry.")
-  results = db_client.db_collection.find().limit(1)
+  results = db_client.db_collection.collection_name.find().limit(1)
   pp = pprint.PrettyPrinter(indent=2)
   for x in results:
       pp.pprint(x)
