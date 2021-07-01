@@ -66,6 +66,9 @@ if DB_READY:
           cards_collection.insert_many(to_insert)
           to_insert = []
 
+  if to_insert != []:
+    cards_collection.insert_many(to_insert)
+    to_insert = []
 
   print("Showing sample entry.")
   results = cards_collection.find().limit(1)
