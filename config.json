@@ -1,5 +1,3 @@
 {
-  "SERVER_NAME": "server.url",
-  "USER": "username",
-  "PASSWORD": "password"
+  "SERVER_NAME": "mongodb://localhost:27017/"
 }
