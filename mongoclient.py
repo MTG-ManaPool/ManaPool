@@ -9,5 +9,6 @@ class mongo:
     def __init__(self):
         # Set up database connection
         self.client = pymongo.MongoClient(SERVER_NAME)
-        self.db_collection = self.client.collection_name
+        self.inventory = self.client["inventory"]
+        self.cards = self.inventory["cards"]
         self.batch_limit = 1000 # Mongo caps batch size at 1000
