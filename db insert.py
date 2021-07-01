@@ -56,10 +56,10 @@ if DB_READY:
 
   # Process loopdata items
   print("Inserting rows...")
-  total_rows = inventoryDF.shape[0]
+  total_rows = inventoryDF_cleaned.shape[0]
 
   to_insert = []
-  for count, df_item in tqdm(inventoryDF.iterrows(), total=total_rows):
+  for count, df_item in tqdm(inventoryDF_cleaned.iterrows(), total=total_rows):
       to_insert.append(df_item)
 
       if count % db_client.batch_limit == 0:
