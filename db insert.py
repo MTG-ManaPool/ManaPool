@@ -5,7 +5,7 @@ from tqdm import tqdm
 from mongoclient import mongo
 import numpy as np
 
-DB_READY = False    # remove when DB server is ready to use
+DB_READY = True    # remove when DB server is ready to use
 DROP_TABLE = False  # set True if need to reload data
 
 
@@ -14,9 +14,9 @@ keep_col = [
   "object", "id", "multiverse_ids",
   "name", "mana_cost", "cmc", "colors", "color_identity",
   "image_uris", "card_faces",
-  "type_line", "set_type", "set", "set_name", "rarity", "artist", 
-  "collector_number", "flavor_text", "power",  "toughness",  "keywords", 
-  "layout", "full_art", "textless", "foil", "nonfoil", "oversized", "promo", 
+  "type_line", "set_type", "set", "set_name", "rarity", "artist",
+  "collector_number", "flavor_text", "power",  "toughness",  "keywords",
+  "layout", "full_art", "textless", "foil", "nonfoil", "oversized", "promo",
 ]
 # If a card contains one of the fields <"full_art", "textless", "foil", "nonfoil", "oversized", "promo"> then there is a variant of that type, for this card.
 # We need the column created in the Database for this variant:
@@ -24,7 +24,7 @@ keep_col = [
 # to have the value of an int 0-999 - if the JSON field was True.  (how many copies of this variant are owned.)
 drop_col = [
   "oracle_id","mtgo_id", "arena_id", "tcgplayer_id", "cardmarket_id", "mtgo_foil_id",  "illustration_id", "artist_ids", "card_back_id", "set_id",
-  "oracle_text", "all_parts", "lang", "released_at", "booster", "story_spotlight", "edhrec_rank", "legalities", "games", "reserved", 
+  "oracle_text", "all_parts", "lang", "released_at", "booster", "story_spotlight", "edhrec_rank", "legalities", "games", "reserved",
   "color_indicator", "frame", "border_color", "produced_mana",
   "related_uris", "purchase_uris", "prices", "preview", "uri", "scryfall_uri", "rulings_uri", "prints_search_uri", "set_uri", "set_search_uri", "scryfall_set_uri",
   "frame_effects","life_modifier", "hand_modifier", "highres_image", "digital", "image_status", "reprint", "variation"
@@ -60,7 +60,7 @@ if DB_READY:
 
   to_insert = []
   for count, df_item in tqdm(inventoryDF_cleaned.iterrows(), total=total_rows):
-      to_insert.append(df_item)
+      to_insert.append(df_item.to_dict())
 
       if count % db_client.batch_limit == 0:
           cards_collection.insert_many(to_insert)
