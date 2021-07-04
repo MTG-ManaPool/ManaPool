@@ -12,6 +12,20 @@ ManaPool provides an interface to manage a digital representation of a personal 
 
 ManaPool assists with aquiring sets of cards, by searching popular digital stores, to complie a purchase order with the best price available.
 
+
+## Roadmap
+
+---
+
+- [x] gather a collection of card data 
+
+- [ ] Implement an inventory system using card data.
+
+- [ ] Provide a user-friendly UI for interfacing with the IMS.
+
+- [ ] Export groups of cards as lists for purchase orders online.
+
+- [ ] And further beyond. . . 
 ## Install
 
 - - -
