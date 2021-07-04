@@ -1,8 +1,10 @@
-ManaPool - Magic the Gathering Collection Tool
-=====================================
+# ManaPool - Magic the Gathering Collection Tool
 
-What is ManaPool?
--------------------------
+Stevon S, Trevor J, Victor H  - 2021
+
+## What is ManaPool?
+
+- - -
 
 ManaPool is a collection manager and aquisition tool for Magic the Gathering trading cards.
 
@@ -10,8 +12,24 @@ ManaPool provides an interface to manage a digital representation of a personal 
 
 ManaPool assists with aquiring sets of cards, by searching popular digital stores, to complie a purchase order with the best price available.
 
-Install
----------
+
+## Roadmap
+
+---
+
+- [x] Gather a collection of card data 
+
+- [ ] Implement an inventory system using card data.
+
+- [ ] Provide a user-friendly UI for interfacing with the IMS.
+
+- [ ] Export groups of cards as lists for purchase orders online.
+
+- [ ] And further beyond. . . 
+
+## Install
+
+- - -
 
 For ManaPool, you will need python3, and pip. It is recommended to use a virtual environment as well:
 
@@ -19,31 +37,26 @@ For ManaPool, you will need python3, and pip. It is recommended to use a virtual
 
 Fetch the latest version of the project:
 
-    git clone https://github.com/tjohn11/ManaPool.git
+    git clone https://github.com/MTG-ManaPool/ManaPool.git
 
 Activate your virtual environment,
 
-#### Unix
+### Unix
 
     virtualenv env
     source env/bin/activate
 
-#### Windows
+### Windows
 
     virtualenv env
     .\env\Scripts\activate
-
 
 Then install the requirements:
 
     pip install -r requirements.txt
 
+## License
 
-
-License
----------
-This work is made available under the "MIT License". Please see the file LICENSE in this distribution for license terms.
-#
-
-Stevon S, Trevor J, Victor H  - 2021
-
+- - -
+This work is made available under the "MIT License".  
+Please see the file LICENSE in this distribution for license terms.
