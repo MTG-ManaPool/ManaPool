@@ -1,6 +1,6 @@
 # ManaPool - Magic the Gathering Collection Tool
 
-Stevon S, Trevor J, Victor H  - 2021
+Stevon Shaw, Trevor Johnson, Victor Heredia  - 2021
 
 ## What is ManaPool?
 
@@ -13,7 +13,7 @@ ManaPool provides an interface to manage a digital representation of a personal 
 ManaPool assists with aquiring sets of cards, by searching popular digital stores, to complie a purchase order with the best price available.
 
 
-## Roadmap
+## Roadmap to MVP
 
 ---
 
