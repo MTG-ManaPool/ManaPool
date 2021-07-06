@@ -13,7 +13,7 @@ class MP_Inventory:
         # First time initialization of inventory Database
         if None ==  self.cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='MTG-Cards'").fetchone():
             self.__firstTimeSetup()
-        
+
         self.__checkForUpdates()
 
     # TODO... Implement
@@ -25,12 +25,12 @@ class MP_Inventory:
     def remove_card(self, card):
         self.connection.commit()
         return False
-        
+
     def close (self):
         self.connection.commit()
         self.connection.close()
 
-    # TODO, reimagine each of these find_cards_* methods, as filters methods. 
+    # TODO, reimagine each of these find_cards_* methods, as filters methods.
     # Provide them with the list that is to be filtered.
     # This will allow complex chaining, of searches.
     def find_cards_with_set(self,searched_setname):
@@ -55,14 +55,24 @@ class MP_Inventory:
 
         bulk_json = dbUtils.getBulkData('default_cards')
         inventoryDF = pd.read_json(bulk_json)
-        inventoryDF_cleaned = inventoryDF[dbUtils.schema_headers]
+        self.inventoryDF_cleaned = inventoryDF[dbUtils.schema_headers]
 
         print("\nResulting cleaned Dataframe\n")
-        inventoryDF_cleaned.info(verbose=False, memory_usage="deep")
-        print("\n", inventoryDF_cleaned, "\n")
+        self.inventoryDF_cleaned.info(verbose=False, memory_usage="deep")
+        print("\n", self.inventoryDF_cleaned, "\n")
+
+        DF_rows = self.inventoryDF_cleaned.shape[0]
+
+        # Get the first multiverse id from the list they are in or tag the token cards with -1
+        for r in range(DF_rows):
+            ids = self.inventoryDF_cleaned.iloc[r]['multiverse_ids']
+            self.inventoryDF_cleaned['multiverse_ids'].iloc[r] = -1 if ids == [] else ids[0]
+
+        # for a later date
+        self.token_cards = self.inventoryDF_cleaned[self.inventoryDF_cleaned['multiverse_ids'] == -1]
 
         # A useless iteration, just to show everything is in the Dataframes.
-        for count, df_item in tqdm(inventoryDF_cleaned.iterrows(), total=inventoryDF_cleaned.shape[0]):
+        for count, df_item in tqdm(self.inventoryDF_cleaned.iterrows(), total=DF_rows):
             print(count)
             # Insert the current df_item, into the MTG-Cards table.
             # Figure out what other tables the current df_item might need inserted into. (efficient queries later / JOINS on tables.)
