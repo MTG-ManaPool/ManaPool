@@ -2,7 +2,7 @@ from consolemenu import * # https://pypi.org/project/console-menu/
 from consolemenu.items import *
 from . import menu_utils
 
-def menu(inventory):
+def Menu(inventory):
 
     # DECLARE MENU's
     menu = ConsoleMenu('Main Menu', 'ManaPool')
