@@ -1,3 +1,4 @@
+from os import sep
 import sqlite3
 import pandas as pd
 from tqdm import tqdm
@@ -54,8 +55,16 @@ class MP_Inventory:
         # Base table of 'MTG-Cards' contains all 60k cards.
         # self.cursor.execute("CREATE TABLE MTG-Cards")
 
+        # Obtaining Inital Card Data
         bulk_json = dbUtils.getBulkData('default_cards')
-        self.inventoryDF = pd.read_json(bulk_json)
+        self.inventoryDF = pd.read_json(bulk_json, dtype={"full_art": int,
+                                                          "textless": int,
+                                                          "foil": int,
+                                                          "nonfoil": int,
+                                                          "oversized": int,
+                                                          "promo": int }
+                                        )
+
 
         # Filter by the defined Schema
         self.inventoryDF = self.inventoryDF[dbUtils.schema_headers]
@@ -126,14 +135,19 @@ class MP_Inventory:
 
 
 
-
-
         # These columns have been expanded into 4 or 5 columns so we do not need the original any longer
         self.inventoryDF = self.inventoryDF.drop(columns=['colors', 'color_identity', 'image_uris', 'keywords'])
 
 
+        # Initilizing the stock count for each variant of all cards to 0 or NaN.
+        self.inventoryDF_cleaned = inventoryDF[dbUtils.schema_headers]
+        for header in [ "full_art", "textless", "foil", "nonfoil", "oversized", "promo"]:
+            self.inventoryDF_cleaned[header] = self.inventoryDF_cleaned[header].replace(0, pd.NA)
+            self.inventoryDF_cleaned[header] -= 1
+
+
         # Get the first multiverse id from the list they are in or tag the token cards with -1
-        for r in range(DF_rows):
+        for r in tqdm(range(DF_rows)):
             ids = self.inventoryDF.iloc[r]['multiverse_ids']
             self.inventoryDF['multiverse_ids'].iloc[r] = -1 if ids == [] else ids[0]
 
@@ -141,9 +155,9 @@ class MP_Inventory:
         # for a later date
         self.token_cards = self.inventoryDF[self.inventoryDF['multiverse_ids'] == -1]
 
-        # A useless iteration, just to show everything is in the Dataframes.
-        for count, df_item in tqdm(self.inventoryDF.iterrows(), total=DF_rows):
-            print(count)
+        print("\nResulting cleaned Dataframe\n")
+        print("\n", self.inventoryDF_cleaned, "\n")
+
             # Insert the current df_item, into the MTG-Cards table.
             # Figure out what other tables the current df_item might need inserted into. (efficient queries later / JOINS on tables.)
 
@@ -156,6 +170,3 @@ class MP_Inventory:
         # get size of bulk file (#cards).
         # if diff: confirm(y/n) to update
         # if y: re-initalize.
-
-# Likely will invoke this from some client GUI class.
-inventory = MP_Inventory()
