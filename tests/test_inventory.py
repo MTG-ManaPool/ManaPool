@@ -1,5 +1,5 @@
 import unittest
-from ..src.inventory.inventory import Inventory
+from ..src.inventory.Inventory import Inventory
 
 class TestUI(unittest.TestCase):
     
