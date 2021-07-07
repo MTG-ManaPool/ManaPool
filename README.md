@@ -17,7 +17,7 @@ ManaPool assists with aquiring sets of cards, by searching popular digital store
 
 ---
 
-- [x] Gather a collection of card data 
+- [x] Gather a collection of card data
 
 - [ ] Implement an inventory system using card data.
 
@@ -25,7 +25,7 @@ ManaPool assists with aquiring sets of cards, by searching popular digital store
 
 - [ ] Export groups of cards as lists for purchase orders online.
 
-- [ ] And further beyond. . . 
+- [ ] And further beyond. . .
 
 ## Install
 
@@ -58,5 +58,5 @@ Then install the requirements:
 ## License
 
 - - -
-This work is made available under the "MIT License".  
+This work is made available under the "MIT License".
 Please see the file LICENSE in this distribution for license terms.
