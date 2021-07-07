@@ -81,7 +81,7 @@ class MP_Inventory:
         self.inventoryDF[new_color_id_cols] = pd.DataFrame(old_color_id_col.to_list(), index=old_color_id_col.index)
 
         # COLOR
-        new_color_cols = ['Color1', 'Color2', 'Color3', 'Color4']
+        new_color_cols = ['Color1', 'Color2', 'Color3', 'Color4', 'Color5']
         old_color_col = self.inventoryDF['colors']
         # replace NaN/None with empty list
         for row in self.inventoryDF.loc[self.inventoryDF.colors.isnull(), 'colors'].index:
@@ -123,7 +123,7 @@ class MP_Inventory:
 
 
         # KEYWORDS
-        new_leywords = ['keyword1', 'keyword2', 'keyword3', 'keyword4', 'keyword5']
+        new_leywords = ['keyword1', 'keyword2', 'keyword3', 'keyword4', 'keyword5','keyword6', 'keyword7', 'keyword8', 'keyword9', 'keyword10']
         old_leyword = self.inventoryDF['keywords']
         # replace NaN/None with empty list
         for row in self.inventoryDF.loc[self.inventoryDF.keywords.isnull(), 'keywords'].index:
