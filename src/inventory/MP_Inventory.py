@@ -4,6 +4,7 @@ import pandas as pd
 from tqdm import tqdm
 import dbUtils
 
+
 class MP_Inventory:
     def __init__ (self):
         '''Initalizes the connection to the ManaPool-Inventory Database.
@@ -68,6 +69,7 @@ class MP_Inventory:
 
         # Filter by the defined Schema
         self.inventoryDF = self.inventoryDF[dbUtils.schema_headers]
+
 
         print("\nResulting cleaned Dataframe\n")
         self.inventoryDF.info(verbose=False, memory_usage="deep")
@@ -140,10 +142,9 @@ class MP_Inventory:
 
 
         # Initilizing the stock count for each variant of all cards to 0 or NaN.
-        self.inventoryDF_cleaned = inventoryDF[dbUtils.schema_headers]
         for header in [ "full_art", "textless", "foil", "nonfoil", "oversized", "promo"]:
-            self.inventoryDF_cleaned[header] = self.inventoryDF_cleaned[header].replace(0, pd.NA)
-            self.inventoryDF_cleaned[header] -= 1
+            self.inventoryDF[header] = self.inventoryDF[header].replace(0, pd.NA)
+            self.inventoryDF[header] -= 1
 
 
         # Get the first multiverse id from the list they are in or tag the token cards with -1
@@ -156,7 +157,7 @@ class MP_Inventory:
         self.token_cards = self.inventoryDF[self.inventoryDF['multiverse_ids'] == -1]
 
         print("\nResulting cleaned Dataframe\n")
-        print("\n", self.inventoryDF_cleaned, "\n")
+        print("\n", self.inventoryDF, "\n")
 
             # Insert the current df_item, into the MTG-Cards table.
             # Figure out what other tables the current df_item might need inserted into. (efficient queries later / JOINS on tables.)
@@ -170,3 +171,7 @@ class MP_Inventory:
         # get size of bulk file (#cards).
         # if diff: confirm(y/n) to update
         # if y: re-initalize.
+
+# Only instanciate MP_Inventory when working in this script directly
+if __name__ == '__main__':
+    x = MP_Inventory()
