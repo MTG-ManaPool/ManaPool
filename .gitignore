@@ -139,6 +139,6 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# ManaPool Specific
+# ManaPool Generated Files
 default_cards.json
 ManaPool-Inventory.db
