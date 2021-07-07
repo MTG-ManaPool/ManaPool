@@ -2,12 +2,36 @@ import os
 import requests
 
 schema_headers = [
-  "id", "multiverse_ids",
-  "name", "mana_cost", "cmc", "colors", "color_identity",
-  "image_uris", "card_faces",
-  "type_line", "set_type", "set", "set_name", "rarity", "artist",
-  "collector_number", "flavor_text", "power", "toughness", "keywords",
-  "layout", "full_art", "textless", "foil", "nonfoil", "oversized", "promo",
+  "id", # working 
+  "multiverse_ids", # working 
+  "name", # working 
+  "mana_cost", # working 
+  "cmc", # working  
+  "colors", 
+  "color_identity",
+  "image_uris", # working
+  "card_faces", # needs work 
+  # - currently stores as nan for single face cards, or
+  # - a list of two card face objects, each containing all the typical headers found on a single faced card.
+
+  "type_line", # working
+  "set_type",
+  "set",
+  "set_name",
+  "rarity",
+  "artist",
+  "collector_number",
+  "flavor_text",
+  "power",
+  "toughness",
+  "keywords",
+  "layout", # working
+  "full_art",# working
+  "textless", # working
+  "foil", # working
+  "nonfoil", # working
+  "oversized", # working
+  "promo", # working
 ]
 
 def getBulkData(requested_data):
