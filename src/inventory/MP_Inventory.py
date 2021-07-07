@@ -70,11 +70,6 @@ class MP_Inventory:
         # Filter by the defined Schema
         self.inventoryDF = self.inventoryDF[dbUtils.schema_headers]
 
-
-        print("\nResulting cleaned Dataframe\n")
-        self.inventoryDF.info(verbose=False, memory_usage="deep")
-        print("\n", self.inventoryDF, "\n")
-
         DF_rows = self.inventoryDF.shape[0]
 
         # COLOR Identities
@@ -158,9 +153,10 @@ class MP_Inventory:
 
         print("\nResulting cleaned Dataframe\n")
         print("\n", self.inventoryDF, "\n")
+        self.inventoryDF.info(verbose=False, memory_usage="deep")
 
-            # Insert the current df_item, into the MTG-Cards table.
-            # Figure out what other tables the current df_item might need inserted into. (efficient queries later / JOINS on tables.)
+        # Insert the current df_item, into the MTG-Cards table.
+        # Figure out what other tables the current df_item might need inserted into. (efficient queries later / JOINS on tables.)
 
         # CREATE SQL TABLE with Schema from DATAFRAME
         self.inventoryDF.to_sql(self.table_name, self.connection)
