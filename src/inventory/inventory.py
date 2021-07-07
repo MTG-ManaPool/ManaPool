@@ -2,7 +2,7 @@ from os import sep
 import sqlite3
 import pandas as pd
 from tqdm import tqdm
-import dbUtils
+import db_utils
 
 
 class MP_Inventory:
@@ -57,7 +57,7 @@ class MP_Inventory:
         # self.cursor.execute("CREATE TABLE MTG-Cards")
 
         # Obtaining Inital Card Data
-        bulk_json = dbUtils.getBulkData('default_cards')
+        bulk_json = db_utils.getBulkData('default_cards')
         self.inventoryDF = pd.read_json(bulk_json, dtype={"full_art": int,
                                                           "textless": int,
                                                           "foil": int,
@@ -68,7 +68,7 @@ class MP_Inventory:
 
 
         # Filter by the defined Schema
-        self.inventoryDF = self.inventoryDF[dbUtils.schema_headers]
+        self.inventoryDF = self.inventoryDF[db_utils.schema_headers]
 
         DF_rows = self.inventoryDF.shape[0]
 
