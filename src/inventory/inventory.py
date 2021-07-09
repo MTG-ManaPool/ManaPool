@@ -72,21 +72,27 @@ class MP_Inventory:
 
         DF_rows = self.inventoryDF.shape[0]
 
+
         # COLOR Identities
-        new_color_id_cols = ['color_id1', 'color_id2', 'color_id3', 'color_id4', 'color_id5']
-        old_color_id_col = self.inventoryDF['color_identity']
+        color_id = self.inventoryDF['color_identity']
         # Didnt find any NaN values but better safe than sorry
-        for row in self.inventoryDF.loc[old_color_id_col.isnull(), 'color_identity'].index:
+        for row in self.inventoryDF.loc[color_id.isnull(), 'color_identity'].index:
             self.inventoryDF.at[row, 'color_identity'] = []
-        self.inventoryDF[new_color_id_cols] = pd.DataFrame(old_color_id_col.to_list(), index=old_color_id_col.index)
+
+        # concatenate the strings representing different color into one strin (e.g. 'UWB')
+        self.inventoryDF['color_identity'] = color_id.agg(''.join)
+
+
 
         # COLOR
-        new_color_cols = ['Color1', 'Color2', 'Color3', 'Color4']
-        old_color_col = self.inventoryDF['colors']
-        # replace NaN/None with empty list
-        for row in self.inventoryDF.loc[self.inventoryDF.colors.isnull(), 'colors'].index:
+        colord = self.inventoryDF['colors']
+        # replace NaN/None with empty list in preparatio for join
+        for row in self.inventoryDF.loc[colord.isnull(), 'colors'].index:
             self.inventoryDF.at[row, 'colors'] = []
-        self.inventoryDF[new_color_cols] = pd.DataFrame(old_color_col.to_list(), index=old_color_col.index)
+
+        # concatenate the strings representing different color into one strin (e.g. 'UWB')
+        self.inventoryDF['colors'] = colord.agg(''.join)
+
 
 
         # IMAGE URIS
@@ -123,17 +129,19 @@ class MP_Inventory:
 
 
         # KEYWORDS
-        new_leywords = ['keyword1', 'keyword2', 'keyword3', 'keyword4', 'keyword5']
-        old_leyword = self.inventoryDF['keywords']
-        # replace NaN/None with empty list
-        for row in self.inventoryDF.loc[self.inventoryDF.keywords.isnull(), 'keywords'].index:
+        keywords = self.inventoryDF['keywords']
+        # replace NaN/None with empty list in preparatio for join
+        for row in self.inventoryDF.loc[keywords.isnull(), 'keywords'].index:
             self.inventoryDF.at[row, 'keywords'] = []
-        self.inventoryDF[new_leywords] = pd.DataFrame(old_leyword.to_list(), index=old_leyword.index)
+
+        # concatenate the strings representing different color into one strin (e.g. 'UWB')
+        self.inventoryDF['keywords'] = keywords.agg(', '.join)
+
 
 
 
         # These columns have been expanded into 4 or 5 columns so we do not need the original any longer
-        self.inventoryDF = self.inventoryDF.drop(columns=['colors', 'color_identity', 'image_uris', 'keywords'])
+        self.inventoryDF = self.inventoryDF.drop(columns=['image_uris'])
 
 
         # Initilizing the stock count for each variant of all cards to 0 or NaN.
