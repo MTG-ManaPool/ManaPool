@@ -85,13 +85,13 @@ class MP_Inventory:
 
 
         # COLOR
-        colord = self.inventoryDF['colors']
+        colors = self.inventoryDF['colors']
         # replace NaN/None with empty list in preparatio for join
-        for row in self.inventoryDF.loc[colord.isnull(), 'colors'].index:
+        for row in self.inventoryDF.loc[colors.isnull(), 'colors'].index:
             self.inventoryDF.at[row, 'colors'] = []
 
         # concatenate the strings representing different color into one strin (e.g. 'UWB')
-        self.inventoryDF['colors'] = colord.agg(''.join)
+        self.inventoryDF['colors'] = colors.agg(''.join)
 
 
 
