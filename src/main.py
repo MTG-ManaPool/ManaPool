@@ -1,10 +1,10 @@
-from inventory.Inventory import Inventory
-from ui.menu import menu
+from inventory.inventory import MP_Inventory as Inventory
+from ui.menu import Menu
 
 def main():
     # Set up db
     inventory = Inventory()
-    menu(inventory)
+    Menu(inventory)
     exit()
 
 main()
