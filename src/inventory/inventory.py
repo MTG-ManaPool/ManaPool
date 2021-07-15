@@ -58,6 +58,7 @@ class MP_Inventory:
 
         # Obtaining Inital Card Data
         bulk_json = db_utils.getBulkData('default_cards')
+
         self.inventoryDF = pd.read_json(bulk_json, dtype={"full_art": int,
                                                           "textless": int,
                                                           "foil": int,
@@ -72,48 +73,74 @@ class MP_Inventory:
 
         DF_rows = self.inventoryDF.shape[0]
 
+
         # COLOR Identities
-        new_color_id_cols = ['color_id1', 'color_id2', 'color_id3', 'color_id4', 'color_id5']
-        old_color_id_col = self.inventoryDF['color_identity']
+        color_id = self.inventoryDF['color_identity']
         # Didnt find any NaN values but better safe than sorry
-        for row in self.inventoryDF.loc[old_color_id_col.isnull(), 'color_identity'].index:
+        for row in self.inventoryDF.loc[color_id.isnull(), 'color_identity'].index:
             self.inventoryDF.at[row, 'color_identity'] = []
-        self.inventoryDF[new_color_id_cols] = pd.DataFrame(old_color_id_col.to_list(), index=old_color_id_col.index)
+
+        # concatenate the strings representing different color into one strin (e.g. 'UWB')
+        self.inventoryDF['color_identity'] = color_id.agg(''.join)
+
+
 
         # COLOR
-        new_color_cols = ['Color1', 'Color2', 'Color3', 'Color4', 'Color5']
-        old_color_col = self.inventoryDF['colors']
-        # replace NaN/None with empty list
-        for row in self.inventoryDF.loc[self.inventoryDF.colors.isnull(), 'colors'].index:
+        colors = self.inventoryDF['colors']
+        # replace NaN/None with empty list in preparatio for join
+        for row in self.inventoryDF.loc[colors.isnull(), 'colors'].index:
             self.inventoryDF.at[row, 'colors'] = []
-        self.inventoryDF[new_color_cols] = pd.DataFrame(old_color_col.to_list(), index=old_color_col.index)
+
+        # concatenate the strings representing different color into one strin (e.g. 'UWB')
+        self.inventoryDF['colors'] = colors.agg(''.join)
+
 
 
         # IMAGE URIS
         new_img_uris = ['small_img', 'normal_img', 'large_img', 'png_img', 'art_crop_img', 'border_crop_img']
         old_img_uris = self.inventoryDF['image_uris']
         data_as_list = []
-        is_null = self.inventoryDF.loc[self.inventoryDF.image_uris.isnull()].index
+        index_without_image = self.inventoryDF.loc[self.inventoryDF.image_uris.isnull()].index
         for row in range(DF_rows):
-            # replace NaN/None with empty list
+
             temp = []
-            if row in is_null:
-                # TODO check for two faced cards here as anothe condition
-                #else not two faced but still null
-                temp = [pd.NA, pd.NA, pd.NA, pd.NA, pd.NA, pd.NA]
+
+            # replace NaN/None with empty list
+            if row in index_without_image:
+                # FIXME still need to account for second face. Talked about making a seperate Table for these cards
+                if self.inventoryDF.loc[row]['card_faces'] and 'image_uris' in self.inventoryDF.loc[row]['card_faces'][0]:
+                    face1_img_uris = self.inventoryDF.loc[row]['card_faces'][0]['image_uris']
+                    small = face1_img_uris["small"]
+                    temp.append(small)
+                    normal = face1_img_uris["normal"]
+                    temp.append(normal)
+                    large = face1_img_uris["large"]
+                    temp.append(large)
+                    png = face1_img_uris["png"]
+                    temp.append(png)
+                    art_crop = face1_img_uris["art_crop"]
+                    temp.append(art_crop)
+                    border_crop = face1_img_uris["border_crop"]
+                    temp.append(border_crop)
+                #else not two faced but still null make them NaN
+                else:
+                    temp = [pd.NA, pd.NA, pd.NA, pd.NA, pd.NA, pd.NA]
             else:
-                small = self.inventoryDF.at[row, 'image_uris']["small"]
+                card_image = self.inventoryDF.at[row, 'image_uris']
+                small = card_image["small"]
                 temp.append(small)
-                normal = self.inventoryDF.at[row, 'image_uris']["normal"]
+                normal = card_image["normal"]
                 temp.append(normal)
-                large = self.inventoryDF.at[row, 'image_uris']["large"]
+                large = card_image["large"]
                 temp.append(large)
-                png = self.inventoryDF.at[row, 'image_uris']["png"]
+                png = card_image["png"]
                 temp.append(png)
-                art_crop = self.inventoryDF.at[row, 'image_uris']["art_crop"]
+                art_crop = card_image["art_crop"]
                 temp.append(art_crop)
-                border_crop = self.inventoryDF.at[row, 'image_uris']["border_crop"]
+                border_crop = card_image["border_crop"]
                 temp.append(border_crop)
+
+
 
             data_as_list.append(temp)
 
@@ -123,17 +150,19 @@ class MP_Inventory:
 
 
         # KEYWORDS
-        new_leywords = ['keyword1', 'keyword2', 'keyword3', 'keyword4', 'keyword5','keyword6', 'keyword7', 'keyword8', 'keyword9', 'keyword10']
-        old_leyword = self.inventoryDF['keywords']
-        # replace NaN/None with empty list
-        for row in self.inventoryDF.loc[self.inventoryDF.keywords.isnull(), 'keywords'].index:
+        keywords = self.inventoryDF['keywords']
+        # replace NaN/None with empty list in preparatio for join
+        for row in self.inventoryDF.loc[keywords.isnull(), 'keywords'].index:
             self.inventoryDF.at[row, 'keywords'] = []
-        self.inventoryDF[new_leywords] = pd.DataFrame(old_leyword.to_list(), index=old_leyword.index)
+
+        # concatenate the strings representing different color into one strin (e.g. 'UWB')
+        self.inventoryDF['keywords'] = keywords.agg(', '.join)
+
 
 
 
         # These columns have been expanded into 4 or 5 columns so we do not need the original any longer
-        self.inventoryDF = self.inventoryDF.drop(columns=['colors', 'color_identity', 'image_uris', 'keywords'])
+        self.inventoryDF = self.inventoryDF.drop(columns=['image_uris', 'card_faces'])
 
 
         # Initilizing the stock count for each variant of all cards to 0 or NaN.

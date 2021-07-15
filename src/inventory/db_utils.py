@@ -11,8 +11,8 @@ schema_headers = [
   "color_identity",
   "image_uris", # working
 
-  # commenting out to get DB up and running, FIXME still
-#   "card_faces", # needs work
+
+  "card_faces", # needs work
   # - currently stores as nan for single face cards, or
   # - a list of two card face objects, each containing all the typical headers found on a single faced card.
 
