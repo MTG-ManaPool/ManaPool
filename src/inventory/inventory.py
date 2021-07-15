@@ -1,7 +1,6 @@
 import os
 import sqlite3
 import pandas as pd
-from pandas.core.frame import DataFrame
 from tqdm import tqdm
 from . import db_utils
 # import db_utils # USED FOR LOCAL TESTING
