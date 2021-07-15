@@ -1,8 +1,9 @@
-from os import sep
+import os
 import sqlite3
 import pandas as pd
 from tqdm import tqdm
-import db_utils
+from . import db_utils
+# import db_utils # USED FOR LOCAL TESTING
 
 
 class MP_Inventory:
@@ -10,6 +11,7 @@ class MP_Inventory:
         '''Initalizes the connection to the ManaPool-Inventory Database.
         Creates a new Database if one does not exist.'''
         self.connection = sqlite3.connect("ManaPool-Inventory.db")
+        self.connection.row_factory = sqlite3.Row
         self.cursor = self.connection.cursor()
         self.table_name = "MTG-Cards"
 
@@ -19,33 +21,59 @@ class MP_Inventory:
         else:
             self.__checkForUpdates()
 
-    # TODO... Implement
-    def add_card(self, card):
-        self.connection.commit()
-        return False
+   # TODO: Implement
+    def addCardToInventory(self, card, to_add):
+        print('adding card')
+        placeholder = input('')
+        # self.connection.commit()
+        # total = card.count + to_add
+        # query = f"UPDATE 'MTG-Cards count' = {total} FROM WHERE id = {card.ID};"
+        # self.connection.execute(query)
 
-    # TODO... Implement
-    def remove_card(self, card):
-        self.connection.commit()
-        return False
+   # TODO: Implement
+    def removeCardFromInventory(self, card, to_remove):
+        print('removing card')
+        placeholder = input('')
+        # self.connection.commit()
+        # total = card.count - to_remove
+        # if total < 0:
+        #     total = 0
+        # query = f"UPDATE 'MTG-Cards count' = {total} FROM WHERE id = {card.ID};"
+        # self.connection.execute(query)
+
+   # TODO: Implement
+    def displayInventory():
+        print('Displaying inventory')
+        placeholder = input('')
 
     def close (self):
         self.connection.commit()
         self.connection.close()
 
-    # TODO, reimagine each of these find_cards_* methods, as filters methods.
-    # Provide them with the list that is to be filtered.
-    # This will allow complex chaining, of searches.
-    def find_cards_with_set(self,searched_setname):
-        '''Returns a list of Dataframes for each card in the ManaPool-Inventory.db matching the provided setname'''
-        return f"Stub, but here's {searched_setname}"
-        #return self.cursor.execute(f"SELECT * FROM 'MTG-Cards' WHERE set_name={searched_setname}'")
+    def searchBySet(self, setname):
+        query = f"SELECT * FROM '{self.table_name}' WHERE set_name='{setname}'"
+        self.cursor.execute(query)
+        res = self.cursor.fetchall()
+        return res
 
-    def find_cards_with_name(self, searched_cardname):
-        '''Returns a list of Dataframes for each card in the ManaPool-Inventory.db matching the provided card name'''
-        return f"Stub, but here's {searched_cardname}"
-        #return self.cursor.execute(f"SELECT * FROM 'MTG-Cards' WHERE name={searched_cardname}'")
+    def searchByBlock(self, blockname):
+        query = f"SELECT * FROM '{self.table_name}' WHERE block='{blockname}'"
+        self.cursor.execute(query)
+        res = self.cursor.fetchall()
+        return res
 
+    def searchByName(self, cardname):
+        query = f"SELECT * FROM '{self.table_name}' WHERE name='{cardname}'"
+        self.cursor.execute(query)
+        res = self.cursor.fetchall()
+        return res
+    
+    def searchByMID(self, card_mid):
+        query = f"SELECT * FROM '{self.table_name}' WHERE multiverse_ids='{card_mid}'"
+        self.cursor.execute(query)
+        res = self.cursor.fetchall()
+        return res
+    
     def all_cards(self):
         '''Returns a list of Dataframes for each card in the ManaPool-Inventory.db'''
         return f"Stub, but here's all_cards"
@@ -189,6 +217,8 @@ class MP_Inventory:
 
         # CREATE SQL TABLE with Schema from DATAFRAME
         self.inventoryDF.to_sql(self.table_name, self.connection)
+        os.remove(bulk_json)
+
 
     def __checkForUpdates(self):
         '''Checks if the current ManaPool database needs to update with new card data'''
@@ -200,3 +230,11 @@ class MP_Inventory:
 # Only instanciate MP_Inventory when working in this script directly
 if __name__ == '__main__':
     x = MP_Inventory()
+    done = False
+    while not done:
+        cards = x.searchByMID('109722')
+        print(cards)
+        print('Done testing? [Y/N]')
+        res = input('>')
+        if res == 'Y':
+            done = True
