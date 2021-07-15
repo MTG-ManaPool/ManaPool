@@ -41,6 +41,26 @@ class MP_Inventory:
         # query = f"UPDATE 'MTG-Cards count' = {total} FROM WHERE id = {card.ID};"
         # self.connection.execute(query)
 
+    def updateTable(self, cards):
+        try:
+            updated = 0
+            rows = cards.shape[0]
+            for r in range(rows):
+                for card_type in ["full_art", "textless", "foil", "nonfoil", "oversized", "promo"]:
+                    if cards.at[r, card_type]:
+                        update_query = f"UPDATE '{self.table_name}' SET {card_type} = {cards.at[r, card_type]} WHERE id == '{cards.at[r, 'id']}'"
+                        self.cursor.execute(update_query)
+                        updated += 1
+            self.connection.commit()
+            print(f"Updated {updated} records successfully ")
+            # Should we be getting a new cursor at each method?
+            # self.cursor.close()
+
+        except sqlite3.Error as error:
+            print("Failed to update sqlite table", error)
+
+
+
    # TODO: Implement
     def displayInventory():
         print('Displaying inventory')
@@ -67,13 +87,13 @@ class MP_Inventory:
         self.cursor.execute(query)
         res = self.cursor.fetchall()
         return res
-    
+
     def searchByMID(self, card_mid):
         query = f"SELECT * FROM '{self.table_name}' WHERE multiverse_ids='{card_mid}'"
         self.cursor.execute(query)
         res = self.cursor.fetchall()
         return res
-    
+
     def all_cards(self):
         '''Returns a list of Dataframes for each card in the ManaPool-Inventory.db'''
         return f"Stub, but here's all_cards"
@@ -230,11 +250,10 @@ class MP_Inventory:
 # Only instanciate MP_Inventory when working in this script directly
 if __name__ == '__main__':
     x = MP_Inventory()
-    done = False
-    while not done:
+    res = ''
+
+    while res.lower() != 'y':
         cards = x.searchByMID('109722')
         print(cards)
         print('Done testing? [Y/N]')
         res = input('>')
-        if res == 'Y':
-            done = True

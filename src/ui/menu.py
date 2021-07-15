@@ -1,8 +1,9 @@
 from . import menu_utils
+import pandas as pd
 
 def Menu(inventory):
     menu_items = {
-        '1: Import Inventory from a JSON file': __importFromJson,
+        '1. Import Inventory from a JSON file': __importFromJson,
         '2. Export Inventory to a JSON file': __exportToJson,
         '3. Access Inventory': __inventoryMenu,
         '4. Search for Cards': __searchMenu,
@@ -35,8 +36,11 @@ def __searchMenu(inventory):
     __renderMenu(title, menu_items, inventory)
 
 def __importFromJson(inventory):
+    json_file = input("Enter path to JSON file you wish to import: ")
     print('\n\nLoading from JSON file')
-    placeholder = input('Press any key to continue...\n>>')
+    json_cards = pd.read_json(json_file)
+    inventory.updateTable(json_cards)
+
 
 def __exportToJson(inventory):
     print('\n\nExporting to JSON file')
@@ -45,11 +49,11 @@ def __exportToJson(inventory):
 
 # INVENTORY MENU FUNCTIONS
 def __addCard(inventory):
-    print('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n')
+    print('\n'*30)
     print('*** Card Add ***')
     print('Is this card a token or emblem? [Y/N]')
     reply = input('\n>')
-    if reply == 'Y':
+    if reply.lower() == 'y':
         print('Please enter the name of the card.')
         name = input('\n>')
         cards = inventory.searchByName(name)
@@ -60,7 +64,7 @@ def __addCard(inventory):
         else:
             print('\n\nReturning to menu')
             placeholder = input('Press any key to continue...\n>>')
-    elif reply == 'N':
+    elif reply.lower() == 'n':
         print('Please enter ID of the card [Front Face ID if double sided].')
         id = input('\n>')
         cards = inventory.searchByMID(id)
@@ -77,11 +81,11 @@ def __addCard(inventory):
 
 
 def __removeCard(inventory):
-    print('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n')
+    print('\n'*30)
     print('*** Card Remove ***')
     print('Is this card a token or emblem? [Y/N]')
     reply = input('\n>')
-    if reply == 'Y':
+    if reply.lower() == 'y':
         print('Please enter the name of the card.')
         name = input('\n>')
         cards = inventory.searchByName(name)
@@ -92,7 +96,7 @@ def __removeCard(inventory):
         else:
             print('\n\nReturning to menu')
             placeholder = input('Press any key to continue...\n>>')
-    elif reply == 'N':
+    elif reply.lower() == 'n':
         print('Please enter ID of the card [Front Face ID if double sided].')
         id = input('\n>')
         cards = inventory.searchByMID(id)
@@ -113,7 +117,7 @@ def __displayAll(inventory):
 
 # SEARCH MENU FUNCTIONS
 def __searchSet(inventory):
-    print('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n')
+    print('\n'*30)
     setname = input('Enter name of set to search by\n>>')
     # settype = input('Enter set type [\'CORE\',\'EXPANSION\',\'COMMANDER\']')
     try:
@@ -123,16 +127,16 @@ def __searchSet(inventory):
         print('ERROR: Program encountered exception: ', e)
         placeholder = input('')
         return
-        
+
 # TODO: Implement search by block functionality in db
 def __searchBlock(inventory):
-    print('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n')
+    print('\n'*30)
     blockname = input('Enter name of block to search by\n>>')
     print('\n\nSearching...')
     placeholder = input('Press any key to continue...\n>>')
 
 def __searchName(inventory):
-    print('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n')
+    print('\n'*30)
     cardname = input('Enter name of card to search by\n>>')
     try:
         cards = inventory.searchByName(cardname)
@@ -144,7 +148,7 @@ def __searchName(inventory):
     print(card)
 
 def __searchMID(inventory):
-    print('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n')
+    print('\n'*30)
     m_id = input('Enter multiverse id of card to search by\n>>')
     try:
         cards = inventory.searchByMID(m_id)
@@ -161,7 +165,7 @@ def __renderMenu(menu_title, menu_items, params):
     quit = False
     legal = False
     while not quit:
-        print('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n')
+        print('\n'*30)
         print(menu_title)
         print('\n\nSelect and option:\n')
         for key in menu_items.keys():
