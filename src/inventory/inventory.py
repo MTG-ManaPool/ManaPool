@@ -12,6 +12,7 @@ class MP_Inventory:
         '''Initalizes the connection to the ManaPool-Inventory Database.
         Creates a new Database if one does not exist.'''
         self.connection = sqlite3.connect("ManaPool-Inventory.db")
+        self.connection.row_factory = sqlite3.Row
         self.cursor = self.connection.cursor()
         self.table_name = "MTG-Cards"
 
@@ -21,7 +22,7 @@ class MP_Inventory:
         else:
             self.__checkForUpdates()
 
-   # TODO: Add count values to database to track cards contained in inventory
+   # TODO: Implement
     def addCardToInventory(self, card, to_add):
         print('adding card')
         placeholder = input('')
@@ -30,7 +31,7 @@ class MP_Inventory:
         # query = f"UPDATE 'MTG-Cards count' = {total} FROM WHERE id = {card.ID};"
         # self.connection.execute(query)
 
-   # TODO: Add count values to database to track cards contained in inventory
+   # TODO: Implement
     def removeCardFromInventory(self, card, to_remove):
         print('removing card')
         placeholder = input('')
@@ -41,7 +42,7 @@ class MP_Inventory:
         # query = f"UPDATE 'MTG-Cards count' = {total} FROM WHERE id = {card.ID};"
         # self.connection.execute(query)
 
-   # TODO: Add count values to database to track cards contained in inventory
+   # TODO: Implement
     def displayInventory():
         print('Displaying inventory')
         placeholder = input('')
@@ -50,59 +51,29 @@ class MP_Inventory:
         self.connection.commit()
         self.connection.close()
 
-   # TODO: Add count values to database to track cards contained in inventory
     def searchBySet(self, setname):
-        query = f"SELECT id, multiverse_ids, name, mana_cost, type_line, set_name, rarity FROM '{self.table_name}' WHERE set_name='{setname}'"
-        res = self.cursor.execute(query)
-        return self.__dbResponseHandler(res)
+        query = f"SELECT * FROM '{self.table_name}' WHERE set_name='{setname}'"
+        self.cursor.execute(query)
+        res = self.cursor.fetchall()
+        return res
 
-   # TODO: Add count values to database to track cards contained in inventory
     def searchByBlock(self, blockname):
-        query = f"SELECT id, multiverse_ids, name, mana_cost, type_line, set_name, rarity FROM '{self.table_name}' WHERE block='{blockname}'"
-        res = self.cursor.execute(query)
-        return self.__dbResponseHandler(res)
+        query = f"SELECT * FROM '{self.table_name}' WHERE block='{blockname}'"
+        self.cursor.execute(query)
+        res = self.cursor.fetchall()
+        return res
 
-   # TODO: Add count values to database to track cards contained in inventory
     def searchByName(self, cardname):
-        query = f"SELECT id, multiverse_ids, name, mana_cost, type_line, set_name, rarity FROM '{self.table_name}' WHERE name='{cardname}'"
-        # test_multi = f"SELECT multiverse_ids, name, mana_cost, type_line, set_name, rarity  FROM 'MTG-Cards' WHERE name='' or name=''"
-        # cards = pd.to_sql(query, self.connection)
-        # self.cursor.execute(f"SELECT * FROM 'MTG-Cards' WHERE set_name={cardname}'")
-        res = self.cursor.execute(query)
-        return self.__dbResponseHandler(res)
+        query = f"SELECT * FROM '{self.table_name}' WHERE name='{cardname}'"
+        self.cursor.execute(query)
+        res = self.cursor.fetchall()
+        return res
     
-   # TODO: Add count values to database to track cards contained in inventory
     def searchByMID(self, card_mid):
-        query = f"SELECT id, multiverse_ids, name, mana_cost, type_line, set_name, rarity FROM '{self.table_name}' WHERE multiverse_ids='{card_mid}'"
-        # test_multi = f"SELECT multiverse_ids, name, mana_cost, type_line, set_name, rarity  FROM 'MTG-Cards' WHERE multiverse_ids='109722' OR multiverse_ids='189637'"
-        res = self.cursor.execute(query)
-        return self.__dbResponseHandler(res)
-
-   # TODO: Add count values to database to track cards contained in inventory
-   # DB queries return with an iterator of tuples.
-   # __dbResponseHandler parses these tuples into a dict that can be consumed by the client.
-    def __dbResponseHandler(self, res_iter):
-        card = {
-            'ID': '',
-            'MULTIVERSE ID': '',
-            'NAME': '',
-            'MANA COST': '',
-            'CARD TYPES': '',
-            'SET': '',
-            'RARITY': ''
-        }
-        cards = []
-        for row in res_iter:
-            card['ID'] = row[0]
-            card['MULTIVERSE ID'] = row[1]
-            card['NAME'] = row[2]
-            card['MANA COST'] = row[3]
-            card['CARD TYPES'] = row[4]
-            card['SET'] = row[5]
-            card['RARITY'] = row[6]
-            cards.append(card.copy())
-        return cards
-
+        query = f"SELECT * FROM '{self.table_name}' WHERE multiverse_ids='{card_mid}'"
+        self.cursor.execute(query)
+        res = self.cursor.fetchall()
+        return res
     
     def all_cards(self):
         '''Returns a list of Dataframes for each card in the ManaPool-Inventory.db'''

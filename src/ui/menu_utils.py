@@ -21,16 +21,14 @@ def singleSearchResponseEval(cards):
         print('More than one card found for search\n\n')
         for index, card in enumerate(cards): # https://realpython.com/python-enumerate/
             print(index+1, '.  ',
-                  'MID:', card['MULTIVERSE ID'], ' ',
-                  'Name:', card['NAME'], ' ',
-                  'Mana:', card['MANA COST'], ' ',
-                  'Type:', card['CARD TYPES'], ' ',
-                  'Set:', card['SET'], ' ',
-                  'Rarity:', card['RARITY'], ' '
+                  'MID:', card['multiverse_ids'], ' ',
+                  'Name:', card['name'], ' ',
+                  'Mana:', card['mana_cost'], ' ',
+                  'Type:', card['type_line'], ' ',
+                  'Set:', card['set_name'], ' ',
+                  'Rarity:', card['rarity'], ' '
                  )
-            print('\n')
-
-        print('Select card to choose or enter [N] to return to menu')
+        print('\n\nSelect card to choose or enter [N] to return to menu')
         res = input('\n>')
         if res == 'N' or res == 'n':
             print('Returning to menu')
@@ -54,13 +52,11 @@ def multiSearchResponseEval(cards, groupname):
         print(f'Found Cards in {groupname}\n\n')
         for index, card in enumerate(cards): # https://realpython.com/python-enumerate/
             print(index+1, '.  ',
-                  'MID:', card['MULTIVERSE ID'], ' ',
-                  'Name:', card['NAME'], ' ',
-                  'Mana:', card['MANA COST'], ' ',
-                  'Type:', card['CARD TYPES'], ' ',
-                  'Set:', card['SET'], ' ',
-                  'Rarity:', card['RARITY'], ' '
+                  'MID:', card['multiverse_ids'], ' ',
+                  'Name:', card['name'], ' ',
+                  'Mana:', card['mana_cost'], ' ',
+                  'Type:', card['type_line'], ' ',
+                  'Set:', card['set_name'], ' ',
+                  'Rarity:', card['rarity'], ' '
                  )
-            print('\n')
-        print('\n\n')
-        placeholder = input('Press any key to continue...\n>>')
+        placeholder = input('\n\nPress any key to continue...\n>>')
