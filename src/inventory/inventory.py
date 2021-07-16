@@ -41,7 +41,7 @@ class MP_Inventory:
         # query = f"UPDATE 'MTG-Cards count' = {total} FROM WHERE id = {card.ID};"
         # self.connection.execute(query)
 
-    def updateTable(self, cards):
+    def importJSON(self, cards):
         try:
             updated = 0
             rows = cards.shape[0]
@@ -57,9 +57,31 @@ class MP_Inventory:
             # self.cursor.close()
 
         except sqlite3.Error as error:
-            print("Failed to update sqlite table", error)
+            print("Failed to update table", error)
 
+    def exportJSON(self, dst):
+        try:
+            if self.connection:
+                # Make sure there is an empty space at the end of each string
+                query = f"SELECT name, set_name, full_art, textless, foil, nonfoil, oversized, promo "
+                query += f"FROM '{self.table_name}' "
+                query += f"WHERE 'full_art' > 0 OR 'textless' > 0 OR 'foil' > 0 OR 'nonfoil' > 0 OR 'oversized' > 0 OR 'promo' > 0 "
 
+                # FIXME REMOVE THE LIMIT AFTER VERIFYING
+                query += f"LIMIT 3"
+
+                my_inventory = pd.read_sql(query, self.connection)
+
+                my_inventory.to_json(dst, orient="records")
+                records = my_inventory.shape[0]
+                print(f"Retrieved {records} records successfully ")
+
+                # importing here since this is the only function that uses it. If it is used more often make global
+                import time
+                time.sleep(5)
+
+        except sqlite3.Error as error:
+            print("Failed to read table", error)
 
    # TODO: Implement
     def displayInventory():

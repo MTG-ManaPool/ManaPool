@@ -44,7 +44,11 @@ def __importFromJson(inventory):
 
 def __exportToJson(inventory):
     print('\n\nExporting to JSON file')
-    placeholder = input('Press any key to continue...\n>>')
+    dst = input("Please enter the file name you wish the exported cards to be in: ")
+    if not dst.endswith('.json'):
+                dst += '.json'
+    inventory.exportJSON(dst)
+    # placeholder = input('Press any key to continue...\n>>')
 
 
 # INVENTORY MENU FUNCTIONS
