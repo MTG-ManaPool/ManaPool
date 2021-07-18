@@ -116,7 +116,7 @@ class MP_Inventory:
                                                           "foil": int,
                                                           "nonfoil": int,
                                                           "oversized": int,
-                                                          "promo": int }
+                                                          "promo": bool}
                                         )
 
 
@@ -218,7 +218,7 @@ class MP_Inventory:
 
 
         # Initilizing the stock count for each variant of all cards to 0 or NaN.
-        for header in [ "full_art", "textless", "foil", "nonfoil", "oversized", "promo"]:
+        for header in [ "full_art", "textless", "foil", "nonfoil", "oversized"]:
             self.inventoryDF[header] = self.inventoryDF[header].replace(0, pd.NA)
             self.inventoryDF[header] -= 1
 
