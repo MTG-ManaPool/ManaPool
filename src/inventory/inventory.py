@@ -103,9 +103,15 @@ class MP_Inventory:
         return res
     
     def all_cards(self):
-        '''Returns a list of Dataframes for each card in the ManaPool-Inventory.db'''
-        return f"Stub, but here's all_cards"
-        #return self.cursor.execute("SELECT * FROM 'MTG-Cards'")
+        '''All cards recognized by the database."
+        
+            Returns:
+                List (cards): a list of all cards recognized by the database.
+        '''
+        query =f"SELECT * FROM {self.table_name}"
+        self.cursor.execute(query)
+        res = self.cursor.fetchall()
+        return res
 
     def __firstTimeSetup(self):
         # Obtaining Inital Card Data
