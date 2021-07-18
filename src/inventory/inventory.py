@@ -64,6 +64,14 @@ class MP_Inventory:
 
     def searchBySet(self, setname):
         query = f"SELECT * FROM '{self.table_name}' WHERE set_name='{setname}';"
+        '''Searches the inventory database for cards in the given set name.
+        
+            Args:
+                setname (string): the full set name of a Magic The Gathering expansion set.
+
+            Returns:
+                List (cards): a list of cards whose given expansion set name exactly match the input setname.
+        '''
         self.cursor.execute(query)
         res = self.cursor.fetchall()
         return res
@@ -75,7 +83,15 @@ class MP_Inventory:
         return res
 
     def searchByName(self, cardname):
-        query = f"SELECT * FROM '{self.table_name}' WHERE name='{cardname}';"
+        query = f"SELECT * FROM '{self.table_name}' WHERE name LIKE '%{cardname}%';"
+        '''Searches the inventory database for cards that contain the input string in their printed name.
+        
+            Args:
+                input (string): a card's printed text name.
+
+            Returns:
+                List (cards): a list of cards that contain the input text anywhere in their printed card name.
+        '''
         self.cursor.execute(query)
         res = self.cursor.fetchall()
         return res
