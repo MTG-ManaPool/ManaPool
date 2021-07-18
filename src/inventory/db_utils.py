@@ -2,38 +2,54 @@ import os
 import requests
 
 schema_headers = [
-  "id", # working
-  "multiverse_ids", # working
-  "name", # working
-  "mana_cost", # working
-  "cmc", # working
+  # Unique Database ID
+  "id",
+
+  # Card Information Headers
+  # (Strings) 
+  "name",
+  "mana_cost",
   "colors",
   "color_identity",
-  "image_uris", # working
-
-
-  "card_faces", # needs work
-  # - currently stores as nan for single face cards, or
-  # - a list of two card face objects, each containing all the typical headers found on a single faced card.
-
-  "type_line", # working
+  "type_line",
   "set_type",
   "set",
   "set_name",
   "rarity",
   "artist",
-  "collector_number",
   "flavor_text",
+  # (Integers)
+  "cmc",
   "power",
   "toughness",
+  "multiverse_ids",
+  # Complex Data
   "keywords",
-  "layout", # working
-  "full_art",# working
-  "textless", # working
-  "foil", # working
-  "nonfoil", # working
-  "oversized", # working
-  "promo", # working
+  "image_uris",
+  "card_faces",
+  
+  # Card Art Detail Headers 
+  # (Boolean) The card either Has this property for it's art, or it Does Not Have.
+  # A card can be multiples of these properties.
+  # A card's uniqueness in the database is retained by the set/collection_number of the card, not these properties.
+  "layout",
+  "full_art",
+  "textless",
+  "oversized",
+  "promo",
+
+  # Stock Count Headers
+  # (Integer) The current stock count of this card in the given property. 
+  "foil",
+  "nonfoil",
+
+  # If card condition is chosen to be tracked in a future implementation,
+  # one will need to consider the concepts such as 'near_mint_foil.' 
+  # near_mint
+  # lightly_played
+  # moderately_played
+  # heavily_played
+  # damaged
 ]
 
 def getBulkData(requested_data):
