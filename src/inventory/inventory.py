@@ -108,10 +108,6 @@ class MP_Inventory:
         #return self.cursor.execute("SELECT * FROM 'MTG-Cards'")
 
     def __firstTimeSetup(self):
-        # TODO . . . Create Relational DB Tables
-        # Base table of 'MTG-Cards' contains all 60k cards.
-        # self.cursor.execute("CREATE TABLE MTG-Cards")
-
         # Obtaining Inital Card Data
         bulk_json = db_utils.getBulkData('default_cards')
 
