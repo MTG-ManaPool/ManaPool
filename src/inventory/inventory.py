@@ -62,8 +62,16 @@ class MP_Inventory:
         res = self.cursor.fetchall()
         return res
 
-    def searchByName(self, cardname):
-        query = f"SELECT * FROM '{self.table_name}' WHERE name='{cardname}'"
+    def searchByName(self, input):
+        '''Searches the inventory database for cards that contain the input string in their printed name.
+        
+            Args:
+                input (string): a card's printed text name.
+
+            Returns:
+                List (cards): a list of cards that contain the input text anywhere in their printed card name.
+        '''
+        query = f"SELECT * FROM '{self.table_name}' WHERE name LIKE '%{input}%'"
         self.cursor.execute(query)
         res = self.cursor.fetchall()
         return res
