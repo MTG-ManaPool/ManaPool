@@ -16,41 +16,54 @@ class MP_Inventory:
         self.table_name = "MTG-Cards"
 
         # First time initialization of inventory Database
-        if None ==  self.cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='MTG-Cards'").fetchone():
+        if None ==  self.cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='MTG-Cards';").fetchone():
             self.__firstTimeSetup()
         else:
             self.__checkForUpdates()
 
-   # TODO: Implement
-    def addCardToInventory(self, card, to_add):
-        print('adding card')
-        placeholder = input('')
-        # self.connection.commit()
-        # total = card.count + to_add
-        # query = f"UPDATE 'MTG-Cards count' = {total} FROM WHERE id = {card.ID};"
-        # self.connection.execute(query)
+    def addCardToInventory(self, cards, cardtype):
+        for card in cards:
+            total = card[f'{cardtype}'] + 1
+            query = f"UPDATE 'MTG-Cards' SET {cardtype} = {total} WHERE id == '{card['id']}';"
+            self.connection.execute(query)
+        self.connection.commit()
 
-   # TODO: Implement
-    def removeCardFromInventory(self, card, to_remove):
-        print('removing card')
-        placeholder = input('')
-        # self.connection.commit()
-        # total = card.count - to_remove
-        # if total < 0:
-        #     total = 0
-        # query = f"UPDATE 'MTG-Cards count' = {total} FROM WHERE id = {card.ID};"
-        # self.connection.execute(query)
+    def removeCardFromInventory(self, cards, cardtype):
+        for card in cards:
+            total = card[f'{cardtype}'] - 1
+            if total < 0:
+                continue
+            query = f"UPDATE 'MTG-Cards' SET {cardtype} = {total} WHERE id == '{card['id']}';"
+            self.connection.execute(query)
+        self.connection.commit()
 
-   # TODO: Implement
-    def displayInventory():
-        print('Displaying inventory')
-        placeholder = input('')
+    def displayInventory(self):
+        print('\nCurrent Inventory:\n\n')
+        query = f"SELECT * FROM '{self.table_name}' WHERE full_art > 0 OR textless > 0 OR foil > 0 OR nonfoil > 0 OR oversized > 0 OR promo > 0;"
+        self.cursor.execute(query)
+        res = self.cursor.fetchall()
+        for card in res:
+            print(
+                'MID:', card['multiverse_ids'], ' ',
+                'Name:', card['name'], ' ',
+                'Mana:', card['mana_cost'], ' ',
+                'Type:', card['type_line'], ' ',
+                'Set:', card['set_name'], ' ',
+                'Rarity:', card['rarity'], ' '
+                'FA:', card['full_art'], ' '
+                'T:', card['textless'], ' '
+                'F:', card['foil'], ' '
+                'NF:', card['nonfoil'], ' '
+                'O:', card['oversized'], ' '
+                'P:', card['oversized'], ' '
+                )
 
     def close (self):
         self.connection.commit()
         self.connection.close()
 
     def searchBySet(self, setname):
+        query = f"SELECT * FROM '{self.table_name}' WHERE set_name='{setname}';"
         '''Searches the inventory database for cards in the given set name.
         
             Args:
@@ -59,18 +72,18 @@ class MP_Inventory:
             Returns:
                 List (cards): a list of cards whose given expansion set name exactly match the input setname.
         '''
-        query = f"SELECT * FROM '{self.table_name}' WHERE set_name='{setname}'"
         self.cursor.execute(query)
         res = self.cursor.fetchall()
         return res
 
     def searchByBlock(self, blockname):
-        query = f"SELECT * FROM '{self.table_name}' WHERE block='{blockname}'"
+        query = f"SELECT * FROM '{self.table_name}' WHERE block='{blockname}';"
         self.cursor.execute(query)
         res = self.cursor.fetchall()
         return res
 
-    def searchByName(self, input):
+    def searchByName(self, cardname):
+        query = f"SELECT * FROM '{self.table_name}' WHERE name LIKE '%{cardname}%';"
         '''Searches the inventory database for cards that contain the input string in their printed name.
         
             Args:
@@ -79,13 +92,12 @@ class MP_Inventory:
             Returns:
                 List (cards): a list of cards that contain the input text anywhere in their printed card name.
         '''
-        query = f"SELECT * FROM '{self.table_name}' WHERE name LIKE '%{input}%'"
         self.cursor.execute(query)
         res = self.cursor.fetchall()
         return res
     
     def searchByMID(self, card_mid):
-        query = f"SELECT * FROM '{self.table_name}' WHERE multiverse_ids='{card_mid}'"
+        query = f"SELECT * FROM '{self.table_name}' WHERE multiverse_ids='{card_mid}';"
         self.cursor.execute(query)
         res = self.cursor.fetchall()
         return res
