@@ -1,7 +1,22 @@
 import os
 import requests
 
-schema_headers = [
+stock_headers = [
+  ## Stock Count Headers
+  "foil", # (Integer)
+    # The current in stock count of foil versions of this card. 
+  "nonfoil", # (Integer)
+      # The current in stock count of nonfoil versions of this card. 
+
+  # If card condition is chosen to be tracked in a future implementation one will need to consider the concepts such as:
+  # near_mint_foil, near_mint_nonfoil.
+  # lightly_played_foil, lightly_played_nonfoil.
+  # moderately_played_foil, moderately_played_nonfoil.
+  # heavily_played_foil, heavily_played_nonfoil.
+  # damaged_foil, damaged_nonfoil.
+]
+
+schema_headers = stock_headers + [
   ## Unique Database ID
   "id", # (String)
 
@@ -171,19 +186,6 @@ schema_headers = [
   "textless", # (Boolean) 
   "oversized", # (Boolean) 
   "promo", # (Boolean) 
-
-  ## Stock Count Headers
-  "foil", # (Integer)
-    # The current in stock count of foil versions of this card. 
-  "nonfoil", # (Integer)
-      # The current in stock count of nonfoil versions of this card. 
-
-  # If card condition is chosen to be tracked in a future implementation one will need to consider the concepts such as:
-  # near_mint_foil, near_mint_nonfoil.
-  # lightly_played_foil, lightly_played_nonfoil.
-  # moderately_played_foil, moderately_played_nonfoil.
-  # heavily_played_foil, heavily_played_nonfoil.
-  # damaged_foil, damaged_nonfoil.
 ]
 
 def getBulkData(requested_data):
