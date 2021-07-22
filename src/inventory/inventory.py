@@ -63,7 +63,6 @@ class MP_Inventory:
         self.connection.close()
 
     def searchBySet(self, setname):
-        query = f"SELECT * FROM '{self.table_name}' WHERE set_name='{setname}';"
         '''Searches the inventory database for cards in the given set name.
         
             Args:
@@ -72,6 +71,7 @@ class MP_Inventory:
             Returns:
                 List (cards): a list of cards whose given expansion set name exactly match the input setname.
         '''
+        query = f"SELECT * FROM '{self.table_name}' WHERE set_name='{setname}';"
         self.cursor.execute(query)
         res = self.cursor.fetchall()
         return res
@@ -83,7 +83,6 @@ class MP_Inventory:
         return res
 
     def searchByName(self, cardname):
-        query = f"SELECT * FROM '{self.table_name}' WHERE name LIKE '%{cardname}%';"
         '''Searches the inventory database for cards that contain the input string in their printed name.
         
             Args:
@@ -92,6 +91,7 @@ class MP_Inventory:
             Returns:
                 List (cards): a list of cards that contain the input text anywhere in their printed card name.
         '''
+        query = f"SELECT * FROM '{self.table_name}' WHERE name LIKE '%{cardname}%';"
         self.cursor.execute(query)
         res = self.cursor.fetchall()
         return res
