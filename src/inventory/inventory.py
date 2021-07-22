@@ -37,25 +37,15 @@ class MP_Inventory:
         self.connection.commit()
 
     def displayInventory(self):
-        print('\nCurrent Inventory:\n\n')
-        query = f"SELECT * FROM '{self.table_name}' WHERE full_art > 0 OR textless > 0 OR foil > 0 OR nonfoil > 0 OR oversized > 0 OR promo > 0;"
+        '''Searches the inventory database for cards that are in stock.
+
+            Returns:
+                List (cards): a list of cards that whose inventory count of foil or nonfoil is greater than 0.
+        '''
+        query = f"SELECT * FROM '{self.table_name}' WHERE foil > 0 OR nonfoil > 0;"
         self.cursor.execute(query)
         res = self.cursor.fetchall()
-        for card in res:
-            print(
-                'MID:', card['multiverse_ids'], ' ',
-                'Name:', card['name'], ' ',
-                'Mana:', card['mana_cost'], ' ',
-                'Type:', card['type_line'], ' ',
-                'Set:', card['set_name'], ' ',
-                'Rarity:', card['rarity'], ' '
-                'FA:', card['full_art'], ' '
-                'T:', card['textless'], ' '
-                'F:', card['foil'], ' '
-                'NF:', card['nonfoil'], ' '
-                'O:', card['oversized'], ' '
-                'P:', card['oversized'], ' '
-                )
+        return res
 
     def close (self):
         self.connection.commit()
