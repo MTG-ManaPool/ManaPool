@@ -20,12 +20,27 @@ class MP_Inventory:
         else:
             self.__checkForUpdates()
 
-    def addCardToInventory(self, cards, cardtype):
-        for card in cards:
-            total = card[f'{cardtype}'] + 1
-            query = f"UPDATE '{self.table_name}' SET {cardtype} = {total} WHERE id == '{card['id']}';"
-            self.connection.execute(query)
-        self.connection.commit()
+    def addCardToInventory(self, card, variant):
+        '''Adds the specified card of the given variant to the inventory.
+
+            Args:
+                card (SQLiteRow): a dict-addressable card row from the database.
+                variant (string): the specified variant of the card to be added.
+        '''
+        if variant not in db_utils.stock_headers:
+            return False
+
+        query = f"SELECT {variant} FROM '{self.table_name}' WHERE id == '{card['id']}';"
+        self.cursor.execute(query)
+        current_count = self.cursor.fetchone()[variant]
+
+        if current_count != None:
+            query = f"UPDATE '{self.table_name}' SET {variant} = {current_count + 1} WHERE id == '{card['id']}';"
+            self.cursor.execute(query)
+            self.connection.commit()
+            return True
+
+        return False
 
     def removeCardFromInventory(self, cards, cardtype):
         for card in cards:
@@ -33,7 +48,7 @@ class MP_Inventory:
             if total < 0:
                 continue
             query = f"UPDATE '{self.table_name}' SET {cardtype} = {total} WHERE id == '{card['id']}';"
-            self.connection.execute(query)
+            self.cursor.execute(query)
         self.connection.commit()
 
     def displayInventory(self):
@@ -105,7 +120,7 @@ class MP_Inventory:
             Returns:
                 List (cards): a list of all cards recognized by the database.
         '''
-        query =f"SELECT * FROM {self.table_name}"
+        query =f"SELECT * FROM '{self.table_name}'"
         self.cursor.execute(query)
         res = self.cursor.fetchall()
         return res
