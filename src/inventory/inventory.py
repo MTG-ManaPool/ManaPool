@@ -117,7 +117,7 @@ class MP_Inventory:
         # Obtaining Inital Card Data
         bulk_json = db_utils.getBulkData('default_cards')
         self.inventoryDF = pd.read_json(bulk_json)
-
+        os.remove(bulk_json)
 
         # Filter by the defined Schema
         self.inventoryDF = self.inventoryDF[db_utils.schema_headers]
@@ -240,7 +240,6 @@ class MP_Inventory:
 
         # CREATE SQL TABLE with Schema from DATAFRAME
         self.inventoryDF.to_sql(self.table_name, self.connection)
-        os.remove(bulk_json)
 
 
     def __checkForUpdates(self):
