@@ -140,6 +140,9 @@ class MP_Inventory:
         # replace NaN/None with empty string, keep already present empty strings.
         self.inventoryDF['mana_cost'] = mana_cost.where(mana_cost.notnull(), '')
 
+        flavor_text = self.inventoryDF['flavor_text']
+        # replace NaN/None with empty string, keep already present empty strings.
+        self.inventoryDF['flavor_text'] = flavor_text.where(flavor_text.notnull(), '')
 
         # IMAGE URIS
         new_img_uris = ['small_img', 'normal_img', 'large_img', 'png_img', 'art_crop_img', 'border_crop_img']
