@@ -130,13 +130,10 @@ class MP_Inventory:
         # concatenate the list of characters representing different colors into one string (e.g. 'UWB')
         self.inventoryDF['color_identity'] = self.inventoryDF['color_identity'].agg(''.join)
 
-        # COLOR
         colors = self.inventoryDF['colors']
-        # replace NaN/None with empty list in preparatio for join
-        for row in self.inventoryDF.loc[colors.isnull(), 'colors'].index:
-            self.inventoryDF.at[row, 'colors'] = []
-
-        # concatenate the strings representing different color into one strin (e.g. 'UWB')
+        # replace NaN/None with empty list
+        self.inventoryDF['colors'] = colors.where(colors.notnull(), '[]')
+        # concatenate the strings representing different colors into one string (e.g. 'UWB')
         self.inventoryDF['colors'] = colors.agg(''.join)
 
 
