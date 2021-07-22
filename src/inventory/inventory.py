@@ -15,7 +15,7 @@ class MP_Inventory:
         self.table_name = "MTG-Cards"
 
         # First time initialization of inventory Database
-        if None ==  self.cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='MTG-Cards';").fetchone():
+        if None ==  self.cursor.execute(f"SELECT name FROM sqlite_master WHERE type='table' AND name='{self.table_name}';").fetchone():
             self.__firstTimeSetup()
         else:
             self.__checkForUpdates()
@@ -23,7 +23,7 @@ class MP_Inventory:
     def addCardToInventory(self, cards, cardtype):
         for card in cards:
             total = card[f'{cardtype}'] + 1
-            query = f"UPDATE 'MTG-Cards' SET {cardtype} = {total} WHERE id == '{card['id']}';"
+            query = f"UPDATE '{self.table_name}' SET {cardtype} = {total} WHERE id == '{card['id']}';"
             self.connection.execute(query)
         self.connection.commit()
 
@@ -32,7 +32,7 @@ class MP_Inventory:
             total = card[f'{cardtype}'] - 1
             if total < 0:
                 continue
-            query = f"UPDATE 'MTG-Cards' SET {cardtype} = {total} WHERE id == '{card['id']}';"
+            query = f"UPDATE '{self.table_name}' SET {cardtype} = {total} WHERE id == '{card['id']}';"
             self.connection.execute(query)
         self.connection.commit()
 
