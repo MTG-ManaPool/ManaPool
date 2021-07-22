@@ -96,6 +96,14 @@ class MP_Inventory:
         return res
     
     def searchByMID(self, card_mid):
+        '''Searches the inventory database for a cards that has the given multiverse id.
+        
+            Args:
+                card_mid (Integer): the gatherer multiverse id of a specific Magic The Gathering card.
+
+            Returns:
+                List (cards): a list of cards that exactly match the given multiverse id.
+        '''
         query = f"SELECT * FROM '{self.table_name}' WHERE multiverse_ids='{card_mid}';"
         self.cursor.execute(query)
         res = self.cursor.fetchall()
