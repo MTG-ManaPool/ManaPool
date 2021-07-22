@@ -150,6 +150,14 @@ class MP_Inventory:
         # concatenate the strings representing different keywords into one string (e.g. 'UWB')
         self.inventoryDF['keywords'] = self.inventoryDF['keywords'].agg(', '.join)
 
+        multiverse_ids = self.inventoryDF['multiverse_ids']
+        present_ids =  multiverse_ids.astype(bool)
+        # replace all 'Falsey' values with '-1'.
+        multiverse_ids = multiverse_ids.where(present_ids, -1)
+        # replace all 'Truthy' values with first multiverse ID'.
+        multiverse_ids = multiverse_ids.where(~present_ids, multiverse_ids[0])
+        self.inventoryDF['multiverse_ids'] = multiverse_ids.astype('int32')
+
         # IMAGE URIS
         new_img_uris = ['small_img', 'normal_img', 'large_img', 'png_img', 'art_crop_img', 'border_crop_img']
         old_img_uris = self.inventoryDF['image_uris']
@@ -211,15 +219,6 @@ class MP_Inventory:
             self.inventoryDF[header] = self.inventoryDF[header].replace(0, pd.NA)
             self.inventoryDF[header] -= 1
 
-
-        # Get the first multiverse id from the list they are in or tag the token cards with -1
-        for r in tqdm(range(DF_rows)):
-            ids = self.inventoryDF.iloc[r]['multiverse_ids']
-            self.inventoryDF['multiverse_ids'].iloc[r] = -1 if ids == [] else ids[0]
-
-
-        # for a later date
-        self.token_cards = self.inventoryDF[self.inventoryDF['multiverse_ids'] == -1]
 
         print("\nResulting cleaned Dataframe\n")
         print("\n", self.inventoryDF, "\n")
