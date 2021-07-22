@@ -158,6 +158,12 @@ class MP_Inventory:
         multiverse_ids = multiverse_ids.where(~present_ids, multiverse_ids[0])
         self.inventoryDF['multiverse_ids'] = multiverse_ids.astype('int32')
 
+        print("Initalizing Empty Inventory . . .")
+        for header in tqdm(["foil", "nonfoil"], total=2):
+            self.inventoryDF[header] = self.inventoryDF[header].astype(int)
+            self.inventoryDF[header] = self.inventoryDF[header].replace(0, pd.NA)
+            self.inventoryDF[header] -= 1
+
         # IMAGE URIS
         new_img_uris = ['small_img', 'normal_img', 'large_img', 'png_img', 'art_crop_img', 'border_crop_img']
         old_img_uris = self.inventoryDF['image_uris']
@@ -212,12 +218,6 @@ class MP_Inventory:
 
         # These columns have been expanded into 4 or 5 columns so we do not need the original any longer
         self.inventoryDF = self.inventoryDF.drop(columns=['image_uris', 'card_faces'])
-
-
-        # Initilizing the stock count for each variant of all cards to 0 or NaN.
-        for header in [ "full_art", "textless", "foil", "nonfoil", "oversized"]:
-            self.inventoryDF[header] = self.inventoryDF[header].replace(0, pd.NA)
-            self.inventoryDF[header] -= 1
 
 
         print("\nResulting cleaned Dataframe\n")
