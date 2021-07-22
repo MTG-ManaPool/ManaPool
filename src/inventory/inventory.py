@@ -116,14 +116,7 @@ class MP_Inventory:
     def __firstTimeSetup(self):
         # Obtaining Inital Card Data
         bulk_json = db_utils.getBulkData('default_cards')
-
-        self.inventoryDF = pd.read_json(bulk_json, dtype={"full_art": int,
-                                                          "textless": int,
-                                                          "foil": int,
-                                                          "nonfoil": int,
-                                                          "oversized": int,
-                                                          "promo": bool}
-                                        )
+        self.inventoryDF = pd.read_json(bulk_json)
 
 
         # Filter by the defined Schema
