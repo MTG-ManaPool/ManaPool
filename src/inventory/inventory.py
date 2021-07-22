@@ -42,14 +42,27 @@ class MP_Inventory:
 
         return False
 
-    def removeCardFromInventory(self, cards, cardtype):
-        for card in cards:
-            total = card[f'{cardtype}'] - 1
-            if total < 0:
-                continue
-            query = f"UPDATE '{self.table_name}' SET {cardtype} = {total} WHERE id == '{card['id']}';"
+    def removeCardFromInventory(self, card, variant):
+        '''Removes the specified card of the given variant from the inventory.
+
+            Args:
+                card (SQLiteRow): a dict-addressable card row from the database.
+                variant (string): the specified variant of the card to be added.
+        '''
+        if variant not in db_utils.stock_headers:
+            return False
+
+        query = f"SELECT {variant} FROM '{self.table_name}' WHERE id == '{card['id']}';"
+        self.cursor.execute(query)
+        current_count = self.cursor.fetchone()[variant]
+
+        if current_count != None or 0:
+            query = f"UPDATE '{self.table_name}' SET {variant} = {current_count - 1} WHERE id == '{card['id']}';"
             self.cursor.execute(query)
-        self.connection.commit()
+            self.connection.commit()
+            return True
+        
+        return False
 
     def displayInventory(self):
         '''Searches the inventory database for cards that are in stock.
