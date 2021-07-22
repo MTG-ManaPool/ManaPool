@@ -124,17 +124,11 @@ class MP_Inventory:
 
         DF_rows = self.inventoryDF.shape[0]
 
-
-        # COLOR Identities
-        color_id = self.inventoryDF['color_identity']
-        # Didnt find any NaN values but better safe than sorry
-        for row in self.inventoryDF.loc[color_id.isnull(), 'color_identity'].index:
-            self.inventoryDF.at[row, 'color_identity'] = []
-
-        # concatenate the strings representing different color into one strin (e.g. 'UWB')
-        self.inventoryDF['color_identity'] = color_id.agg(''.join)
-
-
+        color_identities = self.inventoryDF['color_identity']
+        # replace all 'Falsey' values with empty list.
+        self.inventoryDF['color_identity'] = color_identities.where(color_identities.astype(bool), '[]')
+        # concatenate the list of characters representing different colors into one string (e.g. 'UWB')
+        self.inventoryDF['color_identity'] = self.inventoryDF['color_identity'].agg(''.join)
 
         # COLOR
         colors = self.inventoryDF['colors']
