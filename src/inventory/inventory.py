@@ -3,7 +3,6 @@ import sqlite3
 import pandas as pd
 from tqdm import tqdm
 from . import db_utils
-# import db_utils # USED FOR LOCAL TESTING
 
 
 class MP_Inventory:
@@ -191,14 +190,7 @@ class MP_Inventory:
         self.inventoryDF = self.inventoryDF.drop(columns=['image_uris', 'card_faces'])
 
 
-        print("\nResulting cleaned Dataframe\n")
-        print("\n", self.inventoryDF, "\n")
-        self.inventoryDF.info(verbose=False, memory_usage="deep")
-
-        # Insert the current df_item, into the MTG-Cards table.
-        # Figure out what other tables the current df_item might need inserted into. (efficient queries later / JOINS on tables.)
-
-        # CREATE SQL TABLE with Schema from DATAFRAME
+        # Transform Pandas Dataframe into SQL table representing an Inventory Management System.
         self.inventoryDF.to_sql(self.table_name, self.connection)
 
 
@@ -208,15 +200,3 @@ class MP_Inventory:
         # get size of bulk file (#cards).
         # if diff: confirm(y/n) to update
         # if y: re-initalize.
-
-# Only instanciate MP_Inventory when working in this script directly
-if __name__ == '__main__':
-    x = MP_Inventory()
-    done = False
-    while not done:
-        cards = x.searchByMID('109722')
-        print(cards)
-        print('Done testing? [Y/N]')
-        res = input('>')
-        if res == 'Y':
-            done = True
