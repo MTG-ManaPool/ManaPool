@@ -164,58 +164,29 @@ class MP_Inventory:
             self.inventoryDF[header] = self.inventoryDF[header].replace(0, pd.NA)
             self.inventoryDF[header] -= 1
 
-        # IMAGE URIS
-        new_img_uris = ['small_img', 'normal_img', 'large_img', 'png_img', 'art_crop_img', 'border_crop_img']
-        old_img_uris = self.inventoryDF['image_uris']
-        data_as_list = []
-        index_without_image = self.inventoryDF.loc[self.inventoryDF.image_uris.isnull()].index
-        for row in range(DF_rows):
-
-            temp = []
-
-            # replace NaN/None with empty list
-            if row in index_without_image:
-                # FIXME still need to account for second face. Talked about making a seperate Table for these cards
-                if self.inventoryDF.loc[row]['card_faces'] and 'image_uris' in self.inventoryDF.loc[row]['card_faces'][0]:
-                    face1_img_uris = self.inventoryDF.loc[row]['card_faces'][0]['image_uris']
-                    small = face1_img_uris["small"]
-                    temp.append(small)
-                    normal = face1_img_uris["normal"]
-                    temp.append(normal)
-                    large = face1_img_uris["large"]
-                    temp.append(large)
-                    png = face1_img_uris["png"]
-                    temp.append(png)
-                    art_crop = face1_img_uris["art_crop"]
-                    temp.append(art_crop)
-                    border_crop = face1_img_uris["border_crop"]
-                    temp.append(border_crop)
-                #else not two faced but still null make them NaN
-                else:
-                    temp = [pd.NA, pd.NA, pd.NA, pd.NA, pd.NA, pd.NA]
+        print("Adjusting card images . . .")
+        double_faced_cards =self.inventoryDF.loc[self.inventoryDF['image_uris'].isnull()].index
+        new_image_headers = ['small_img', 'normal_img', 'large_img', 'png_img', 'art_crop_img', 'border_crop_img']
+        old_image_headers = ["small", "normal", "large", "png", "art_crop", "border_crop"]
+        
+        updated_cards = []
+        for card in tqdm(range(DF_rows)):
+            current_image_data = []
+            if card in double_faced_cards:
+                if 'image_uris' in self.inventoryDF.loc[card]['card_faces'][0]:
+                    card_front = self.inventoryDF.loc[card]['card_faces'][0]['image_uris']
+                    #TODO card_back = self.inventoryDF.loc[card]['card_faces'][1]['image_uris']
+                    for header in old_image_headers:
+                        current_image_data.append(card_front[header])
             else:
-                card_image = self.inventoryDF.at[row, 'image_uris']
-                small = card_image["small"]
-                temp.append(small)
-                normal = card_image["normal"]
-                temp.append(normal)
-                large = card_image["large"]
-                temp.append(large)
-                png = card_image["png"]
-                temp.append(png)
-                art_crop = card_image["art_crop"]
-                temp.append(art_crop)
-                border_crop = card_image["border_crop"]
-                temp.append(border_crop)
+                card_front = self.inventoryDF.at[card, 'image_uris']
+                #TODO card_back = placeholder MTG Image
+                for header in old_image_headers:
+                    current_image_data.append(card_front[header])
+            updated_cards.append(current_image_data)
 
-
-
-            data_as_list.append(temp)
-
-        # insert the new DF after making the all the columns first
-        self.inventoryDF[new_img_uris] = pd.DataFrame(data_as_list, columns=new_img_uris)
-
-
+        # insert the DF containing the updated image headers
+        self.inventoryDF[new_image_headers] = pd.DataFrame(updated_cards, columns=new_image_headers)
         # These columns have been expanded into 4 or 5 columns so we do not need the original any longer
         self.inventoryDF = self.inventoryDF.drop(columns=['image_uris', 'card_faces'])
 
