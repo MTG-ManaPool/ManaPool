@@ -136,6 +136,9 @@ class MP_Inventory:
         # concatenate the strings representing different colors into one string (e.g. 'UWB')
         self.inventoryDF['colors'] = colors.agg(''.join)
 
+        mana_cost = self.inventoryDF['mana_cost']
+        # replace NaN/None with empty string, keep already present empty strings.
+        self.inventoryDF['mana_cost'] = mana_cost.where(mana_cost.notnull(), '')
 
 
         # IMAGE URIS
