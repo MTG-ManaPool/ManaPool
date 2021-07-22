@@ -144,6 +144,12 @@ class MP_Inventory:
         # replace NaN/None with empty string, keep already present empty strings.
         self.inventoryDF['flavor_text'] = flavor_text.where(flavor_text.notnull(), '')
 
+        keywords = self.inventoryDF['keywords']
+        # replace NaN/None with empty list
+        self.inventoryDF['keywords'] = keywords.where(keywords.notnull(), '[]')
+        # concatenate the strings representing different keywords into one string (e.g. 'UWB')
+        self.inventoryDF['keywords'] = self.inventoryDF['keywords'].agg(', '.join)
+
         # IMAGE URIS
         new_img_uris = ['small_img', 'normal_img', 'large_img', 'png_img', 'art_crop_img', 'border_crop_img']
         old_img_uris = self.inventoryDF['image_uris']
@@ -194,19 +200,6 @@ class MP_Inventory:
 
         # insert the new DF after making the all the columns first
         self.inventoryDF[new_img_uris] = pd.DataFrame(data_as_list, columns=new_img_uris)
-
-
-
-        # KEYWORDS
-        keywords = self.inventoryDF['keywords']
-        # replace NaN/None with empty list in preparatio for join
-        for row in self.inventoryDF.loc[keywords.isnull(), 'keywords'].index:
-            self.inventoryDF.at[row, 'keywords'] = []
-
-        # concatenate the strings representing different color into one strin (e.g. 'UWB')
-        self.inventoryDF['keywords'] = keywords.agg(', '.join)
-
-
 
 
         # These columns have been expanded into 4 or 5 columns so we do not need the original any longer
