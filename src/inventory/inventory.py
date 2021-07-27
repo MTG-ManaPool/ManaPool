@@ -23,12 +23,29 @@ class MP_Inventory:
 
     def addCardToInventory(self, cards, cardtype):
         for card in cards:
-            total = card[f'{cardtype}'] + 1
+            total = card[f'{cardtype}']
+            if total == None:
+                # raise(f"{card['name']} does not exist in this format.")
+                print('\n\nERROR Cannot add Cards to Inventory.')
+                print(f"{card['name']} does not exist in this format.")
+                return
+
+        for card in cards:
+            total = card[f'{cardtype}']
+            total += 1
             query = f"UPDATE 'MTG-Cards' SET {cardtype} = {total} WHERE id == '{card['id']}';"
             self.connection.execute(query)
         self.connection.commit()
 
     def removeCardFromInventory(self, cards, cardtype):
+        for card in cards:
+            total = card[f'{cardtype}']
+            if total == None:
+                # raise(f"{card['name']} does not exist in this format.")
+                print('\n\nERROR Cannot add Cards to Inventory.')
+                print(f"{card['name']} does not exist in this format.")
+                return
+
         for card in cards:
             total = card[f'{cardtype}'] - 1
             if total < 0:

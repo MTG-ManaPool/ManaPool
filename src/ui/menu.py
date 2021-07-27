@@ -1,240 +1,222 @@
-from . import menu_utils
+from .menu_utils import CardList
 
-# MAIN MENU
-def Menu(inventory):
-    menu_items = {
-        '1: Import Inventory from a JSON file': __importFromJson,
-        '2. Export Inventory to a JSON file': __exportToJson,
-        '3. Access Inventory': __inventoryMenu,
-        '4. Search for Cards': __searchMenu,
-        '5. Quit': None
-    }
-    title = 'Welcome to ManaPool'
-    __renderMenu(title, menu_items, inventory)
-
-
-# MAIN MENU FUNCTIONS
-# MENU FOR INVENTORY INTERFACE
-def __inventoryMenu(inventory):
-    menu_items = {
-        '1: Add Cards to Inventory': __addCardMenu,
-        '2. Remove Cards from Inventory': __removeCardMenu,
-        '3. View Inventory': __displayAll,
-        '4. Quit': None
-    }
-    title = 'Inventory Menu'
-    __renderMenu(title, menu_items, inventory)
-
-# MENU FOR DATABASE INTERFACE
-def __searchMenu(inventory):
-    menu_items = {
-        '1: Search for Cards by Set': __searchSet,
-        '2. Search for Cards by Block': __searchBlock,
-        '3. Search for Cards by Name': __searchName,
-        '4. Search for Cards by Multiverse ID': __searchMID,
-        '5. Quit': None
-    }
-    title = 'Search Menu'
-    __renderMenu(title, menu_items, inventory)
-
-# IMPORTS CURRENT INVENTORY FROM AN EXPORTED JSON FILE
-def __importFromJson(inventory):
-    print('\n\nLoading from JSON file')
-    placeholder = input('Press any key to continue...\n')
-
-# EXPORTS CURRENT INVENTORY TO A JSON FILE
-# THIS FILE CAN BE IMPORTED LATER TO SHARE AN INVENTORY ACROSS DEVICES
-def __exportToJson(inventory):
-    print('\n\nExporting to JSON file')
-    placeholder = input('Press any key to continue...\n')
+class Menu():
+    def __init__ (self):
+        self.main_menu_title = 'Welcome to ManaPool'
+        self.main_menu_items = {
+            '1: Import Inventory from a JSON file': self.__importFromJson,
+            '2. Export Inventory to a JSON file': self.__exportToJson,
+            '3. Access Inventory': self.__inventoryMenu,
+            '4. Search for Cards': self.__searchMenu,
+            '5. Quit ManaPool': None
+        }
+        self.inv_menu_title = 'Inventory Menu'
+        self.inv_menu_items = {
+            '1: Add Cards to Inventory': self.__addCardMenu,
+            '2. Remove Cards from Inventory': self.__removeCardMenu,
+            '3. View Inventory': self.__displayAll,
+            '4. Main Menu': None
+        }
+        self.search_menu_title = 'Search Menu'
+        self.search_menu_items = {
+            '1: Search for Cards by Set': self.__searchSet,
+            '2. Search for Cards by Block': self.__searchBlock,
+            '3. Search for Cards by Name': self.__searchName,
+            '4. Search for Cards by Multiverse ID': self.__searchMID,
+            '5. Quit': None
+        }
+        self.add_menu_title = 'Select Method to Search for Cards to Add'
+        self.remove_menu_title = 'Select Method to Search for Cards to Remove'
+        self.cache = CardList()
 
 
-# INVENTORY MENU FUNCTIONS
-# MENU TO INITIATE ADDING CARDS TO INVENTORY
-def __addCardMenu(inventory):
-    print('\n' * 50)
-    menu_items = {
-        '1: Search for Cards by Set': __searchSet,
-        '2. Search for Cards by Block': __searchBlock,
-        '3. Search for Cards by Name': __searchName,
-        '4. Search for Cards by Multiverse ID': __searchMID,
-        '5. Quit': None
-    }
-    title = 'Select Method to Search for Cards to Add'
-    __renderMenu(title, menu_items, [inventory, 'add'])
+    # PUBLIC MENU's
+    def mainMenu(self, inventory):
+        self.__renderMenu(self.main_menu_title, self.main_menu_items, inventory)
+    
+    # PRIVATE MENU's
+    def __inventoryMenu(self, inventory):
+        self.__renderMenu(self.inv_menu_title, self.inv_menu_items, inventory)
+    
+    def __searchMenu(self, inventory):
+        self.__renderMenu(self.search_menu_title, self.search_menu_items, inventory)
 
-# MENU TO INITIATE REMOVING CARDS TO INVENTORY
-def __removeCardMenu(inventory):
-    print('\n' * 50)
-    menu_items = {
-        '1: Search for Cards by Set': __searchSet,
-        '2. Search for Cards by Block': __searchBlock,
-        '3. Search for Cards by Name': __searchName,
-        '4. Search for Cards by Multiverse ID': __searchMID,
-        '5. Quit': None
-    }
-    title = 'Select Method to Search for Cards to Remove'
-    __renderMenu(title, menu_items, [inventory, 'remove'])
-
-# MENU TO INQUIRE TYPES OF CARDS TO ADD/REMOVE FROM INVENTORY
-def __selectCardType(inventory, selected_cards, action):
-    if action == 'add':
-        action = __addCards
-    elif action == 'remove':
-        action = __removeCards
-    else:
-        raise('No action specified') 
-
-    menu_items = {
-        '1: full_art': action,
-        '2. textless': action,
-        '3. foil': action,
-        '4. nonfoil': action,
-        '5. oversized': action,
-        '6. promo': action,
-        '7. Quit': None
-    }
-    print('\n\nSelect Card type\n')
-    for action in menu_items.keys():
-        print(action)
-    reply = input('\n>')
-    for index, key in enumerate(menu_items.keys()): # https://realpython.com/python-enumerate/
-        if reply == str(index+1):
-            if menu_items[key] == None:
-                break
-            else:
-                index, cardtype = key.split()
-                menu_items[key](inventory, selected_cards, cardtype)
-                break
-
-# WRAPPER FUNCTION TO DISPLAY ALL OWNED CARDS
-def __displayAll(inventory):
-    print('\n\nDisplaying all Cards...\n')
-    inventory.displayInventory()
-    placeholder = input('\n\nPress any key to continue...\n')
-
-# WRAPPER FUNCTION TO ADD CARDS TO INVENTORY
-def __addCards(inventory, cards, cardtype):
-    print('\nAdding Cards...\n\n')
-    for card in cards:
-        print(
-            'MID:', card['multiverse_ids'], ' ',
-            'Name:', card['name'], ' ',
-            'Mana:', card['mana_cost'], ' ',
-            'Type:', card['type_line'], ' ',
-            'Set:', card['set_name'], ' ',
-            'Rarity:', card['rarity'], ' '
-            )
-    inventory.addCardToInventory(cards, cardtype)
-    print('\nCards added.')
-    placeholder = input('Press any key to continue...\n')
-
-# WRAPPER FUNCTION TO REMOVE CARDS FROM INVENTORY
-def __removeCards(inventory, cards, cardtype):
-    print('\nRemoving Cards...\n\n')
-    for card in cards:
-        print(
-            'MID:', card['multiverse_ids'], ' ',
-            'Name:', card['name'], ' ',
-            'Mana:', card['mana_cost'], ' ',
-            'Type:', card['type_line'], ' ',
-            'Set:', card['set_name'], ' ',
-            'Rarity:', card['rarity'], ' '
-            )
-    inventory.removeCardFromInventory(cards, cardtype)
-    print('\nCards removed.')
-    placeholder = input('Press any key to continue...\n')
-
-
-# SEARCH MENU FUNCTIONS
-# TODO: Implement search by block functionality in db
-def __searchBlock(params):
-    print('\n' * 50)
-    blockname = input('Enter name of block to search by\n\n>')
-    print('\n\nSearching...')
-    placeholder = input('Press any key to continue...\n')
-
-
-def __searchSet(params):
-    print('\n' * 50)
-    setname = input('Enter name of set to search by\n\n>')
-    if isinstance(params, list):
-        inventory = params[0]
-        action = params[1]
-    else:
-        inventory = params
-        action = None
-
-    try:
-        set = inventory.searchBySet(setname)
-        selected_cards = menu_utils.searchResponseEval(set, setname, action)
-        if action and selected_cards:
-            __selectCardType(inventory, selected_cards, action)
-    except Exception as e:
-        print('ERROR: Program encountered exception: ', e)
-        placeholder = input('')
-        
-def __searchName(params):
-    print('\n' * 50)
-    cardname = input('Enter name of card to search by\n\n>')
-    if isinstance(params, list):
-        inventory = params[0]
-        action = params[1]
-    else:
-        inventory = params
-        action = None
-
-    try:
-        cards = inventory.searchByName(cardname)
-        selected_cards = menu_utils.searchResponseEval(cards, cardname, action)
-        if action and selected_cards:
-            __selectCardType(inventory, selected_cards, action)
-    except Exception as e:
-        print('ERROR: Program encountered exception: ', e)
-        placeholder = input('')
-
-def __searchMID(params):
-    print('\n' * 50)
-    m_id = input('Enter multiverse id of card to search by\n\n>')
-    if isinstance(params, list):
-        inventory = params[0]
-        action = params[1]
-    else:
-        inventory = params
-        action = None
-
-    try:
-        cards = inventory.searchByMID(m_id)
-        selected_cards = menu_utils.searchResponseEval(cards, m_id, action)
-        if action and selected_cards:
-            __selectCardType(inventory, selected_cards, action)
-    except Exception as e:
-        print('ERROR: Invalid input.')
-        placeholder = input('')
-
-
-# RENDERS MENU FOR SELECT MENU's
-# MENU's CANNOT RETURN VALUES, THEREFORE FUNCTIONS CALLED BY MENU's ALSO CANNOT RETURN VALUES
-def __renderMenu(menu_title, menu_items, params):
-    quit = False
-    while not quit:
-        legal = False
+    def __addCardMenu(self, inventory):
         print('\n' * 50)
-        print(menu_title, '\n\n')
-        for key in menu_items.keys():
-            print(key)
+        self.__renderMenu(self.add_menu_title, self.search_menu_items, [inventory, 'add'])
+
+    def __removeCardMenu(self, inventory):
+        print('\n' * 50)
+        self.__renderMenu(self.remove_menu_title, self.search_menu_items, [inventory, 'remove'])
+    
+    # IMPORTS CURRENT INVENTORY FROM AN EXPORTED JSON FILE
+    def __importFromJson(self, inventory):
+        print('\n\nLoading from JSON file')
+        placeholder = input('Press any key to continue...\n')
+
+    # EXPORTS CURRENT INVENTORY TO A JSON FILE
+    # THIS FILE CAN BE IMPORTED LATER TO SHARE AN INVENTORY ACROSS DEVICES
+    def __exportToJson(self, inventory):
+        print('\n\nExporting to JSON file')
+        placeholder = input('Press any key to continue...\n')
+
+    # WRAPPER FUNCTION TO DISPLAY ALL OWNED CARDS
+    def __displayAll(self, inventory):
+        print('\n\nDisplaying all Cards...\n')
+        inventory.displayInventory()
+        placeholder = input('\n\nPress any key to continue...\n')
+
+    # WRAPPER FUNCTION TO ADD CARDS TO INVENTORY
+    def __addCards(self, inventory, cards, cardtype):
+        print('\nAdding Cards...\n\n')
+        for card in cards:
+            print(
+                'MID:', card['multiverse_ids'], ' ',
+                'Name:', card['name'], ' ',
+                'Mana:', card['mana_cost'], ' ',
+                'Type:', card['type_line'], ' ',
+                'Set:', card['set_name'], ' ',
+                'Rarity:', card['rarity'], ' '
+                )
+        inventory.addCardToInventory(cards, cardtype)
+        print('\nCards added.')
+        placeholder = input('Press any key to continue...\n')
+
+    # WRAPPER FUNCTION TO REMOVE CARDS FROM INVENTORY
+    def __removeCards(self, inventory, cards, cardtype):
+        print('\nRemoving Cards...\n\n')
+        for card in cards:
+            print(
+                'MID:', card['multiverse_ids'], ' ',
+                'Name:', card['name'], ' ',
+                'Mana:', card['mana_cost'], ' ',
+                'Type:', card['type_line'], ' ',
+                'Set:', card['set_name'], ' ',
+                'Rarity:', card['rarity'], ' '
+                )
+        inventory.removeCardFromInventory(cards, cardtype)
+        print('\nCards removed.')
+        placeholder = input('Press any key to continue...\n')
+
+    # MENU TO INQUIRE TYPE OF CARDS TO ADD/REMOVE FROM INVENTORY
+    def __selectCardType(self, inventory, selected_cards, action):
+        if action == 'add':
+            action = self.__addCards
+        elif action == 'remove':
+            action = self.__removeCards
+        else:
+            raise('No action specified') 
+
+        menu_items = {
+            '1: full_art': action,
+            '2. textless': action,
+            '3. foil': action,
+            '4. nonfoil': action,
+            '5. oversized': action,
+            '6. promo': action,
+            '7. Quit': None
+        }
+        print('\n\nSelect Card type\n')
+        for action in menu_items.keys():
+            print(action)
         reply = input('\n>')
         for index, key in enumerate(menu_items.keys()): # https://realpython.com/python-enumerate/
             if reply == str(index+1):
                 if menu_items[key] == None:
-                    legal = True
-                    quit = True
                     break
                 else:
-                    legal = True
-                    menu_items[key](params)
+                    index, cardtype = key.split()
+                    print(cardtype)
+                    menu_items[key](inventory, selected_cards, cardtype)
                     break
-        if not legal:
-            print('\n\nERROR: Invalid Input. Please try again')
-            err = input('')
-    
+
+    # SEARCH MENU FUNCTIONS
+    # TODO: Implement search by block functionality in db
+    def __searchBlock(self, params):
+        print('\n' * 50)
+        blockname = input('Enter name of block to search by\n\n>')
+        print('\n\nSearching...')
+        placeholder = input('Press any key to continue...\n')
+
+
+    def __searchSet(self, params):
+        print('\n' * 50)
+        setname = input('Enter name of set to search by\n\n>')
+        if isinstance(params, list):
+            inventory = params[0]
+            action = params[1]
+        else:
+            inventory = params
+            action = None
+
+        try:
+            set = inventory.searchBySet(setname)
+            selected_cards = self.cache.createFromDBResponse(set, setname, action)
+            if action and selected_cards:
+                self.__selectCardType(inventory, selected_cards, action)
+        except Exception as e:
+            print('ERROR: ', e)
+            placeholder = input('')
+            
+    def __searchName(self, params):
+        print('\n' * 50)
+        cardname = input('Enter name of card to search by\n\n>')
+        if isinstance(params, list):
+            inventory = params[0]
+            action = params[1]
+        else:
+            inventory = params
+            action = None
+
+        try:
+            cards = inventory.searchByName(cardname)
+            selected_cards = self.cache.createFromDBResponse(cards, cardname, action)
+            if action and selected_cards:
+                self.__selectCardType(inventory, selected_cards, action)
+        except Exception as e:
+            print('ERROR: Program encountered exception: ', e)
+            placeholder = input('')
+
+    def __searchMID(self, params):
+        print('\n' * 50)
+        m_id = input('Enter multiverse id of card to search by\n\n>')
+        if isinstance(params, list):
+            inventory = params[0]
+            action = params[1]
+        else:
+            inventory = params
+            action = None
+
+        try:
+            cards = inventory.searchByMID(m_id)
+            selected_cards = self.cache.createFromDBResponse(cards, m_id, action)
+            if action and selected_cards:
+                self.__selectCardType(inventory, selected_cards, action)
+        except Exception as e:
+            print('ERROR: Invalid input.')
+            placeholder = input('')
+
+    # RENDERS MENU FOR SELECT MENU's
+    # MENU's CANNOT RETURN VALUES, THEREFORE FUNCTIONS CALLED BY MENU's ALSO CANNOT RETURN VALUES
+    def __renderMenu(self, menu_title, menu_items, params):
+        quit = False
+        while not quit:
+            legal = False
+            print('\n' * 50)
+            print(menu_title, '\n\n')
+            for key in menu_items.keys():
+                print(key)
+            reply = input('\n>')
+            for index, key in enumerate(menu_items.keys()): # https://realpython.com/python-enumerate/
+                if reply == str(index+1):
+                    if menu_items[key] == None:
+                        legal = True
+                        quit = True
+                        break
+                    else:
+                        legal = True
+                        menu_items[key](params)
+                        break
+            if not legal:
+                print('\n\nERROR: Invalid Input. Please try again')
+                err = input('')

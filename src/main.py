@@ -4,7 +4,9 @@ from ui.menu import Menu
 def main():
     # Set up db
     inventory = Inventory()
-    Menu(inventory)
+    # Menu(inventory)
+    menu = Menu()
+    menu.mainMenu(inventory)
     exit()
 
 main()
