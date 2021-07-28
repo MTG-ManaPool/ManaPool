@@ -3,7 +3,6 @@ import sqlite3
 import pandas as pd
 from tqdm import tqdm
 from . import db_utils
-# import db_utils # USED FOR LOCAL TESTING
 
 
 class MP_Inventory:
@@ -16,37 +15,18 @@ class MP_Inventory:
         self.table_name = "MTG-Cards"
 
         # First time initialization of inventory Database
-        if None ==  self.cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='MTG-Cards'").fetchone():
+        if None ==  self.cursor.execute(f"SELECT name FROM sqlite_master WHERE type='table' AND name='{self.table_name}';").fetchone():
             self.__firstTimeSetup()
         else:
             self.__checkForUpdates()
 
-   # TODO: Implement
-    def addCardToInventory(self, card, to_add):
-        print('adding card')
-        placeholder = input('')
-        # self.connection.commit()
-        # total = card.count + to_add
-        # query = f"UPDATE 'MTG-Cards count' = {total} FROM WHERE id = {card.ID};"
-        # self.connection.execute(query)
-
-   # TODO: Implement
-    def removeCardFromInventory(self, card, to_remove):
-        print('removing card')
-        placeholder = input('')
-        # self.connection.commit()
-        # total = card.count - to_remove
-        # if total < 0:
-        #     total = 0
-        # query = f"UPDATE 'MTG-Cards count' = {total} FROM WHERE id = {card.ID};"
-        # self.connection.execute(query)
 
     def importJSON(self, cards):
         try:
             updated = 0
             rows = cards.shape[0]
             for r in range(rows):
-                for card_type in ["full_art", "textless", "foil", "nonfoil", "oversized", "promo"]:
+                for card_type in db_utils.stock_headers:
                     if cards.at[r, card_type]:
                         update_query = f"UPDATE '{self.table_name}' SET {card_type} = {cards.at[r, card_type]} WHERE id == '{cards.at[r, 'id']}'"
                         self.cursor.execute(update_query)
@@ -65,7 +45,7 @@ class MP_Inventory:
                 # Make sure there is an empty space at the end of each string
                 query = f"SELECT name, set_name, full_art, textless, foil, nonfoil, oversized, promo "
                 query += f"FROM '{self.table_name}' "
-                query += f"WHERE 'full_art' > 0 OR 'textless' > 0 OR 'foil' > 0 OR 'nonfoil' > 0 OR 'oversized' > 0 OR 'promo' > 0 "
+                query += f"WHERE 'foil' > 0 OR 'nonfoil' > 0 "
 
                 # FIXME REMOVE THE LIMIT AFTER VERIFYING
                 query += f"LIMIT 3"
@@ -83,183 +63,204 @@ class MP_Inventory:
         except sqlite3.Error as error:
             print("Failed to read table", error)
 
-   # TODO: Implement
-    def displayInventory():
-        print('Displaying inventory')
-        placeholder = input('')
+    def addCardToInventory(self, card, variant):
+        '''Adds the specified card of the given variant to the inventory.
+
+            Args:
+                card (SQLiteRow): a dict-addressable card row from the database.
+                variant (string): the specified variant of the card to be added.
+        '''
+        if variant not in db_utils.stock_headers:
+            return False
+
+        query = f"SELECT {variant} FROM '{self.table_name}' WHERE id == '{card['id']}';"
+        self.cursor.execute(query)
+        current_count = self.cursor.fetchone()[variant]
+
+        if current_count != None:
+            query = f"UPDATE '{self.table_name}' SET {variant} = {current_count + 1} WHERE id == '{card['id']}';"
+            self.cursor.execute(query)
+            self.connection.commit()
+            return True
+
+        return False
+
+    def removeCardFromInventory(self, card, variant):
+        '''Removes the specified card of the given variant from the inventory.
+
+            Args:
+                card (SQLiteRow): a dict-addressable card row from the database.
+                variant (string): the specified variant of the card to be added.
+        '''
+        if variant not in db_utils.stock_headers:
+            return False
+
+        query = f"SELECT {variant} FROM '{self.table_name}' WHERE id == '{card['id']}';"
+        self.cursor.execute(query)
+        current_count = self.cursor.fetchone()[variant]
+
+        if current_count != None or 0:
+            query = f"UPDATE '{self.table_name}' SET {variant} = {current_count - 1} WHERE id == '{card['id']}';"
+            self.cursor.execute(query)
+            self.connection.commit()
+            return True
+        
+        return False
+
+    def displayInventory(self):
+        '''Searches the inventory database for cards that are in stock.
+
+            Returns:
+                List (cards): a list of cards that whose inventory count of foil or nonfoil is greater than 0.
+        '''
+        query = f"SELECT * FROM '{self.table_name}' WHERE foil > 0 OR nonfoil > 0;"
+        self.cursor.execute(query)
+        res = self.cursor.fetchall()
+        return res
 
     def close (self):
         self.connection.commit()
         self.connection.close()
 
     def searchBySet(self, setname):
-        query = f"SELECT * FROM '{self.table_name}' WHERE set_name='{setname}'"
+        '''Searches the inventory database for cards in the given set name.
+        
+            Args:
+                setname (string): the full set name of a Magic The Gathering expansion set.
+
+            Returns:
+                List (cards): a list of cards whose given expansion set name exactly match the input setname.
+        '''
+        query = f"SELECT * FROM '{self.table_name}' WHERE set_name='{setname}';"
         self.cursor.execute(query)
         res = self.cursor.fetchall()
         return res
 
     def searchByBlock(self, blockname):
-        query = f"SELECT * FROM '{self.table_name}' WHERE block='{blockname}'"
+        query = f"SELECT * FROM '{self.table_name}' WHERE block='{blockname}';"
         self.cursor.execute(query)
         res = self.cursor.fetchall()
         return res
 
     def searchByName(self, cardname):
-        query = f"SELECT * FROM '{self.table_name}' WHERE name='{cardname}'"
+        '''Searches the inventory database for cards that contain the input string in their printed name.
+        
+            Args:
+                input (string): a card's printed text name.
+
+            Returns:
+                List (cards): a list of cards that contain the input text anywhere in their printed card name.
+        '''
+        query = f"SELECT * FROM '{self.table_name}' WHERE name LIKE '%{cardname}%';"
         self.cursor.execute(query)
         res = self.cursor.fetchall()
         return res
 
     def searchByMID(self, card_mid):
-        query = f"SELECT * FROM '{self.table_name}' WHERE multiverse_ids='{card_mid}'"
+        '''Searches the inventory database for a cards that has the given multiverse id.
+        
+            Args:
+                card_mid (Integer): the gatherer multiverse id of a specific Magic The Gathering card.
+
+            Returns:
+                List (cards): a list of cards that exactly match the given multiverse id.
+        '''
+        query = f"SELECT * FROM '{self.table_name}' WHERE multiverse_ids='{card_mid}';"
         self.cursor.execute(query)
         res = self.cursor.fetchall()
         return res
 
     def all_cards(self):
-        '''Returns a list of Dataframes for each card in the ManaPool-Inventory.db'''
-        return f"Stub, but here's all_cards"
-        #return self.cursor.execute("SELECT * FROM 'MTG-Cards'")
+        '''All cards recognized by the database."
+        
+            Returns:
+                List (cards): a list of all cards recognized by the database.
+        '''
+        query =f"SELECT * FROM '{self.table_name}'"
+        self.cursor.execute(query)
+        res = self.cursor.fetchall()
+        return res
 
     def __firstTimeSetup(self):
-        # TODO . . . Create Relational DB Tables
-        # Base table of 'MTG-Cards' contains all 60k cards.
-        # self.cursor.execute("CREATE TABLE MTG-Cards")
-
         # Obtaining Inital Card Data
         bulk_json = db_utils.getBulkData('default_cards')
-
-        self.inventoryDF = pd.read_json(bulk_json, dtype={"full_art": int,
-                                                          "textless": int,
-                                                          "foil": int,
-                                                          "nonfoil": int,
-                                                          "oversized": int,
-                                                          "promo": int }
-                                        )
-
+        self.inventoryDF = pd.read_json(bulk_json)
+        os.remove(bulk_json)
 
         # Filter by the defined Schema
         self.inventoryDF = self.inventoryDF[db_utils.schema_headers]
 
         DF_rows = self.inventoryDF.shape[0]
 
+        color_identities = self.inventoryDF['color_identity']
+        # replace all 'Falsey' values with empty list.
+        self.inventoryDF['color_identity'] = color_identities.where(color_identities.astype(bool), '[]')
+        # concatenate the list of characters representing different colors into one string (e.g. 'UWB')
+        self.inventoryDF['color_identity'] = self.inventoryDF['color_identity'].agg(''.join)
 
-        # COLOR Identities
-        color_id = self.inventoryDF['color_identity']
-        # Didnt find any NaN values but better safe than sorry
-        for row in self.inventoryDF.loc[color_id.isnull(), 'color_identity'].index:
-            self.inventoryDF.at[row, 'color_identity'] = []
-
-        # concatenate the strings representing different color into one strin (e.g. 'UWB')
-        self.inventoryDF['color_identity'] = color_id.agg(''.join)
-
-
-
-        # COLOR
         colors = self.inventoryDF['colors']
-        # replace NaN/None with empty list in preparatio for join
-        for row in self.inventoryDF.loc[colors.isnull(), 'colors'].index:
-            self.inventoryDF.at[row, 'colors'] = []
-
-        # concatenate the strings representing different color into one strin (e.g. 'UWB')
+        # replace NaN/None with empty list
+        self.inventoryDF['colors'] = colors.where(colors.notnull(), '[]')
+        # concatenate the strings representing different colors into one string (e.g. 'UWB')
         self.inventoryDF['colors'] = colors.agg(''.join)
 
+        mana_cost = self.inventoryDF['mana_cost']
+        # replace NaN/None with empty string, keep already present empty strings.
+        self.inventoryDF['mana_cost'] = mana_cost.where(mana_cost.notnull(), '')
 
+        flavor_text = self.inventoryDF['flavor_text']
+        # replace NaN/None with empty string, keep already present empty strings.
+        self.inventoryDF['flavor_text'] = flavor_text.where(flavor_text.notnull(), '')
 
-        # IMAGE URIS
-        new_img_uris = ['small_img', 'normal_img', 'large_img', 'png_img', 'art_crop_img', 'border_crop_img']
-        old_img_uris = self.inventoryDF['image_uris']
-        data_as_list = []
-        index_without_image = self.inventoryDF.loc[self.inventoryDF.image_uris.isnull()].index
-        for row in range(DF_rows):
-
-            temp = []
-
-            # replace NaN/None with empty list
-            if row in index_without_image:
-                # FIXME still need to account for second face. Talked about making a seperate Table for these cards
-                if self.inventoryDF.loc[row]['card_faces'] and 'image_uris' in self.inventoryDF.loc[row]['card_faces'][0]:
-                    face1_img_uris = self.inventoryDF.loc[row]['card_faces'][0]['image_uris']
-                    small = face1_img_uris["small"]
-                    temp.append(small)
-                    normal = face1_img_uris["normal"]
-                    temp.append(normal)
-                    large = face1_img_uris["large"]
-                    temp.append(large)
-                    png = face1_img_uris["png"]
-                    temp.append(png)
-                    art_crop = face1_img_uris["art_crop"]
-                    temp.append(art_crop)
-                    border_crop = face1_img_uris["border_crop"]
-                    temp.append(border_crop)
-                #else not two faced but still null make them NaN
-                else:
-                    temp = [pd.NA, pd.NA, pd.NA, pd.NA, pd.NA, pd.NA]
-            else:
-                card_image = self.inventoryDF.at[row, 'image_uris']
-                small = card_image["small"]
-                temp.append(small)
-                normal = card_image["normal"]
-                temp.append(normal)
-                large = card_image["large"]
-                temp.append(large)
-                png = card_image["png"]
-                temp.append(png)
-                art_crop = card_image["art_crop"]
-                temp.append(art_crop)
-                border_crop = card_image["border_crop"]
-                temp.append(border_crop)
-
-
-
-            data_as_list.append(temp)
-
-        # insert the new DF after making the all the columns first
-        self.inventoryDF[new_img_uris] = pd.DataFrame(data_as_list, columns=new_img_uris)
-
-
-
-        # KEYWORDS
         keywords = self.inventoryDF['keywords']
-        # replace NaN/None with empty list in preparatio for join
-        for row in self.inventoryDF.loc[keywords.isnull(), 'keywords'].index:
-            self.inventoryDF.at[row, 'keywords'] = []
+        # replace NaN/None with empty list
+        self.inventoryDF['keywords'] = keywords.where(keywords.notnull(), '[]')
+        # concatenate the strings representing different keywords into one string (e.g. 'UWB')
+        self.inventoryDF['keywords'] = self.inventoryDF['keywords'].agg(', '.join)
 
-        # concatenate the strings representing different color into one strin (e.g. 'UWB')
-        self.inventoryDF['keywords'] = keywords.agg(', '.join)
+        multiverse_ids = self.inventoryDF['multiverse_ids']
+        present_ids =  multiverse_ids.astype(bool)
+        # replace all 'Falsey' values with '-1'.
+        multiverse_ids = multiverse_ids.where(present_ids, -1)
+        # replace all 'Truthy' values with first multiverse ID'.
+        multiverse_ids = multiverse_ids.where(~present_ids, multiverse_ids[0])
+        self.inventoryDF['multiverse_ids'] = multiverse_ids.astype('int32')
 
+        print("Initalizing Empty Inventory . . .")
+        for header in tqdm(["foil", "nonfoil"], total=2):
+            self.inventoryDF[header] = self.inventoryDF[header].astype(int)
+            self.inventoryDF[header] = self.inventoryDF[header].replace(0, pd.NA)
+            self.inventoryDF[header] -= 1
 
+        print("Adjusting card images . . .")
+        double_faced_cards =self.inventoryDF.loc[self.inventoryDF['image_uris'].isnull()].index
+        new_image_headers = ['small_img', 'normal_img', 'large_img', 'png_img', 'art_crop_img', 'border_crop_img']
+        old_image_headers = ["small", "normal", "large", "png", "art_crop", "border_crop"]
+        
+        updated_cards = []
+        for card in tqdm(range(DF_rows)):
+            current_image_data = []
+            if card in double_faced_cards:
+                if 'image_uris' in self.inventoryDF.loc[card]['card_faces'][0]:
+                    card_front = self.inventoryDF.loc[card]['card_faces'][0]['image_uris']
+                    #TODO card_back = self.inventoryDF.loc[card]['card_faces'][1]['image_uris']
+                    for header in old_image_headers:
+                        current_image_data.append(card_front[header])
+            else:
+                card_front = self.inventoryDF.at[card, 'image_uris']
+                #TODO card_back = placeholder MTG Image
+                for header in old_image_headers:
+                    current_image_data.append(card_front[header])
+            updated_cards.append(current_image_data)
 
-
+        # insert the DF containing the updated image headers
+        self.inventoryDF[new_image_headers] = pd.DataFrame(updated_cards, columns=new_image_headers)
         # These columns have been expanded into 4 or 5 columns so we do not need the original any longer
         self.inventoryDF = self.inventoryDF.drop(columns=['image_uris', 'card_faces'])
 
 
-        # Initilizing the stock count for each variant of all cards to 0 or NaN.
-        for header in [ "full_art", "textless", "foil", "nonfoil", "oversized", "promo"]:
-            self.inventoryDF[header] = self.inventoryDF[header].replace(0, pd.NA)
-            self.inventoryDF[header] -= 1
-
-
-        # Get the first multiverse id from the list they are in or tag the token cards with -1
-        for r in tqdm(range(DF_rows)):
-            ids = self.inventoryDF.iloc[r]['multiverse_ids']
-            self.inventoryDF['multiverse_ids'].iloc[r] = -1 if ids == [] else ids[0]
-
-
-        # for a later date
-        self.token_cards = self.inventoryDF[self.inventoryDF['multiverse_ids'] == -1]
-
-        print("\nResulting cleaned Dataframe\n")
-        print("\n", self.inventoryDF, "\n")
-        self.inventoryDF.info(verbose=False, memory_usage="deep")
-
-        # Insert the current df_item, into the MTG-Cards table.
-        # Figure out what other tables the current df_item might need inserted into. (efficient queries later / JOINS on tables.)
-
-        # CREATE SQL TABLE with Schema from DATAFRAME
+        # Transform Pandas Dataframe into SQL table representing an Inventory Management System.
         self.inventoryDF.to_sql(self.table_name, self.connection)
-        os.remove(bulk_json)
 
 
     def __checkForUpdates(self):
@@ -268,14 +269,3 @@ class MP_Inventory:
         # get size of bulk file (#cards).
         # if diff: confirm(y/n) to update
         # if y: re-initalize.
-
-# Only instanciate MP_Inventory when working in this script directly
-if __name__ == '__main__':
-    x = MP_Inventory()
-    res = ''
-
-    while res.lower() != 'y':
-        cards = x.searchByMID('109722')
-        print(cards)
-        print('Done testing? [Y/N]')
-        res = input('>')
