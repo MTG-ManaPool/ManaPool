@@ -1,9 +1,10 @@
 from . import menu_utils
+import pandas as pd
 
 # MAIN MENU
 def Menu(inventory):
     menu_items = {
-        '1: Import Inventory from a JSON file': __importFromJson,
+        '1. Import Inventory from a JSON file': __importFromJson,
         '2. Export Inventory to a JSON file': __exportToJson,
         '3. Access Inventory': __inventoryMenu,
         '4. Search for Cards': __searchMenu,
@@ -39,15 +40,83 @@ def __searchMenu(inventory):
 
 # IMPORTS CURRENT INVENTORY FROM AN EXPORTED JSON FILE
 def __importFromJson(inventory):
+    json_file = input("Enter path to JSON file you wish to import: ")
     print('\n\nLoading from JSON file')
-    placeholder = input('Press any key to continue...\n')
+    json_cards = pd.read_json(json_file)
+    inventory.updateTable(json_cards)
+
 
 # EXPORTS CURRENT INVENTORY TO A JSON FILE
 # THIS FILE CAN BE IMPORTED LATER TO SHARE AN INVENTORY ACROSS DEVICES
 def __exportToJson(inventory):
     print('\n\nExporting to JSON file')
-    placeholder = input('Press any key to continue...\n')
+    dst = input("Please enter the file name you wish the exported cards to be in: ")
+    if not dst.endswith('.json'):
+                dst += '.json'
+    inventory.exportJSON(dst)
+    # placeholder = input('Press any key to continue...\n>>')
 
+
+# INVENTORY MENU FUNCTIONS
+def __addCard(inventory):
+    print('\n'*30)
+    print('*** Card Add ***')
+    print('Is this card a token or emblem? [Y/N]')
+    reply = input('\n>')
+    if reply.lower() == 'y':
+        print('Please enter the name of the card.')
+        name = input('\n>')
+        cards = inventory.searchByName(name)
+        card = menu_utils.singleSearchResponseEval(cards)
+        if card:
+            print('Adding card to inventory')
+            inventory.addCard(card)
+        else:
+            print('\n\nReturning to menu')
+            placeholder = input('Press any key to continue...\n>>')
+    elif reply.lower() == 'n':
+        print('Please enter ID of the card [Front Face ID if double sided].')
+        id = input('\n>')
+        cards = inventory.searchByMID(id)
+        card = menu_utils.singleSearchResponseEval(cards)
+        if card:
+            print('Adding card to inventory')
+            inventory.addCard(card)
+        else:
+            print('\n\nReturning to menu')
+            placeholder = input('Press any key to continue...\n>>')
+    else:
+        print('\n\nERROR: Invalid response.')
+        placeholder = input('')
+
+
+def __removeCard(inventory):
+    print('\n'*30)
+    print('*** Card Remove ***')
+    print('Is this card a token or emblem? [Y/N]')
+    reply = input('\n>')
+    if reply.lower() == 'y':
+        print('Please enter the name of the card.')
+        name = input('\n>')
+        cards = inventory.searchByName(name)
+        card = menu_utils.singleSearchResponseEval(cards)
+        if card:
+            print('Removing card from inventory')
+            inventory.removeCard(card)
+        else:
+            print('\n\nReturning to menu')
+            placeholder = input('Press any key to continue...\n>>')
+    elif reply.lower() == 'n':
+        print('Please enter ID of the card [Front Face ID if double sided].')
+        id = input('\n>')
+        cards = inventory.searchByMID(id)
+        card = menu_utils.singleSearchResponseEval(cards)
+        if card:
+            print('Removing card from inventory')
+            inventory.removeCard(card)
+        else:
+            print('\n\nReturning to menu')
+            placeholder = input('Press any key to continue...\n>>')
 
 # INVENTORY MENU FUNCTIONS
 # MENU TO INITIATE ADDING CARDS TO INVENTORY

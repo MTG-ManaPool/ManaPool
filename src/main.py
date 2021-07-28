@@ -6,5 +6,5 @@ def main():
     inventory = Inventory()
     Menu(inventory)
     exit()
-
+    inventory.close()
 main()
