@@ -37,16 +37,19 @@ class CardList():
                         finish = True
                     elif (int(reply)-1) in range(len(cards)):
                         reply = int(reply)-1
-                        selected.append(cards[reply])
+                        cardtype = self.__selectCardType(cards[reply], action)
+                        if cardtype == None:
+                            continue
+                        selected.append((cards[reply], cardtype))
                         print(f'\n\n\nCurrent list of cards to {action}:\n\n')
                         for card in selected:
                             print(
-                                'MID:', card['multiverse_ids'], ' ',
-                                'Name:', card['name'], ' ',
-                                'Mana:', card['mana_cost'], ' ',
-                                'Type:', card['type_line'], ' ',
-                                'Set:', card['set_name'], ' ',
-                                'Rarity:', card['rarity'], ' '
+                                'MID:', card[0]['multiverse_ids'], ' ',
+                                'Name:', card[0]['name'], ' ',
+                                'Mana:', card[0]['mana_cost'], ' ',
+                                'Type:', card[0]['type_line'], ' ',
+                                'Set:', card[0]['set_name'], ' ',
+                                'Rarity:', card[0]['rarity'], ' '
                                 )
                         placeholder = input('\n\n\nPress any key to continue...\n')
                     else:
@@ -85,12 +88,12 @@ class CardList():
             while not quit or not finish:
                 for index, card in enumerate(self.cardlist): # https://realpython.com/python-enumerate/
                     print(index+1, '.  ',
-                        'MID:', card['multiverse_ids'], ' ',
-                        'Name:', card['name'], ' ',
-                        'Mana:', card['mana_cost'], ' ',
-                        'Type:', card['type_line'], ' ',
-                        'Set:', card['set_name'], ' ',
-                        'Rarity:', card['rarity'], ' '
+                        'MID:', card[0]['multiverse_ids'], ' ',
+                        'Name:', card[0]['name'], ' ',
+                        'Mana:', card[0]['mana_cost'], ' ',
+                        'Type:', card[0]['type_line'], ' ',
+                        'Set:', card[0]['set_name'], ' ',
+                        'Rarity:', card[0]['rarity'], ' '
                         )
                 print('\n\n\nRemove a card by selecting it\'s number in the list or type [F] to finish or [Q] to quit\n\n')
                 print('')
@@ -112,65 +115,29 @@ class CardList():
                 return None
             else:
                 return self.cardlist.copy()
-            return None
-        
-        
-
-
-
-
-# # FUNCTION TO SELECT CARDS FROM THE LIST RETURNED BY DB
-# def searchResponseEval(cards, groupname, action):
-#     # NO CARDS FOUND
-#     if len(cards) == 0:
-#         print('No cards of that name found...')
-#         placeholder = input('Press any key to continue...\n')
-#         return None
-#     # CARDS WERE FOUND IN SET/BLOCK
-#     else:
-#         if action:
-#             print(f'\n\nResulting Cards from Search "{groupname}"\n\n')
-#             quit = False
-#             selected = []
-#             while not quit:
-#                 for index, card in enumerate(cards): # https://realpython.com/python-enumerate/
-#                     print(index+1, '.  ',
-#                         'MID:', card['multiverse_ids'], ' ',
-#                         'Name:', card['name'], ' ',
-#                         'Mana:', card['mana_cost'], ' ',
-#                         'Type:', card['type_line'], ' ',
-#                         'Set:', card['set_name'], ' ',
-#                         'Rarity:', card['rarity'], ' '
-#                         )
-#                 print('\n\n\n Select a card by selecting it\'s number in the list or type [Q] to quit')
-#                 reply = input('\n\n>')
-#                 if reply == 'Q' or reply == 'q':
-#                     quit = True
-#                 elif (int(reply)-1) in range(len(cards)):
-#                     reply = int(reply)-1
-#                     selected.append(cards[reply])
-#                     print(f'\n\n\nCurrent list of cards to {action}:\n\n')
-#                     for card in selected:
-#                         print(
-#                             'MID:', card['multiverse_ids'], ' ',
-#                             'Name:', card['name'], ' ',
-#                             'Mana:', card['mana_cost'], ' ',
-#                             'Type:', card['type_line'], ' ',
-#                             'Set:', card['set_name'], ' ',
-#                             'Rarity:', card['rarity'], ' '
-#                             )
-#                     placeholder = input('\n\n\nPress any key to continue...\n')
-#             return selected
-#         else:
-#             print(f'\n\nResulting Cards from Search "{groupname}"\n\n')
-#             for index, card in enumerate(cards): # https://realpython.com/python-enumerate/
-#                 print(index+1, '.  ',
-#                     'MID:', card['multiverse_ids'], ' ',
-#                     'Name:', card['name'], ' ',
-#                     'Mana:', card['mana_cost'], ' ',
-#                     'Type:', card['type_line'], ' ',
-#                     'Set:', card['set_name'], ' ',
-#                     'Rarity:', card['rarity'], ' '
-#                     )
-#             placeholder = input('\n\n\nPress any key to continue...\n')
-#         return None
+    
+    # MENU TO INQUIRE TYPE OF CARDS TO ADD/REMOVE FROM INVENTORY
+    def __selectCardType(self, card, action):
+        cardtype = None
+        menu_items = {
+            '1: Full Art': 'full_art',
+            '2. Textless': 'textless',
+            '3. Foil': 'foil',
+            '4. Nonfoil (normal card)': 'nonfoil',
+            '5. Oversized': 'oversized',
+            '6. Promo': 'promo',
+            '7. Quit': None
+        }
+        print(f"\n\nSelect Card type for {card['name']} to {action}\n")
+        for action in menu_items.keys():
+            print(action)
+        reply = input('\n>')
+        for index, key in enumerate(menu_items.keys()): # https://realpython.com/python-enumerate/
+            if reply == str(index+1):
+                if menu_items[key] == None:
+                    break
+                else:
+                    cardtype = menu_items[key]
+                    break
+        return cardtype
+ 

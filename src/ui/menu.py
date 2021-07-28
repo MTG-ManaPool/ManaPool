@@ -67,68 +67,52 @@ class Menu():
         placeholder = input('\n\nPress any key to continue...\n')
 
     # WRAPPER FUNCTION TO ADD CARDS TO INVENTORY
-    def __addCards(self, inventory, cards, cardtype):
-        print('\nAdding Cards...\n\n')
+    def __addCards(self, inventory, cards):
+        print(f'\nAttempting to Add {len(cards)} Cards...\n\n')
+        count = 0
         for card in cards:
+            cardtype = card[1]
             print(
-                'MID:', card['multiverse_ids'], ' ',
-                'Name:', card['name'], ' ',
-                'Mana:', card['mana_cost'], ' ',
-                'Type:', card['type_line'], ' ',
-                'Set:', card['set_name'], ' ',
-                'Rarity:', card['rarity'], ' '
+                'MID:', card[0]['multiverse_ids'], ' ',
+                'Name:', card[0]['name'], ' ',
+                'Mana:', card[0]['mana_cost'], ' ',
+                'Type:', card[0]['type_line'], ' ',
+                'Set:', card[0]['set_name'], ' ',
+                'Rarity:', card[0]['rarity'], ' '
                 )
-        inventory.addCardToInventory(cards, cardtype)
-        print('\nCards added.')
+            try:
+                inventory.addCardToInventory(card[0], cardtype)
+                count += 1
+            except Exception as e:
+                print(e)
+                placeholder = input('')
+                continue
+        print(f'\n{count} Cards added.')
         placeholder = input('Press any key to continue...\n')
 
     # WRAPPER FUNCTION TO REMOVE CARDS FROM INVENTORY
-    def __removeCards(self, inventory, cards, cardtype):
-        print('\nRemoving Cards...\n\n')
+    def __removeCards(self, inventory, cards):
+        print(f'\nAttempting to Remove {len(cards)} Cards...\n\n')
+        count = 0
         for card in cards:
+            cardtype = card[1]
             print(
-                'MID:', card['multiverse_ids'], ' ',
-                'Name:', card['name'], ' ',
-                'Mana:', card['mana_cost'], ' ',
-                'Type:', card['type_line'], ' ',
-                'Set:', card['set_name'], ' ',
-                'Rarity:', card['rarity'], ' '
+                'MID:', card[0]['multiverse_ids'], ' ',
+                'Name:', card[0]['name'], ' ',
+                'Mana:', card[0]['mana_cost'], ' ',
+                'Type:', card[0]['type_line'], ' ',
+                'Set:', card[0]['set_name'], ' ',
+                'Rarity:', card[0]['rarity'], ' '
                 )
-        inventory.removeCardFromInventory(cards, cardtype)
+            try:
+                inventory.removeCardFromInventory(card[0], cardtype)
+                count += 1
+            except Exception as e:
+                print(e)
+                placeholder = input('')
+                continue
         print('\nCards removed.')
         placeholder = input('Press any key to continue...\n')
-
-    # MENU TO INQUIRE TYPE OF CARDS TO ADD/REMOVE FROM INVENTORY
-    def __selectCardType(self, inventory, selected_cards, action):
-        if action == 'add':
-            action = self.__addCards
-        elif action == 'remove':
-            action = self.__removeCards
-        else:
-            raise('No action specified') 
-
-        menu_items = {
-            '1: full_art': action,
-            '2. textless': action,
-            '3. foil': action,
-            '4. nonfoil': action,
-            '5. oversized': action,
-            '6. promo': action,
-            '7. Quit': None
-        }
-        print('\n\nSelect Card type\n')
-        for action in menu_items.keys():
-            print(action)
-        reply = input('\n>')
-        for index, key in enumerate(menu_items.keys()): # https://realpython.com/python-enumerate/
-            if reply == str(index+1):
-                if menu_items[key] == None:
-                    break
-                else:
-                    index, cardtype = key.split()
-                    print(cardtype)
-                    menu_items[key](inventory, selected_cards, cardtype)
-                    break
 
     # SEARCH MENU FUNCTIONS
     # TODO: Implement search by block functionality in db
@@ -137,7 +121,6 @@ class Menu():
         blockname = input('Enter name of block to search by\n\n>')
         print('\n\nSearching...')
         placeholder = input('Press any key to continue...\n')
-
 
     def __searchSet(self, params):
         print('\n' * 50)
@@ -152,10 +135,13 @@ class Menu():
         try:
             set = inventory.searchBySet(setname)
             selected_cards = self.cache.createFromDBResponse(set, setname, action)
-            if action and selected_cards:
-                self.__selectCardType(inventory, selected_cards, action)
+            if selected_cards:
+                if action == 'add':
+                    self.__addCards(inventory, selected_cards)
+                elif action == 'remove':
+                    self.__removeCards(inventory, selected_cards)
         except Exception as e:
-            print('ERROR: ', e)
+            print(e)
             placeholder = input('')
             
     def __searchName(self, params):
@@ -171,8 +157,11 @@ class Menu():
         try:
             cards = inventory.searchByName(cardname)
             selected_cards = self.cache.createFromDBResponse(cards, cardname, action)
-            if action and selected_cards:
-                self.__selectCardType(inventory, selected_cards, action)
+            if selected_cards:
+                if action == 'add':
+                    self.__addCards(inventory, selected_cards)
+                elif action == 'remove':
+                    self.__removeCards(inventory, selected_cards)
         except Exception as e:
             print('ERROR: Program encountered exception: ', e)
             placeholder = input('')
@@ -190,11 +179,15 @@ class Menu():
         try:
             cards = inventory.searchByMID(m_id)
             selected_cards = self.cache.createFromDBResponse(cards, m_id, action)
-            if action and selected_cards:
-                self.__selectCardType(inventory, selected_cards, action)
+            if selected_cards:
+                if action == 'add':
+                    self.__addCards(inventory, selected_cards)
+                elif action == 'remove':
+                    self.__removeCards(inventory, selected_cards)
         except Exception as e:
             print('ERROR: Invalid input.')
             placeholder = input('')
+
 
     # RENDERS MENU FOR SELECT MENU's
     # MENU's CANNOT RETURN VALUES, THEREFORE FUNCTIONS CALLED BY MENU's ALSO CANNOT RETURN VALUES
