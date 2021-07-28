@@ -63,7 +63,24 @@ class Menu():
     # WRAPPER FUNCTION TO DISPLAY ALL OWNED CARDS
     def __displayAll(self, inventory):
         print('\n\nDisplaying all Cards...\n')
-        inventory.displayInventory()
+        cards = inventory.displayInventory()
+        count = 0
+        for card in cards:
+            print(
+                'MID:', card['multiverse_ids'], ' ',
+                'Name:', card['name'], ' ',
+                'Mana:', card['mana_cost'], ' ',
+                'Type:', card['type_line'], ' ',
+                'Set:', card['set_name'], ' ',
+                'FA:', card['full_art'], ' ',
+                'T:', card['textless'], ' ',
+                'F:', card['foil'], ' ',
+                'NF:', card['nonfoil'], ' ',
+                'O:', card['oversized'], ' ',
+                'P:', card['promo'], ' ',
+                )
+            count += 1
+        print(f'Displayed {count} cards')
         placeholder = input('\n\nPress any key to continue...\n')
 
     # WRAPPER FUNCTION TO ADD CARDS TO INVENTORY
@@ -78,7 +95,8 @@ class Menu():
                 'Mana:', card[0]['mana_cost'], ' ',
                 'Type:', card[0]['type_line'], ' ',
                 'Set:', card[0]['set_name'], ' ',
-                'Rarity:', card[0]['rarity'], ' '
+                'Rarity:', card[0]['rarity'], ' ',
+                'Variant:', cardtype, ' '
                 )
             try:
                 inventory.addCardToInventory(card[0], cardtype)
@@ -103,6 +121,7 @@ class Menu():
                 'Type:', card[0]['type_line'], ' ',
                 'Set:', card[0]['set_name'], ' ',
                 'Rarity:', card[0]['rarity'], ' '
+                'Variant:', cardtype, ' '
                 )
             try:
                 inventory.removeCardFromInventory(card[0], cardtype)

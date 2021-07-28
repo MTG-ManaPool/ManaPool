@@ -50,6 +50,7 @@ class CardList():
                                 'Type:', card[0]['type_line'], ' ',
                                 'Set:', card[0]['set_name'], ' ',
                                 'Rarity:', card[0]['rarity'], ' '
+                                'Variant:', card[1], ' '
                                 )
                         placeholder = input('\n\n\nPress any key to continue...\n')
                     else:
@@ -93,7 +94,8 @@ class CardList():
                         'Mana:', card[0]['mana_cost'], ' ',
                         'Type:', card[0]['type_line'], ' ',
                         'Set:', card[0]['set_name'], ' ',
-                        'Rarity:', card[0]['rarity'], ' '
+                        'Rarity:', card[0]['rarity'], ' ',
+                        'Variant:', card[1], ' '
                         )
                 print('\n\n\nRemove a card by selecting it\'s number in the list or type [F] to finish or [Q] to quit\n\n')
                 print('')
