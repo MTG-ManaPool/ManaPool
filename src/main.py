@@ -8,5 +8,5 @@ def main():
     menu = Menu()
     menu.mainMenu(inventory)
     exit()
-
+    inventory.close()
 main()

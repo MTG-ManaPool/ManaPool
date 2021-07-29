@@ -20,6 +20,49 @@ class MP_Inventory:
         else:
             self.__checkForUpdates()
 
+
+    def importJSON(self, cards):
+        try:
+            updated = 0
+            rows = cards.shape[0]
+            for r in range(rows):
+                for card_type in db_utils.stock_headers:
+                    if cards.at[r, card_type]:
+                        update_query = f"UPDATE '{self.table_name}' SET {card_type} = {cards.at[r, card_type]} WHERE id == '{cards.at[r, 'id']}'"
+                        self.cursor.execute(update_query)
+                        updated += 1
+            self.connection.commit()
+            print(f"Updated {updated} records successfully ")
+            # Should we be getting a new cursor at each method?
+            # self.cursor.close()
+
+        except sqlite3.Error as error:
+            print("Failed to update table", error)
+
+    def exportJSON(self, dst):
+        try:
+            if self.connection:
+                # Make sure there is an empty space at the end of each string
+                query = f"SELECT name, set_name, full_art, textless, foil, nonfoil, oversized, promo "
+                query += f"FROM '{self.table_name}' "
+                query += f"WHERE 'foil' > 0 OR 'nonfoil' > 0 "
+
+                # FIXME REMOVE THE LIMIT AFTER VERIFYING
+                query += f"LIMIT 3"
+
+                my_inventory = pd.read_sql(query, self.connection)
+
+                my_inventory.to_json(dst, orient="records")
+                records = my_inventory.shape[0]
+                print(f"Retrieved {records} records successfully ")
+
+                # importing here since this is the only function that uses it. If it is used more often make global
+                import time
+                time.sleep(5)
+
+        except sqlite3.Error as error:
+            print("Failed to read table", error)
+
     def addCardToInventory(self, card, variant):
         '''Adds the specified card of the given variant to the inventory.
 
@@ -105,7 +148,7 @@ class MP_Inventory:
         self.cursor.execute(query)
         res = self.cursor.fetchall()
         return res
-    
+
     def searchByMID(self, card_mid):
         '''Searches the inventory database for a cards that has the given multiverse id.
         
@@ -119,7 +162,7 @@ class MP_Inventory:
         self.cursor.execute(query)
         res = self.cursor.fetchall()
         return res
-    
+
     def all_cards(self):
         '''All cards recognized by the database."
         
