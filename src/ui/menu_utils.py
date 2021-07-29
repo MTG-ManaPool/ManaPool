@@ -37,10 +37,10 @@ class CardList():
                         finish = True
                     elif (int(reply)-1) in range(len(cards)):
                         reply = int(reply)-1
-                        cardtype = self.__selectCardType(cards[reply], action)
-                        if cardtype == None:
+                        variant = self.__selectVariant(cards[reply], action)
+                        if variant == None:
                             continue
-                        selected.append((cards[reply], cardtype))
+                        selected.append((cards[reply], variant))
                         print(f'\n\n\nCurrent list of cards to {action}:\n\n')
                         for card in selected:
                             print(
@@ -119,16 +119,12 @@ class CardList():
                 return self.cardlist.copy()
     
     # MENU TO INQUIRE TYPE OF CARDS TO ADD/REMOVE FROM INVENTORY
-    def __selectCardType(self, card, action):
-        cardtype = None
+    def __selectVariant(self, card, action):
+        variant = None
         menu_items = {
-            '1: Full Art': 'full_art',
-            '2. Textless': 'textless',
-            '3. Foil': 'foil',
-            '4. Nonfoil (normal card)': 'nonfoil',
-            '5. Oversized': 'oversized',
-            '6. Promo': 'promo',
-            '7. Quit': None
+            '1. Foil': 'foil',
+            '2. Nonfoil (normal card)': 'nonfoil',
+            '3. Quit': None
         }
         print(f"\n\nSelect Card type for {card['name']} to {action}\n")
         for action in menu_items.keys():
@@ -139,7 +135,7 @@ class CardList():
                 if menu_items[key] == None:
                     break
                 else:
-                    cardtype = menu_items[key]
+                    variant = menu_items[key]
                     break
-        return cardtype
+        return variant
  

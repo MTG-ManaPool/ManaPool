@@ -30,7 +30,7 @@ class MP_Inventory:
         total = card[f'{variant}']
         if total == None:
             print('\n\nERROR: Cannot add Cards to Inventory.')
-            raise(f"{card['name']} does not exist in the {variant} format.")
+            raise Exception(f"{card['name']} does not exist in the {variant} format.")
 
         total = card[f'{variant}']
         total += 1
@@ -48,11 +48,11 @@ class MP_Inventory:
         total = card[f'{variant}']
         if total == None:
             print('\n\nERROR: Cannot add Cards to Inventory.')
-            raise(f"{card['name']} does not exist in the {variant} format.")
+            raise Exception(f"{card['name']} does not exist in the {variant} format.")
 
         total = card[f'{variant}'] - 1
         if total < 0:
-            raise(f"ERROR: Inventory Count for {card['name']} is 0 for {variant}'s")
+            raise Exception(f"ERROR: Inventory Count for {card['name']} is 0 for {variant}'s")
         query = f"UPDATE 'MTG-Cards' SET {variant} = {total} WHERE id == '{card['id']}';"
         self.connection.execute(query)
         self.connection.commit()

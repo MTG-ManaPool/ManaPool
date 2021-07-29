@@ -72,12 +72,9 @@ class Menu():
                 'Mana:', card['mana_cost'], ' ',
                 'Type:', card['type_line'], ' ',
                 'Set:', card['set_name'], ' ',
-                'FA:', card['full_art'], ' ',
-                'T:', card['textless'], ' ',
-                'F:', card['foil'], ' ',
-                'NF:', card['nonfoil'], ' ',
-                'O:', card['oversized'], ' ',
-                'P:', card['promo'], ' ',
+                'Rarity:', card['rarity'], ' ',
+                'Foils:', card['foil'], ' ',
+                'Nonfoils:', card['nonfoil'], ' '
                 )
             count += 1
         print(f'Displayed {count} cards')
@@ -88,7 +85,7 @@ class Menu():
         print(f'\nAttempting to Add {len(cards)} Cards...\n\n')
         count = 0
         for card in cards:
-            cardtype = card[1]
+            variant = card[1]
             print(
                 'MID:', card[0]['multiverse_ids'], ' ',
                 'Name:', card[0]['name'], ' ',
@@ -96,10 +93,10 @@ class Menu():
                 'Type:', card[0]['type_line'], ' ',
                 'Set:', card[0]['set_name'], ' ',
                 'Rarity:', card[0]['rarity'], ' ',
-                'Variant:', cardtype, ' '
+                'Variant:', variant, ' '
                 )
             try:
-                inventory.addCardToInventory(card[0], cardtype)
+                inventory.addCardToInventory(card[0], variant)
                 count += 1
             except Exception as e:
                 print(e)
@@ -113,7 +110,7 @@ class Menu():
         print(f'\nAttempting to Remove {len(cards)} Cards...\n\n')
         count = 0
         for card in cards:
-            cardtype = card[1]
+            variant = card[1]
             print(
                 'MID:', card[0]['multiverse_ids'], ' ',
                 'Name:', card[0]['name'], ' ',
@@ -121,10 +118,10 @@ class Menu():
                 'Type:', card[0]['type_line'], ' ',
                 'Set:', card[0]['set_name'], ' ',
                 'Rarity:', card[0]['rarity'], ' '
-                'Variant:', cardtype, ' '
+                'Variant:', variant, ' '
                 )
             try:
-                inventory.removeCardFromInventory(card[0], cardtype)
+                inventory.removeCardFromInventory(card[0], variant)
                 count += 1
             except Exception as e:
                 print(e)
