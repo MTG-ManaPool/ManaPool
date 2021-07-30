@@ -90,7 +90,7 @@ class MP_Inventory:
         '''
         total = card[f'{variant}']
         if total == None:
-            print('\n\nERROR: Cannot add Cards to Inventory.')
+            print('\n\nERROR: Cannot remove Cards from Inventory.')
             raise Exception(f"{card['name']} does not exist in the {variant} format.")
 
         total = card[f'{variant}'] - 1
