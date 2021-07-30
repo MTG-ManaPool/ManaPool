@@ -70,20 +70,16 @@ class MP_Inventory:
                 card (SQLiteRow): a dict-addressable card row from the database.
                 variant (string): the specified variant of the card to be added.
         '''
-        if variant not in db_utils.stock_headers:
-            return False
+        total = card[f'{variant}']
+        if total == None:
+            print('\n\nERROR: Cannot add Cards to Inventory.')
+            raise Exception(f"{card['name']} does not exist in the {variant} format.")
 
-        query = f"SELECT {variant} FROM '{self.table_name}' WHERE id == '{card['id']}';"
-        self.cursor.execute(query)
-        current_count = self.cursor.fetchone()[variant]
-
-        if current_count != None:
-            query = f"UPDATE '{self.table_name}' SET {variant} = {current_count + 1} WHERE id == '{card['id']}';"
-            self.cursor.execute(query)
-            self.connection.commit()
-            return True
-
-        return False
+        total = card[f'{variant}']
+        total += 1
+        query = f"UPDATE 'MTG-Cards' SET {variant} = {total} WHERE id == '{card['id']}';"
+        self.connection.execute(query)
+        self.connection.commit()
 
     def removeCardFromInventory(self, card, variant):
         '''Removes the specified card of the given variant from the inventory.
@@ -92,20 +88,17 @@ class MP_Inventory:
                 card (SQLiteRow): a dict-addressable card row from the database.
                 variant (string): the specified variant of the card to be added.
         '''
-        if variant not in db_utils.stock_headers:
-            return False
+        total = card[f'{variant}']
+        if total == None:
+            print('\n\nERROR: Cannot remove Cards from Inventory.')
+            raise Exception(f"{card['name']} does not exist in the {variant} format.")
 
-        query = f"SELECT {variant} FROM '{self.table_name}' WHERE id == '{card['id']}';"
-        self.cursor.execute(query)
-        current_count = self.cursor.fetchone()[variant]
-
-        if current_count != None or 0:
-            query = f"UPDATE '{self.table_name}' SET {variant} = {current_count - 1} WHERE id == '{card['id']}';"
-            self.cursor.execute(query)
-            self.connection.commit()
-            return True
-        
-        return False
+        total = card[f'{variant}'] - 1
+        if total < 0:
+            raise Exception(f"ERROR: Inventory Count for {card['name']} is 0 for {variant}'s")
+        query = f"UPDATE 'MTG-Cards' SET {variant} = {total} WHERE id == '{card['id']}';"
+        self.connection.execute(query)
+        self.connection.commit()
 
     def displayInventory(self):
         '''Searches the inventory database for cards that are in stock.
@@ -218,13 +211,15 @@ class MP_Inventory:
         # concatenate the strings representing different keywords into one string (e.g. 'UWB')
         self.inventoryDF['keywords'] = self.inventoryDF['keywords'].agg(', '.join)
 
-        multiverse_ids = self.inventoryDF['multiverse_ids']
-        present_ids =  multiverse_ids.astype(bool)
-        # replace all 'Falsey' values with '-1'.
-        multiverse_ids = multiverse_ids.where(present_ids, -1)
+
         # replace all 'Truthy' values with first multiverse ID'.
-        multiverse_ids = multiverse_ids.where(~present_ids, multiverse_ids[0])
-        self.inventoryDF['multiverse_ids'] = multiverse_ids.astype('int32')
+        # replace all 'Falsey' values with '-1'.
+        def clean(id):
+            if id:
+                return id[0]
+            else:
+                return -1
+        self.inventoryDF['multiverse_ids'] = self.inventoryDF['multiverse_ids'].map(lambda id: clean(id))
 
         print("Initalizing Empty Inventory . . .")
         for header in tqdm(["foil", "nonfoil"], total=2):
