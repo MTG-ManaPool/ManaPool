@@ -219,8 +219,7 @@ class MP_Inventory:
                 return id[0]
             else:
                 return -1
-        multiverse_ids = self.inventoryDF['multiverse_ids']
-        multiverse_ids = multiverse_ids.map(lambda id: clean(id))
+        self.inventoryDF['multiverse_ids'] = self.inventoryDF['multiverse_ids'].map(lambda id: clean(id))
 
         print("Initalizing Empty Inventory . . .")
         for header in tqdm(["foil", "nonfoil"], total=2):
