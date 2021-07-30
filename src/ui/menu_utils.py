@@ -9,7 +9,7 @@ class CardList():
     def createFromDBResponse(self, cards, groupname, action):
         # NO CARDS FOUND
         if len(cards) == 0:
-            print('No cards of that name found...')
+            print('\n\nNo cards of that name found...\n')
             placeholder = input('Press any key to continue...\n')
             return None
         # CARDS WERE FOUND IN SET/BLOCK
@@ -27,7 +27,9 @@ class CardList():
                             'Mana:', card['mana_cost'], ' ',
                             'Type:', card['type_line'], ' ',
                             'Set:', card['set_name'], ' ',
-                            'Rarity:', card['rarity'], ' '
+                            'Rarity:', card['rarity'], ' ',
+                            'Foils:', card['foil'], ' ',
+                            'Nonfoils:', card['nonfoil'], ' '
                             )
                     print('\n\n\nSelect a card by selecting it\'s number in the list or type [F] to finish or [Q] to quit\n\n')
                     reply = input('>')

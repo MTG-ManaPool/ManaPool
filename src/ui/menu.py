@@ -31,39 +31,50 @@ class Menu():
 
 
     # PUBLIC MENU's
-    def mainMenu(self, inventory):
-        self.__renderMenu(self.main_menu_title, self.main_menu_items, inventory)
+    def mainMenu(self, inventory, database):
+        self.__renderMenu(self.main_menu_title, self.main_menu_items, [inventory, database])
     
     # PRIVATE MENU's
-    def __inventoryMenu(self, inventory):
-        self.__renderMenu(self.inv_menu_title, self.inv_menu_items, inventory)
-    
-    def __searchMenu(self, inventory):
-        self.__renderMenu(self.search_menu_title, self.search_menu_items, inventory)
+    # CALLED BY MAIN MENU
+    def __inventoryMenu(self, params):
+        self.__renderMenu(self.inv_menu_title, self.inv_menu_items, params)
 
-    def __addCardMenu(self, inventory):
-        print('\n' * 50)
-        self.__renderMenu(self.add_menu_title, self.search_menu_items, [inventory, 'add'])
+   # CALLED BY INVENTORY MENU
+    def __searchMenu(self, params):
+        self.__renderMenu(self.search_menu_title, self.search_menu_items, params)
 
-    def __removeCardMenu(self, inventory):
+    # CALLED BY INVENTORY MENU
+    def __addCardMenu(self, params):
         print('\n' * 50)
-        self.__renderMenu(self.remove_menu_title, self.search_menu_items, [inventory, 'remove'])
+        inventory = params[0]
+        database = params[1]
+        self.__renderMenu(self.add_menu_title, self.search_menu_items, [inventory, database, 'add'])
+
+    # CALLED BY INVENTORY MENU
+    def __removeCardMenu(self, params):
+        print('\n' * 50)
+        inventory = params[0]
+        database = params[1]
+        self.__renderMenu(self.remove_menu_title, self.search_menu_items, [inventory, database, 'remove'])
     
     # IMPORTS CURRENT INVENTORY FROM AN EXPORTED JSON FILE
+    # CALLED BY MAIN MENU
     def __importFromJson(self, inventory):
         print('\n\nLoading from JSON file')
         placeholder = input('Press any key to continue...\n')
 
     # EXPORTS CURRENT INVENTORY TO A JSON FILE
     # THIS FILE CAN BE IMPORTED LATER TO SHARE AN INVENTORY ACROSS DEVICES
+    # CALLED BY MAIN MENU
     def __exportToJson(self, inventory):
         print('\n\nExporting to JSON file')
         placeholder = input('Press any key to continue...\n')
 
     # WRAPPER FUNCTION TO DISPLAY ALL OWNED CARDS
-    def __displayAll(self, inventory):
+    def __displayAll(self, params):
+        inventory = params[0]
         print('\n\nDisplaying all Cards...\n')
-        cards = inventory.displayInventory()
+        cards = inventory.getInventory()
         count = 0
         for card in cards:
             print(
@@ -77,7 +88,7 @@ class Menu():
                 'Nonfoils:', card['nonfoil'], ' '
                 )
             count += 1
-        print(f'Displayed {count} cards')
+        print(f'\n\nDisplayed {count} cards')
         placeholder = input('\n\nPress any key to continue...\n')
 
     # WRAPPER FUNCTION TO ADD CARDS TO INVENTORY
@@ -102,7 +113,7 @@ class Menu():
                 print(e)
                 placeholder = input('')
                 continue
-        print(f'\n{count} Cards added.')
+        print(f'\n\n{count} Cards added.')
         placeholder = input('Press any key to continue...\n')
 
     # WRAPPER FUNCTION TO REMOVE CARDS FROM INVENTORY
@@ -127,7 +138,7 @@ class Menu():
                 print(e)
                 placeholder = input('')
                 continue
-        print('\nCards removed.')
+        print(f'\n\n{count} Cards removed.')
         placeholder = input('Press any key to continue...\n')
 
     # SEARCH MENU FUNCTIONS
@@ -139,17 +150,22 @@ class Menu():
         placeholder = input('Press any key to continue...\n')
 
     def __searchSet(self, params):
-        print('\n' * 50)
-        setname = input('Enter name of set to search by\n\n>')
-        if isinstance(params, list):
+        if len(params) == 3:
             inventory = params[0]
-            action = params[1]
+            database = params[1]
+            action = params[2]
         else:
-            inventory = params
+            inventory = params[0]
+            database = params[1]
             action = None
 
+        print('\n' * 50)
+        setname = input('Enter name of set to search by\n\n>')
         try:
-            set = inventory.searchBySet(setname)
+            if action == 'remove':
+                set = inventory.searchBySet(setname)
+            else:
+                set = database.searchBySet(setname)
             selected_cards = self.cache.createFromDBResponse(set, setname, action)
             if selected_cards:
                 if action == 'add':
@@ -161,17 +177,22 @@ class Menu():
             placeholder = input('')
             
     def __searchName(self, params):
-        print('\n' * 50)
-        cardname = input('Enter name of card to search by\n\n>')
-        if isinstance(params, list):
+        if len(params) == 3:
             inventory = params[0]
-            action = params[1]
+            database = params[1]
+            action = params[2]
         else:
-            inventory = params
+            inventory = params[0]
+            database = params[1]
             action = None
 
+        print('\n' * 50)
+        cardname = input('Enter name of card to search by\n\n>')
         try:
-            cards = inventory.searchByName(cardname)
+            if action == 'remove':
+                cards = inventory.searchByName(cardname)
+            else:
+                cards = database.searchByName(cardname)
             selected_cards = self.cache.createFromDBResponse(cards, cardname, action)
             if selected_cards:
                 if action == 'add':
@@ -183,17 +204,22 @@ class Menu():
             placeholder = input('')
 
     def __searchMID(self, params):
-        print('\n' * 50)
-        m_id = input('Enter multiverse id of card to search by\n\n>')
-        if isinstance(params, list):
+        if len(params) == 3:
             inventory = params[0]
-            action = params[1]
+            database = params[1]
+            action = params[2]
         else:
-            inventory = params
+            inventory = params[0]
+            database = params[1]
             action = None
 
+        print('\n' * 50)
+        m_id = input('Enter multiverse id of card to search by\n\n>')
         try:
-            cards = inventory.searchByMID(m_id)
+            if action == 'remove':
+                cards = inventory.searchByMID(m_id)
+            else:
+                cards = database.searchByMID(m_id)
             selected_cards = self.cache.createFromDBResponse(cards, m_id, action)
             if selected_cards:
                 if action == 'add':
