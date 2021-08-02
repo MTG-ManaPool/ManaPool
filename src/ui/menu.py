@@ -1,4 +1,4 @@
-from .menu_utils import CardList
+from . import menu_utils
 
 class Menu():
     def __init__ (self):
@@ -27,7 +27,7 @@ class Menu():
         }
         self.add_menu_title = 'Select Method to Search for Cards to Add'
         self.remove_menu_title = 'Select Method to Search for Cards to Remove'
-        self.cache = CardList()
+        self.cache = menu_utils.CardList()
 
 
     # PUBLIC MENU's
@@ -45,14 +45,14 @@ class Menu():
 
     # CALLED BY INVENTORY MENU
     def __addCardMenu(self, params):
-        print('\n' * 50)
+        menu_utils.clear_screen()
         inventory = params[0]
         database = params[1]
         self.__renderMenu(self.add_menu_title, self.search_menu_items, [inventory, database, 'add'])
 
     # CALLED BY INVENTORY MENU
     def __removeCardMenu(self, params):
-        print('\n' * 50)
+        menu_utils.clear_screen()
         inventory = params[0]
         database = params[1]
         self.__renderMenu(self.remove_menu_title, self.search_menu_items, [inventory, database, 'remove'])
@@ -144,7 +144,7 @@ class Menu():
     # SEARCH MENU FUNCTIONS
     # TODO: Implement search by block functionality in db
     def __searchBlock(self, params):
-        print('\n' * 50)
+        menu_utils.clear_screen()
         blockname = input('Enter name of block to search by\n\n>')
         print('\n\nSearching...')
         placeholder = input('Press any key to continue...\n')
@@ -159,7 +159,7 @@ class Menu():
             database = params[1]
             action = None
 
-        print('\n' * 50)
+        menu_utils.clear_screen()
         setname = input('Enter name of set to search by\n\n>')
         try:
             if action == 'remove':
@@ -186,7 +186,7 @@ class Menu():
             database = params[1]
             action = None
 
-        print('\n' * 50)
+        menu_utils.clear_screen()
         cardname = input('Enter name of card to search by\n\n>')
         try:
             if action == 'remove':
@@ -213,7 +213,7 @@ class Menu():
             database = params[1]
             action = None
 
-        print('\n' * 50)
+        menu_utils.clear_screen()
         m_id = input('Enter multiverse id of card to search by\n\n>')
         try:
             if action == 'remove':
@@ -237,7 +237,7 @@ class Menu():
         quit = False
         while not quit:
             legal = False
-            print('\n' * 50)
+            menu_utils.clear_screen()
             print(menu_title, '\n\n')
             for key in menu_items.keys():
                 print(key)
