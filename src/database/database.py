@@ -120,13 +120,15 @@ class MP_Database:
         # concatenate the strings representing different keywords into one string (e.g. 'UWB')
         self.inventoryDF['keywords'] = self.inventoryDF['keywords'].agg(', '.join)
 
-        multiverse_ids = self.inventoryDF['multiverse_ids']
-        present_ids =  multiverse_ids.astype(bool)
-        # replace all 'Falsey' values with '-1'.
-        multiverse_ids = multiverse_ids.where(present_ids, -1)
+
         # replace all 'Truthy' values with first multiverse ID'.
-        multiverse_ids = multiverse_ids.where(~present_ids, multiverse_ids[0])
-        self.inventoryDF['multiverse_ids'] = multiverse_ids.astype('int32')
+        # replace all 'Falsey' values with '-1'.
+        def clean(id):
+            if id:
+                return id[0]
+            else:
+                return -1
+        self.inventoryDF['multiverse_ids'] = self.inventoryDF['multiverse_ids'].map(lambda id: clean(id))
 
         print("Initalizing Empty Inventory . . .")
         for header in tqdm(["foil", "nonfoil"], total=2):
