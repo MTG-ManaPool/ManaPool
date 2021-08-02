@@ -1,5 +1,6 @@
 import sqlite3
 import pandas as pd
+from database import db_utils
 
 class MP_Inventory:
     def __init__ (self):
@@ -73,7 +74,7 @@ class MP_Inventory:
 
         total = card[f'{variant}']
         total += 1
-        query = f"UPDATE 'MTG-Cards' SET {variant} = {total} WHERE id == '{card['id']}';"
+        query = f"UPDATE '{self.table_name}' SET {variant} = {total} WHERE id == '{card['id']}';"
         self.connection.execute(query)
         self.connection.commit()
 
@@ -92,7 +93,7 @@ class MP_Inventory:
         total = card[f'{variant}'] - 1
         if total < 0:
             raise Exception(f"ERROR: Inventory Count for {card['name']} is 0 for {variant}'s")
-        query = f"UPDATE 'MTG-Cards' SET {variant} = {total} WHERE id == '{card['id']}';"
+        query = f"UPDATE '{self.table_name}' SET {variant} = {total} WHERE id == '{card['id']}';"
         self.connection.execute(query)
         self.connection.commit()
 
