@@ -72,7 +72,6 @@ class MP_Inventory:
             print('\n\nERROR: Cannot add Cards to Inventory.')
             raise Exception(f"{card['name']} does not exist in the {variant} format.")
 
-        total = card[f'{variant}']
         total += 1
         query = f"UPDATE '{self.table_name}' SET {variant} = {total} WHERE id == '{card['id']}';"
         self.connection.execute(query)
@@ -90,7 +89,7 @@ class MP_Inventory:
             print('\n\nERROR: Cannot remove Cards from Inventory.')
             raise Exception(f"{card['name']} does not exist in the {variant} format.")
 
-        total = card[f'{variant}'] - 1
+        total -=  1
         if total < 0:
             raise Exception(f"ERROR: Inventory Count for {card['name']} is 0 for {variant}'s")
         query = f"UPDATE '{self.table_name}' SET {variant} = {total} WHERE id == '{card['id']}';"
