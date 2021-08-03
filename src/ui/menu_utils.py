@@ -1,4 +1,4 @@
-
+import os
 # CLASS FOR CACHING A TEMPORARY LIST TO USE FOR ADDING/REMOVING FROM INVENTORY
 # ALSO FOR USE IN CREATING PURCHASE ORDERS TO SUBMIT TO WEB
 class CardList():
@@ -9,7 +9,7 @@ class CardList():
     def createFromDBResponse(self, cards, groupname, action):
         # NO CARDS FOUND
         if len(cards) == 0:
-            print('No cards of that name found...')
+            print('\n\nNo cards found...\n')
             placeholder = input('Press any key to continue...\n')
             return None
         # CARDS WERE FOUND IN SET/BLOCK
@@ -27,7 +27,9 @@ class CardList():
                             'Mana:', card['mana_cost'], ' ',
                             'Type:', card['type_line'], ' ',
                             'Set:', card['set_name'], ' ',
-                            'Rarity:', card['rarity'], ' '
+                            'Rarity:', card['rarity'], ' ',
+                            'Foils:', card['foil'], ' ',
+                            'Nonfoils:', card['nonfoil'], ' '
                             )
                     print('\n\n\nSelect a card by selecting it\'s number in the list or type [F] to finish or [Q] to quit\n\n')
                     reply = input('>')
@@ -138,4 +140,11 @@ class CardList():
                     variant = menu_items[key]
                     break
         return variant
- 
+
+ # https://www.tutorialspoint.com/how-to-clear-screen-in-python
+def clear_screen():
+    if os.name == 'posix':
+        _ = os.system('clear')
+    else:
+        # for windows platfrom
+        _ = os.system('cls')
