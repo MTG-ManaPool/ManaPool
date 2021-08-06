@@ -3,6 +3,9 @@ include
 lib
 *.cfg
 
+#database
+./*.db
+
 #config
 config.json
 

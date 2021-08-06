@@ -1,4 +1,6 @@
 from . import menu_utils
+from cardlist.cardlist import CardList
+from orders.purchaselist import PurchaseList
 
 class Menu():
     def __init__ (self):
@@ -8,7 +10,8 @@ class Menu():
             '2. Export Inventory to a JSON file': self.__exportToJson,
             '3. Access Inventory': self.__inventoryMenu,
             '4. Search for Cards': self.__searchMenu,
-            '5. Quit ManaPool': None
+            '5. Purchase Cards': self.__purchaseMenu,
+            '6. Quit ManaPool': None
         }
         self.inv_menu_title = 'Inventory Menu'
         self.inv_menu_items = {
@@ -27,21 +30,28 @@ class Menu():
         }
         self.add_menu_title = 'Select Method to Search for Cards to Add'
         self.remove_menu_title = 'Select Method to Search for Cards to Remove'
-        self.cache = menu_utils.CardList()
+        self.cache = CardList()
 
 
     # PUBLIC MENU's
     def mainMenu(self, inventory, database):
-        self.__renderMenu(self.main_menu_title, self.main_menu_items, [inventory, database])
+        self.__renderMenu(self.main_menu_title, self.main_menu_items, [inventory, database, None])
     
     # PRIVATE MENU's
     # CALLED BY MAIN MENU
     def __inventoryMenu(self, params):
         self.__renderMenu(self.inv_menu_title, self.inv_menu_items, params)
 
-   # CALLED BY INVENTORY MENU
+   # CALLED BY MAIN MENU AND ADD/REMOVE
     def __searchMenu(self, params):
         self.__renderMenu(self.search_menu_title, self.search_menu_items, params)
+
+    # CALLED BY MAIN MENU
+    def __purchaseMenu(self, params):
+        menu_utils.clear_screen()
+        inventory = params[0]
+        database = params[1]
+        self.__renderMenu(self.add_menu_title, self.search_menu_items, [inventory, database, 'buy'])
 
     # CALLED BY INVENTORY MENU
     def __addCardMenu(self, params):
@@ -150,42 +160,25 @@ class Menu():
         placeholder = input('Press any key to continue...\n')
 
     def __searchSet(self, params):
-        if len(params) == 3:
-            inventory = params[0]
-            database = params[1]
-            action = params[2]
-        else:
-            inventory = params[0]
-            database = params[1]
-            action = None
-
         menu_utils.clear_screen()
+        inventory = params[0]
+        database = params[1]
+        action = params[2]
         setname = input('Enter name of set to search by\n\n>')
         try:
             if action == 'remove':
                 set = inventory.searchBySet(setname)
             else:
                 set = database.searchBySet(setname)
-            selected_cards = self.cache.createFromDBResponse(set, setname, action)
-            if selected_cards:
-                if action == 'add':
-                    self.__addCards(inventory, selected_cards)
-                elif action == 'remove':
-                    self.__removeCards(inventory, selected_cards)
+            self.__handleResponse(inventory, setname, set, action)
         except Exception as e:
             print(e)
             placeholder = input('')
             
     def __searchName(self, params):
-        if len(params) == 3:
-            inventory = params[0]
-            database = params[1]
-            action = params[2]
-        else:
-            inventory = params[0]
-            database = params[1]
-            action = None
-
+        inventory = params[0]
+        database = params[1]
+        action = params[2]
         menu_utils.clear_screen()
         cardname = input('Enter name of card to search by\n\n>')
         try:
@@ -193,26 +186,15 @@ class Menu():
                 cards = inventory.searchByName(cardname)
             else:
                 cards = database.searchByName(cardname)
-            selected_cards = self.cache.createFromDBResponse(cards, cardname, action)
-            if selected_cards:
-                if action == 'add':
-                    self.__addCards(inventory, selected_cards)
-                elif action == 'remove':
-                    self.__removeCards(inventory, selected_cards)
+            self.__handleResponse(inventory, cardname, cards, action) 
         except Exception as e:
             print('ERROR: Program encountered exception: ', e)
             placeholder = input('')
 
     def __searchMID(self, params):
-        if len(params) == 3:
-            inventory = params[0]
-            database = params[1]
-            action = params[2]
-        else:
-            inventory = params[0]
-            database = params[1]
-            action = None
-
+        inventory = params[0]
+        database = params[1]
+        action = params[2]
         menu_utils.clear_screen()
         m_id = input('Enter multiverse id of card to search by\n\n>')
         try:
@@ -220,16 +202,21 @@ class Menu():
                 cards = inventory.searchByMID(m_id)
             else:
                 cards = database.searchByMID(m_id)
-            selected_cards = self.cache.createFromDBResponse(cards, m_id, action)
-            if selected_cards:
-                if action == 'add':
-                    self.__addCards(inventory, selected_cards)
-                elif action == 'remove':
-                    self.__removeCards(inventory, selected_cards)
+            self.__handleResponse(inventory, m_id, cards, action) 
         except Exception as e:
             print('ERROR: Invalid input.')
             placeholder = input('')
-
+    
+    def __handleResponse(self, inventory, groupname, cards, action):
+        selected = self.cache.createFromDBResponse(cards, groupname, action)
+        if selected:
+            if action == 'add':
+                self.__addCards(inventory, cards)
+            elif action == 'remove':
+                self.__removeCards(inventory, cards)
+            elif action == 'buy':
+                order = PurchaseList(self.cache)
+                order.submitOrder()
 
     # RENDERS MENU FOR SELECT MENU's
     # MENU's CANNOT RETURN VALUES, THEREFORE FUNCTIONS CALLED BY MENU's ALSO CANNOT RETURN VALUES
