@@ -83,22 +83,25 @@ class Menu():
     # WRAPPER FUNCTION TO DISPLAY ALL OWNED CARDS
     def __displayAll(self, params):
         inventory = params[0]
-        print('\n\nDisplaying all Cards...\n')
         cards = inventory.getInventory()
         count = 0
-        for card in cards:
-            print(
-                'MID:', card['multiverse_ids'], ' ',
-                'Name:', card['name'], ' ',
-                'Mana:', card['mana_cost'], ' ',
-                'Type:', card['type_line'], ' ',
-                'Set:', card['set_name'], ' ',
-                'Rarity:', card['rarity'], ' ',
-                'Foils:', card['foil'], ' ',
-                'Nonfoils:', card['nonfoil'], ' '
-                )
-            count += 1
-        print(f'\n\nDisplayed {count} cards')
+        if not cards.empty:
+            print('\n\nDisplaying all Cards...\n')
+            for index, card in cards.iterrows():
+                print(
+                    'MID:', card['multiverse_ids'], ' ',
+                    'Name:', card['name'], ' ',
+                    'Mana:', card['mana_cost'], ' ',
+                    'Type:', card['type_line'], ' ',
+                    'Set:', card['set_name'], ' ',
+                    'Rarity:', card['rarity'], ' ',
+                    'Foils:', card['foil'], ' ',
+                    'Nonfoils:', card['nonfoil'], ' '
+                    )
+                count += 1
+            print(f'\n\nDisplayed {count} cards')
+        else:
+            print("\n\nNo Cards found...\n")
         placeholder = input('\n\nPress any key to continue...\n')
 
     # WRAPPER FUNCTION TO ADD CARDS TO INVENTORY

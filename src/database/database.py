@@ -34,15 +34,11 @@ class MP_Database:
                 List (cards): a list of cards whose given expansion set name exactly match the input setname.
         '''
         query = f"SELECT * FROM '{self.table_name}' WHERE set_name='{setname}';"
-        self.cursor.execute(query)
-        res = self.cursor.fetchall()
-        return res
+        return pd.read_sql_query(query, self.connection)
 
     def searchByBlock(self, blockname):
         query = f"SELECT * FROM '{self.table_name}' WHERE block='{blockname}';"
-        self.cursor.execute(query)
-        res = self.cursor.fetchall()
-        return res
+        return pd.read_sql_query(query, self.connection)
 
     def searchByName(self, cardname):
         '''Searches the database for cards that contain the input string in their printed name.
@@ -54,9 +50,7 @@ class MP_Database:
                 List (cards): a list of cards that contain the input text anywhere in their printed card name.
         '''
         query = f"SELECT * FROM '{self.table_name}' WHERE name LIKE '%{cardname}%';"
-        self.cursor.execute(query)
-        res = self.cursor.fetchall()
-        return res
+        return pd.read_sql_query(query, self.connection)
 
     def searchByMID(self, card_mid):
         '''Searches the database for a cards that has the given multiverse id.
@@ -68,9 +62,7 @@ class MP_Database:
                 List (cards): a list of cards that exactly match the given multiverse id.
         '''
         query = f"SELECT * FROM '{self.table_name}' WHERE multiverse_ids='{card_mid}';"
-        self.cursor.execute(query)
-        res = self.cursor.fetchall()
-        return res
+        return pd.read_sql_query(query, self.connection)
 
     def all_cards(self):
         '''All cards recognized by the database."
@@ -79,9 +71,7 @@ class MP_Database:
                 List (cards): a list of all cards recognized by the database.
         '''
         query =f"SELECT * FROM '{self.table_name}'"
-        self.cursor.execute(query)
-        res = self.cursor.fetchall()
-        return res
+        return pd.read_sql_query(query, self.connection)
 
     def __firstTimeSetup(self):
         # Obtaining Inital Card Data
