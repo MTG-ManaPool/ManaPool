@@ -20,7 +20,7 @@ class CardList():
                 finish = False
                 selected = []
                 while not quit and not finish:
-                    for index, card in enumerate(cards): # https://realpython.com/python-enumerate/
+                    for index, card in cards.iterrows():
                         print(index+1, '.  ',
                             'MID:', card['multiverse_ids'], ' ',
                             'Name:', card['name'], ' ',
@@ -39,10 +39,10 @@ class CardList():
                         finish = True
                     elif (int(reply)-1) in range(len(cards)):
                         reply = int(reply)-1
-                        variant = self.__selectVariant(cards[reply], action)
+                        variant = self.__selectVariant(cards.iloc[reply], action)
                         if variant == None:
                             continue
-                        selected.append((cards[reply], variant))
+                        selected.append((cards.iloc[reply], variant))
                         print(f'\n\n\nCurrent list of cards to {action}:\n\n')
                         for card in selected:
                             print(
@@ -65,7 +65,7 @@ class CardList():
                     return selected
             else:
                 print(f'\n\nResulting Cards from Search "{groupname}"\n\n')
-                for index, card in enumerate(cards): # https://realpython.com/python-enumerate/
+                for index, card in cards.iterrows():
                     print(index+1, '.  ',
                         'MID:', card['multiverse_ids'], ' ',
                         'Name:', card['name'], ' ',

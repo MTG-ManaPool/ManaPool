@@ -72,7 +72,6 @@ class MP_Inventory:
             print('\n\nERROR: Cannot add Cards to Inventory.')
             raise Exception(f"{card['name']} does not exist in the {variant} format.")
 
-        total = card[f'{variant}']
         total += 1
         query = f"UPDATE '{self.table_name}' SET {variant} = {total} WHERE id == '{card['id']}';"
         self.connection.execute(query)
@@ -90,7 +89,7 @@ class MP_Inventory:
             print('\n\nERROR: Cannot remove Cards from Inventory.')
             raise Exception(f"{card['name']} does not exist in the {variant} format.")
 
-        total = card[f'{variant}'] - 1
+        total -=  1
         if total < 0:
             raise Exception(f"ERROR: Inventory Count for {card['name']} is 0 for {variant}'s")
         query = f"UPDATE '{self.table_name}' SET {variant} = {total} WHERE id == '{card['id']}';"
@@ -104,9 +103,7 @@ class MP_Inventory:
                 List (cards): a list of cards that whose inventory count of foil or nonfoil is greater than 0.
         '''
         query = f"SELECT * FROM '{self.table_name}' WHERE foil > 0 OR nonfoil > 0;"
-        self.cursor.execute(query)
-        res = self.cursor.fetchall()
-        return res
+        return pd.read_sql_query(query, self.connection)
 
     def searchBySet(self, setname):
         '''Searches the inventory for cards in stock with the given set name.
@@ -118,15 +115,11 @@ class MP_Inventory:
                 List (cards): a list of cards whose given expansion set name exactly match the input setname.
         '''
         query = f"SELECT * FROM '{self.table_name}' WHERE set_name='{setname}' AND (foil>0 OR nonfoil>0);"
-        self.cursor.execute(query)
-        res = self.cursor.fetchall()
-        return res
+        return pd.read_sql_query(query, self.connection)
 
     def searchByBlock(self, blockname):
         query = f"SELECT * FROM '{self.table_name}' WHERE block='{blockname}' AND (foil>0 OR nonfoil>0);"
-        self.cursor.execute(query)
-        res = self.cursor.fetchall()
-        return res
+        return pd.read_sql_query(query, self.connection)
 
     def searchByName(self, cardname):
         '''Searches the inventory for cards in stock that contain the input string in their printed name.
@@ -138,9 +131,7 @@ class MP_Inventory:
                 List (cards): a list of cards that contain the input text anywhere in their printed card name.
         '''
         query = f"SELECT * FROM '{self.table_name}' WHERE name LIKE '%{cardname}%' AND (foil>0 OR nonfoil>0);"
-        self.cursor.execute(query)
-        res = self.cursor.fetchall()
-        return res
+        return pd.read_sql_query(query, self.connection)
 
     def searchByMID(self, card_mid):
         '''Searches the inventory database for a card in stock that has the given multiverse id.
@@ -152,6 +143,4 @@ class MP_Inventory:
                 List (cards): a list of cards that exactly match the given multiverse id.
         '''
         query = f"SELECT * FROM '{self.table_name}' WHERE multiverse_ids='{card_mid}' AND (foil>0 OR nonfoil>0);"
-        self.cursor.execute(query)
-        res = self.cursor.fetchall()
-        return res
+        return pd.read_sql_query(query, self.connection)
