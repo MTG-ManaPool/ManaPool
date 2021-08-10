@@ -1,5 +1,3 @@
-import sys
-sys.path.append('src')
 import unittest
 from database.database import MP_Database
 

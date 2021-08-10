@@ -1,5 +1,3 @@
-import sys
-sys.path.append('src')
 import unittest
 from inventory.inventory import MP_Inventory
 
