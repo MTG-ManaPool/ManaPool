@@ -60,40 +60,50 @@ class MP_Inventory:
         except sqlite3.Error as error:
             print("Failed to read table", error)
 
-    def addCardToInventory(self, card, variant):
+    def addCardToInventory(self, card):
         '''Adds the specified card of the given variant to the inventory.
 
             Args:
                 card (SQLiteRow): a dict-addressable card row from the database.
                 variant (string): the specified variant of the card to be added.
         '''
-        total = card[f'{variant}']
+        query = f"SELECT * FROM '{self.table_name}' WHERE id='{card['id']}';"
+        tempDF = pd.read_sql_query(query, self.connection)
+        if tempDF.empty:
+            print('\n\nERROR: Cannot add Cards to Inventory.')
+            raise Exception(f"{card['name']} does not exist in the {card['variant']} format.")
+        total = tempDF[card['variant']][0]
         if total == None:
             print('\n\nERROR: Cannot add Cards to Inventory.')
-            raise Exception(f"{card['name']} does not exist in the {variant} format.")
+            raise Exception(f"{card['name']} does not exist in the {card['variant']} format.")
 
         total += 1
-        query = f"UPDATE '{self.table_name}' SET {variant} = {total} WHERE id == '{card['id']}';"
-        self.connection.execute(query)
+        update = f"UPDATE '{self.table_name}' SET {card['variant']} = {total} WHERE id == '{card['id']}';"
+        self.connection.execute(update)
         self.connection.commit()
 
-    def removeCardFromInventory(self, card, variant):
+    def removeCardFromInventory(self, card):
         '''Removes the specified card of the given variant from the inventory.
 
             Args:
                 card (SQLiteRow): a dict-addressable card row from the database.
                 variant (string): the specified variant of the card to be added.
         '''
-        total = card[f'{variant}']
+        query = f"SELECT * FROM '{self.table_name}' WHERE id='{card['id']}' AND (foil>0 OR nonfoil>0);"
+        tempDF = pd.read_sql_query(query, self.connection)
+        if tempDF.empty:
+            print('\n\nERROR: Cannot remove Cards from Inventory.')
+            raise Exception(f"{card['name']} does not exist in the {card['variant']} format.")
+        total = tempDF[card['variant']][0]
         if total == None:
             print('\n\nERROR: Cannot remove Cards from Inventory.')
-            raise Exception(f"{card['name']} does not exist in the {variant} format.")
+            raise Exception(f"{card['name']} does not exist in the {card['variant']} format.")
 
         total -=  1
         if total < 0:
-            raise Exception(f"ERROR: Inventory Count for {card['name']} is 0 for {variant}'s")
-        query = f"UPDATE '{self.table_name}' SET {variant} = {total} WHERE id == '{card['id']}';"
-        self.connection.execute(query)
+            raise Exception(f"ERROR: Inventory Count for {card['name']} is 0 for {card['variant']}'s")
+        update = f"UPDATE '{self.table_name}' SET {card['variant']} = {total} WHERE id == '{card['id']}';"
+        self.connection.execute(update)
         self.connection.commit()
 
     def getInventory(self):

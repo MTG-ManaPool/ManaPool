@@ -1,24 +1,31 @@
+
+import pandas as pd
+import numpy as np
+from ui.menu_utils import clear_screen
 # CLASS FOR CACHING A TEMPORARY LIST TO USE FOR ADDING/REMOVING FROM INVENTORY
 # ALSO FOR USE IN CREATING PURCHASE ORDERS TO SUBMIT TO WEB
 class CardList():
     def __init__ (self):
-        cardlist = None
+        self.cardlist = None
 
     # FUNCTION TO SELECT CARDS FROM THE LIST RETURNED BY DB
     def createFromDBResponse(self, cards, groupname, action):
         # NO CARDS FOUND
-        if len(cards) == 0:
+        if cards.empty:
             print('\n\nNo cards found...\n')
+            self.cardlist = pd.DataFrame(columns=np.append(cards.columns.values, 'variant'), dtype=object)
             placeholder = input('Press any key to continue...\n')
-            return None
+            return self.cardlist
         # CARDS WERE FOUND IN SET/BLOCK
         else:
+            self.cardlist = pd.DataFrame(columns=np.append(cards.columns.values, 'variant'), dtype=object)
             if action:
-                print(f'\n\nResulting Cards from Search "{groupname}"\n\n')
                 quit = False
                 finish = False
-                selected = []
+                count = 0
                 while not quit and not finish:
+                    clear_screen()
+                    print(f'\n\nResulting Cards from Search "{groupname}"\n\n')
                     for index, card in cards.iterrows():
                         print(index+1, '.  ',
                             'MID:', card['multiverse_ids'], ' ',
@@ -41,27 +48,31 @@ class CardList():
                         variant = self.__selectVariant(cards.iloc[reply], action)
                         if variant == None:
                             continue
-                        selected.append((cards.iloc[reply], variant))
+                        self.cardlist = pd.concat([self.cardlist, cards.loc[[reply]]], ignore_index=True)
+                        self.cardlist.loc[count, "variant"] = variant
+                        clear_screen()
                         print(f'\n\n\nCurrent list of cards to {action}:\n\n')
-                        for card in selected:
+                        for index, card in self.cardlist.iterrows():
                             print(
-                                'MID:', card[0]['multiverse_ids'], ' ',
-                                'Name:', card[0]['name'], ' ',
-                                'Mana:', card[0]['mana_cost'], ' ',
-                                'Type:', card[0]['type_line'], ' ',
-                                'Set:', card[0]['set_name'], ' ',
-                                'Rarity:', card[0]['rarity'], ' '
-                                'Variant:', card[1], ' '
+                                'MID:', card['multiverse_ids'], ' ',
+                                'Name:', card['name'], ' ',
+                                'Mana:', card['mana_cost'], ' ',
+                                'Type:', card['type_line'], ' ',
+                                'Set:', card['set_name'], ' ',
+                                'Rarity:', card['rarity'], ' '
+                                'Variant:', card['variant'], ' '
                                 )
                         placeholder = input('\n\n\nPress any key to continue...\n')
+                        count += 1
                     else:
                         print('\n\nERROR: Invalid Entry. Pleasy try again.\n\n')
                         placeholder = input('')
                 if quit == True:
-                    return None
+                    # clear all data from cardlist: https://stackoverflow.com/questions/39173992/drop-all-data-in-a-pandas-dataframe/39174024
+                    self.cardlist.iloc[0:0]
+                    return self.cardlist
                 else:
-                    self.cardlist = selected
-                    return selected
+                    return self.cardlist
             else:
                 print(f'\n\nResulting Cards from Search "{groupname}"\n\n')
                 for index, card in cards.iterrows():
@@ -78,32 +89,30 @@ class CardList():
     
     def modifyCardList(self):
         # CARD LIST EMPTY
-        if len(self.cardlist) == 0:
+        if self.cardlist.empty:
             print('Card list currently empty...')
             placeholder = input('Press any key to continue...\n')
-            return None
+            return self.cardlist
         # CARDS FOUND IN CARDLIST
         else:
             print(f'\n\nCurrent Stored Card List\n\n')
             quit = False
             finish = False
-            while not quit or not finish:
-                for index, card in enumerate(self.cardlist): # https://realpython.com/python-enumerate/
+            while not finish:
+                for index, card in self.cardlist.iterrows():
                     print(index+1, '.  ',
-                        'MID:', card[0]['multiverse_ids'], ' ',
-                        'Name:', card[0]['name'], ' ',
-                        'Mana:', card[0]['mana_cost'], ' ',
-                        'Type:', card[0]['type_line'], ' ',
-                        'Set:', card[0]['set_name'], ' ',
-                        'Rarity:', card[0]['rarity'], ' ',
-                        'Variant:', card[1], ' '
+                        'MID:', card['multiverse_ids'], ' ',
+                        'Name:', card['name'], ' ',
+                        'Mana:', card['mana_cost'], ' ',
+                        'Type:', card['type_line'], ' ',
+                        'Set:', card['set_name'], ' ',
+                        'Rarity:', card['rarity'], ' ',
+                        'Variant:', card['variant'], ' '
                         )
-                print('\n\n\nRemove a card by selecting it\'s number in the list or type [F] to finish or [Q] to quit\n\n')
-                print('')
+                print('\n\n\nRemove a card by selecting it\'s number in the list or type [F] to finish\n')
+                print('NOTE: CHANGES MADE HERE CANNOT BE REVERSED!!\n\n')
                 reply = input('>')
-                if reply == 'Q' or reply == 'q':
-                    quit = True
-                elif reply == 'F' or reply == 'f':
+                if reply == 'F' or reply == 'f':
                     finish = True
                 elif (int(reply)-1) in range(len(self.cardlist)):
                     reply = int(reply)-1
@@ -113,9 +122,6 @@ class CardList():
                 else:
                     print('\n\nERROR: Invalid Entry. Pleasy try again.\n\n')
                     placeholder = input('')
-                    
-            if quit == True:
-                return None
             else:
                 return self.cardlist.copy()
     

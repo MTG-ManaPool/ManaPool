@@ -1,9 +1,11 @@
-from . import menu_utils
+from ui.menu_utils import clear_screen
 from cardlist.cardlist import CardList
 from orders.purchaselist import PurchaseList
 
 class Menu():
     def __init__ (self):
+
+        # OPTIONS LIST FOR DIFFERENT MENU's AND CORRESPONDING ACTIONS
         self.main_menu_title = 'Welcome to ManaPool'
         self.main_menu_items = {
             '1: Import Inventory from a JSON file': self.__importFromJson,
@@ -48,21 +50,21 @@ class Menu():
 
     # CALLED BY MAIN MENU
     def __purchaseMenu(self, params):
-        menu_utils.clear_screen()
+        clear_screen()
         inventory = params[0]
         database = params[1]
         self.__renderMenu(self.add_menu_title, self.search_menu_items, [inventory, database, 'buy'])
 
     # CALLED BY INVENTORY MENU
     def __addCardMenu(self, params):
-        menu_utils.clear_screen()
+        clear_screen()
         inventory = params[0]
         database = params[1]
         self.__renderMenu(self.add_menu_title, self.search_menu_items, [inventory, database, 'add'])
 
     # CALLED BY INVENTORY MENU
     def __removeCardMenu(self, params):
-        menu_utils.clear_screen()
+        clear_screen()
         inventory = params[0]
         database = params[1]
         self.__renderMenu(self.remove_menu_title, self.search_menu_items, [inventory, database, 'remove'])
@@ -106,64 +108,68 @@ class Menu():
 
     # WRAPPER FUNCTION TO ADD CARDS TO INVENTORY
     def __addCards(self, inventory, cards):
-        print(f'\nAttempting to Add {len(cards)} Cards...\n\n')
+        print(f'\nAttempting to Add {len(cards.index)} Cards...\n\n')
         count = 0
-        for card in cards:
-            variant = card[1]
-            print(
-                'MID:', card[0]['multiverse_ids'], ' ',
-                'Name:', card[0]['name'], ' ',
-                'Mana:', card[0]['mana_cost'], ' ',
-                'Type:', card[0]['type_line'], ' ',
-                'Set:', card[0]['set_name'], ' ',
-                'Rarity:', card[0]['rarity'], ' ',
-                'Variant:', variant, ' '
-                )
-            try:
-                inventory.addCardToInventory(card[0], variant)
-                count += 1
-            except Exception as e:
-                print(e)
-                placeholder = input('')
-                continue
-        print(f'\n\n{count} Cards added.')
+        if not cards.empty:
+            for index, card in cards.iterrows():
+                print(
+                    'MID:', card['multiverse_ids'], ' ',
+                    'Name:', card['name'], ' ',
+                    'Mana:', card['mana_cost'], ' ',
+                    'Type:', card['type_line'], ' ',
+                    'Set:', card['set_name'], ' ',
+                    'Rarity:', card['rarity'], ' ',
+                    'Variant:', card['variant'], ' ',
+                    )
+                try:
+                    inventory.addCardToInventory(card)
+                    count += 1
+                except Exception as e:
+                    print(e)
+                    placeholder = input('')
+                    continue
+            print(f'\n\n{count} Cards added.')
+        else:
+           print("\n\nNo cards specified to add...\n") 
         placeholder = input('Press any key to continue...\n')
 
     # WRAPPER FUNCTION TO REMOVE CARDS FROM INVENTORY
     def __removeCards(self, inventory, cards):
         print(f'\nAttempting to Remove {len(cards)} Cards...\n\n')
         count = 0
-        for card in cards:
-            variant = card[1]
-            print(
-                'MID:', card[0]['multiverse_ids'], ' ',
-                'Name:', card[0]['name'], ' ',
-                'Mana:', card[0]['mana_cost'], ' ',
-                'Type:', card[0]['type_line'], ' ',
-                'Set:', card[0]['set_name'], ' ',
-                'Rarity:', card[0]['rarity'], ' '
-                'Variant:', variant, ' '
-                )
-            try:
-                inventory.removeCardFromInventory(card[0], variant)
-                count += 1
-            except Exception as e:
-                print(e)
-                placeholder = input('')
-                continue
-        print(f'\n\n{count} Cards removed.')
+        if not cards.empty:
+            for index, card in cards.iterrows():
+                print(
+                    'MID:', card['multiverse_ids'], ' ',
+                    'Name:', card['name'], ' ',
+                    'Mana:', card['mana_cost'], ' ',
+                    'Type:', card['type_line'], ' ',
+                    'Set:', card['set_name'], ' ',
+                    'Rarity:', card['rarity'], ' ',
+                    'Variant:', card['variant'], ' ',
+                    )
+                try:
+                    inventory.removeCardFromInventory(card)
+                    count += 1
+                except Exception as e:
+                    print(e)
+                    placeholder = input('')
+                    continue
+            print(f'\n\n{count} Cards removed.')
+        else:
+           print("\n\nNo cards specified to remove...\n") 
         placeholder = input('Press any key to continue...\n')
 
     # SEARCH MENU FUNCTIONS
     # TODO: Implement search by block functionality in db
     def __searchBlock(self, params):
-        menu_utils.clear_screen()
+        clear_screen()
         blockname = input('Enter name of block to search by\n\n>')
         print('\n\nSearching...')
         placeholder = input('Press any key to continue...\n')
 
     def __searchSet(self, params):
-        menu_utils.clear_screen()
+        clear_screen()
         inventory = params[0]
         database = params[1]
         action = params[2]
@@ -182,7 +188,7 @@ class Menu():
         inventory = params[0]
         database = params[1]
         action = params[2]
-        menu_utils.clear_screen()
+        clear_screen()
         cardname = input('Enter name of card to search by\n\n>')
         try:
             if action == 'remove':
@@ -198,7 +204,7 @@ class Menu():
         inventory = params[0]
         database = params[1]
         action = params[2]
-        menu_utils.clear_screen()
+        clear_screen()
         m_id = input('Enter multiverse id of card to search by\n\n>')
         try:
             if action == 'remove':
@@ -212,11 +218,11 @@ class Menu():
     
     def __handleResponse(self, inventory, groupname, cards, action):
         selected = self.cache.createFromDBResponse(cards, groupname, action)
-        if selected:
+        if not selected.empty:
             if action == 'add':
-                self.__addCards(inventory, cards)
+                self.__addCards(inventory, selected)
             elif action == 'remove':
-                self.__removeCards(inventory, cards)
+                self.__removeCards(inventory, selected)
             elif action == 'buy':
                 order = PurchaseList(self.cache)
                 order.submitOrder()
@@ -227,7 +233,7 @@ class Menu():
         quit = False
         while not quit:
             legal = False
-            menu_utils.clear_screen()
+            clear_screen()
             print(menu_title, '\n\n')
             for key in menu_items.keys():
                 print(key)

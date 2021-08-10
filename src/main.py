@@ -11,6 +11,7 @@ def main():
         menu.mainMenu(inventory, database)
     except Exception as e:
         print(e)
-    exit()
     inventory.close()
+    database.close()
+    exit()
 main()
