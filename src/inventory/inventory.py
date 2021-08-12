@@ -1,6 +1,6 @@
 import sqlite3
 import pandas as pd
-from database import db_utils
+import json
 
 class MP_Inventory:
     def __init__ (self):
@@ -18,47 +18,34 @@ class MP_Inventory:
         self.connection.commit()
         self.connection.close()
 
-    def importJSON(self, cards):
+    def importJSON(self, path):
+        with open(path) as f:
+            cards = json.load(f)
+            f.close()
+        updated = 0
         try:
-            updated = 0
-            rows = cards.shape[0]
-            for r in range(rows):
-                for card_type in db_utils.stock_headers:
-                    if cards.at[r, card_type]:
-                        update_query = f"UPDATE '{self.table_name}' SET {card_type} = {cards.at[r, card_type]} WHERE id == '{cards.at[r, 'id']}'"
-                        self.cursor.execute(update_query)
-                        updated += 1
+            for card in cards:
+                update_query = f"UPDATE '{self.table_name}' SET foil={card['foil']}, nonfoil={card['nonfoil']} WHERE id=='{card['id']}'"
+                self.cursor.execute(update_query)
+                updated += 1
             self.connection.commit()
-            print(f"Updated {updated} records successfully ")
-            # Should we be getting a new cursor at each method?
-            # self.cursor.close()
-
         except sqlite3.Error as error:
-            print("Failed to update table", error)
+            print("Failed to update table.\n\n", error, "\n\nThis should never happen.")
+        return updated
 
-    def exportJSON(self, dst):
+    def exportJSON(self, path):
+        records = 0
         try:
             if self.connection:
                 # Make sure there is an empty space at the end of each string
-                query = f"SELECT name, set_name, full_art, textless, foil, nonfoil, oversized, promo "
-                query += f"FROM '{self.table_name}' "
-                query += f"WHERE 'foil' > 0 OR 'nonfoil' > 0 "
-
-                # FIXME REMOVE THE LIMIT AFTER VERIFYING
-                query += f"LIMIT 3"
-
+                query = f"SELECT id, name, multiverse_ids, set_name, foil, nonfoil "
+                query += f"FROM '{self.table_name}' WHERE foil > 0 OR nonfoil > 0"
                 my_inventory = pd.read_sql(query, self.connection)
-
-                my_inventory.to_json(dst, orient="records")
+                my_inventory.to_json(path, orient="records")
                 records = my_inventory.shape[0]
-                print(f"Retrieved {records} records successfully ")
-
-                # importing here since this is the only function that uses it. If it is used more often make global
-                import time
-                time.sleep(5)
-
         except sqlite3.Error as error:
-            print("Failed to read table", error)
+            print("Failed to read table.\n\n", error, "\n\nThis should never happen")
+        return records
 
     def addCardToInventory(self, card):
         '''Adds the specified card of the given variant to the inventory.
@@ -124,11 +111,11 @@ class MP_Inventory:
             Returns:
                 List (cards): a list of cards whose given expansion set name exactly match the input setname.
         '''
-        query = f"SELECT * FROM '{self.table_name}' WHERE set_name='{setname}' AND (foil>0 OR nonfoil>0);"
+        query = f"SELECT * FROM '{self.table_name}' WHERE set_name='{setname}' AND (foil>0 OR nonfoil>0) ORDER BY multiverse_ids;"
         return pd.read_sql_query(query, self.connection)
 
     def searchByBlock(self, blockname):
-        query = f"SELECT * FROM '{self.table_name}' WHERE block='{blockname}' AND (foil>0 OR nonfoil>0);"
+        query = f"SELECT * FROM '{self.table_name}' WHERE block='{blockname}' AND (foil>0 OR nonfoil>0) ORDER BY multiverse_ids;"
         return pd.read_sql_query(query, self.connection)
 
     def searchByName(self, cardname):
@@ -140,7 +127,7 @@ class MP_Inventory:
             Returns:
                 List (cards): a list of cards that contain the input text anywhere in their printed card name.
         '''
-        query = f"SELECT * FROM '{self.table_name}' WHERE name LIKE '%{cardname}%' AND (foil>0 OR nonfoil>0);"
+        query = f"SELECT * FROM '{self.table_name}' WHERE name LIKE '%{cardname}%' AND (foil>0 OR nonfoil>0) ORDER BY multiverse_ids;"
         return pd.read_sql_query(query, self.connection)
 
     def searchByMID(self, card_mid):
@@ -152,5 +139,5 @@ class MP_Inventory:
             Returns:
                 List (cards): a list of cards that exactly match the given multiverse id.
         '''
-        query = f"SELECT * FROM '{self.table_name}' WHERE multiverse_ids='{card_mid}' AND (foil>0 OR nonfoil>0);"
+        query = f"SELECT * FROM '{self.table_name}' WHERE multiverse_ids='{card_mid}' AND (foil>0 OR nonfoil>0) ORDER BY multiverse_ids;"
         return pd.read_sql_query(query, self.connection)

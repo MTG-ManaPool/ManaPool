@@ -4,7 +4,10 @@ lib
 *.cfg
 
 #database
-./*.db
+*.db
+
+#import/exports
+*.json
 
 #config
 config.json
