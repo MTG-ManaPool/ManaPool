@@ -3,6 +3,12 @@ include
 lib
 *.cfg
 
+#database
+*.db
+
+#import/exports
+*.json
+
 #config
 config.json
 
