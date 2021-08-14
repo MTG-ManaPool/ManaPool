@@ -6,10 +6,10 @@ from . import db_utils
 
 
 class MP_Database:
-    def __init__ (self):
+    def __init__ (self, database_name="ManaPool-Inventory.db"):
         '''Initalizes the connection to the ManaPool-Inventory Database.
         Creates a new Database if one does not exist.'''
-        self.connection = sqlite3.connect("ManaPool-Inventory.db")
+        self.connection = sqlite3.connect(database_name)
         self.connection.row_factory = sqlite3.Row
         self.cursor = self.connection.cursor()
         self.table_name = "MTG-Cards"
