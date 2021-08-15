@@ -6,25 +6,25 @@ from unittest import mock
 
 
 class TestInventory(unittest.TestCase):
-    def setUp(self) -> None:
-        # Create 60k DB
-        # self.database = MP_Database()
-        self.database_name = "test_database.db"
-        self.table_name = "MTG-Cards"
-        self.database = MP_Database(self.database_name)
-        self.test_db_connection =   self.database.connection
+    # def setUp(self) -> None:
+    #     # Create 60k DB
+    #     # self.database = MP_Database()
+    #     self.database_name = "test_database.db"
+    #     self.table_name = "MTG-Cards"
+    #     self.database = MP_Database(self.database_name)
+    #     self.test_db_connection =   self.database.connection
         
-        schema = [ 'index', 'foil', 'nonfoil', 'id', 'name', 'colors', 'color_identity',
-            'mana_cost', 'type_line', 'set_type', 'set_name', 'rarity', 'artist',
-            'flavor_text', 'cmc', 'power', 'toughness', 'multiverse_ids',
-            'keywords', 'set', 'collector_number', 'layout', 'full_art', 'textless',
-            'oversized', 'promo', 'small_img', 'normal_img', 'large_img', 'png_img',
-            'art_crop_img', 'border_crop_img']
+    #     schema = [ 'index', 'foil', 'nonfoil', 'id', 'name', 'colors', 'color_identity',
+    #         'mana_cost', 'type_line', 'set_type', 'set_name', 'rarity', 'artist',
+    #         'flavor_text', 'cmc', 'power', 'toughness', 'multiverse_ids',
+    #         'keywords', 'set', 'collector_number', 'layout', 'full_art', 'textless',
+    #         'oversized', 'promo', 'small_img', 'normal_img', 'large_img', 'png_img',
+    #         'art_crop_img', 'border_crop_img']
 
-        card = pandas.read_sql_query(f"SELECT * FROM '{self.table_name}' LIMIT 1", self.test_db_connection)
-        self.assertListEqual(list(card.columns), schema)
-        self.test_inventory = MP_Inventory()
-        return super().setUp()
+    #     card = pandas.read_sql_query(f"SELECT * FROM '{self.table_name}' LIMIT 1", self.test_db_connection)
+    #     self.assertListEqual(list(card.columns), schema)
+    #     self.test_inventory = MP_Inventory()
+    #     return super().setUp()
 
     # @mock.patch("pandas.read_sql_query", return_value=None)
     # def test_get_inventory(self, mock_read_sql_query):
