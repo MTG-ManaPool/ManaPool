@@ -3,14 +3,14 @@ import pandas as pd
 import json
 
 class MP_Inventory:
-    def __init__ (self):
+    def __init__ (self, database_name="ManaPool-Inventory.db"):
         '''Initalizes the connection to the ManaPool-Inventory Database.'''
-        self.connection = sqlite3.connect("ManaPool-Inventory.db")
+        self.connection = sqlite3.connect(database_name)
         self.connection.row_factory = sqlite3.Row
         self.cursor = self.connection.cursor()
         self.table_name = "MTG-Cards"
 
-        # First time initialization of inventory Database
+        # First time initialization of inventory
         if None ==  self.cursor.execute(f"SELECT name FROM sqlite_master WHERE type='table' AND name='{self.table_name}';").fetchone():
             raise Exception('Database DNE Exception.')
     

@@ -29,6 +29,11 @@ ManaPool searches popular digital card stores, to find the best price available 
 
 - [ ] And further beyond. . .
 
+
+## Demo Video
+
+https://pdx.zoom.us/rec/play/-TEAXIUWiFLKdwll2KfyJdjvi8uTkfJ5zW_rZjz3nJOoq9jw9P4UPNI11DsKGIFvUijI1iVB03ykfhzo.AyssrBwBEUdP-mPj?autoplay=true&startTime=1628986950000
+
 ## Install
 
 - - -

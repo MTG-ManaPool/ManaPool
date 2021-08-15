@@ -85,7 +85,9 @@ class CardList():
                         'Rarity:', card['rarity'], ' '
                         )
                 placeholder = input('\n\n\nPress any key to continue...\n')
-            return None
+            # clear all data from cardlist: https://stackoverflow.com/questions/39173992/drop-all-data-in-a-pandas-dataframe/39174024
+            self.cardlist.iloc[0:0]
+            return self.cardlist
     
     def modifyCardList(self):
         # CARD LIST EMPTY
