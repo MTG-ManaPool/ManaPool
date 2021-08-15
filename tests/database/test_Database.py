@@ -1,8 +1,5 @@
 import unittest
-import sqlite3
 import pandas
-import os
-import database
 from database.database import MP_Database
 from unittest import mock
 
